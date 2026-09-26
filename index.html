@@ -295,7 +295,7 @@ textarea:focus,.tinput:focus,input:focus,button:focus-visible,.navbtn:focus-visi
    consentimento por vínculo, DBR de 16 frases em 5 dimensões, fila de
    revisão humana e trilha de auditoria.
    ========================================================================== */
-const APP_VERSION = '1.0.0';
+const APP_VERSION = '1.0.1';
 const LS_KEY = 'ebenezer-conecta-v7';
 const CORRECAO_MS = 15*60*1000;
 // "Hoje" = data local do dispositivo (antes era fixa em 09/09/2026, o que gerava "registrado X dias depois" incorreto).
@@ -576,7 +576,8 @@ function topbarFor(){
   const titles = titleFor();
   return `
     <div class="topbar">
-      ${S.sub ? `<button class="tb-back" data-act="sub-back">${icoBack()} Voltar</button>` : ''}
+      ${S.sub ? `<button class="tb-back" data-act="sub-back">${icoBack()} Voltar</button>`
+        : (S.tab !== NAV[S.role].primary[0][0] ? `<button class="tb-back" data-act="tab-back">${icoBack()} Voltar</button>` : '')}
       <div>
         <div class="tb-title">${titles[0]}</div>
         ${titles[1] ? `<div class="tb-sub">${titles[1]}</div>` : ''}
@@ -1679,6 +1680,8 @@ function handle(act, el){
     case 'open-tutorial': S.tutorialOpen = true; render(); break;
     case 'close-tutorial': S.tutorialOpen = false; render(); break;
     case 'sub-back': S.sub=null; S.ctx={}; render(); break;
+    // Fora do painel inicial, "Voltar" leva de volta ao painel do perfil.
+    case 'tab-back': S.tab=NAV[S.role].primary[0][0]; S.sub=null; S.ctx={}; S.sheetOpen=false; render(); break;
 
     case 'painel-sub': ctx({painelSub:el.dataset.sub}); render(); break;
 

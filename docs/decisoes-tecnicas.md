@@ -40,7 +40,7 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 
 ## DT-07 · Testes ponta a ponta com Playwright
 
-- **Decisão:** 16 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
+- **Decisão:** 17 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
 - **Por quê:** o valor do MVP está no fluxo entre perfis, e testes de interface são o que prova isso.
 - **Consequência:** `npm test` roda tudo em cerca de 1 minuto e gera um relatório HTML e as capturas de tela usadas como evidência.
 
@@ -62,3 +62,4 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 | B6 | Uma falha do `localStorage` (modo privado) derrubava o app, e não havia como voltar aos dados iniciais. | `try/catch` e validação na leitura, mais o botão "Restaurar dados de demonstração" (T15). |
 | B7 | O texto do cabeçalho da trajetória saía sem estilo (fonte grande). | Estilo `.meta` aplicado também aos cartões. |
 | B8 | Ao abrir uma tela nova, ela aparecia na rolagem da anterior (por exemplo, a trajetória já rolada até o meio). | A página volta ao topo a cada troca de tela (T03). |
+| B9 | Nos perfis Coordenação e Psicóloga, ao abrir uma aba pelos botões do painel, não havia como voltar ao painel. | Toda aba fora do painel mostra "Voltar", que leva ao painel do perfil; versão 1.0.1 (T17). |

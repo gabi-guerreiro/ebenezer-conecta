@@ -58,7 +58,7 @@ O app é um único arquivo (`index.html`). Também dá para simplesmente dar doi
 ```bash
 npm install
 npx playwright install chromium   # só na primeira vez
-npm test                          # roda os 16 testes (~1 min)
+npm test                          # roda os 17 testes (~1 min)
 npm run test:report               # abre o relatório HTML
 npm run video                     # regrava as imagens do vídeo, sem narração (precisa de ffmpeg)
 ```
@@ -102,4 +102,4 @@ playwright.config.js · package.json
 
 ## Créditos
 
-MBA Inteli, Grupo 5 (Adele Abdalla, Juliana Almeida, Marilia Pinheiro, Thaysa Benz). Projeto desenvolvido com o Instituto Social Ebenézer.
+MBA Inteli, Grupo 5. Projeto desenvolvido com o Instituto Social Ebenézer.

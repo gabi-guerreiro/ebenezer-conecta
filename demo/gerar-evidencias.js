@@ -32,14 +32,14 @@ const rubrica = [
   ['MVP funcional executando o fluxo principal', 'Presença → avaliação DBR → observação → revisão humana → intervenção → trajetória → encaminhamento à psicóloga, nos 3 perfis.', '#fluxo', 'T04–T12'],
   ['Modelo de dados implementado', '9 coleções com chaves e regras de integridade (ERD e dicionário documentados).', '#modelo', 'T13'],
   ['Populado com dados sintéticos representativos', '18 educandos em 4 turmas, 15 avaliações, 9 registros, 3 intervenções, 4 encaminhamentos e 1 caso, cobrindo todos os estados.', '#dados', 'T13'],
-  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T16'],
-  ['Operação estável', 'Zero erros de JavaScript em todos os testes, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 8 defeitos corrigidos.', '#estabilidade', 'T15–T16'],
+  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T17'],
+  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 9 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
   ['Entrega via repositório', 'Código, testes, scripts e documentos versionados no GitHub e publicados no GitHub Pages.', '#acesso', '—'],
-  ['Handover · vídeo demonstrativo', 'Vídeo de 85 s legendado, gravado automaticamente a partir do app real.', '#video', '—'],
+  ['Handover · vídeo demonstrativo', 'Vídeo narrado de 2 min 37 s, com legendas, gravado a partir do app real.', '#video', '—'],
   ['Handover · registro do modelo de dados', 'docs/modelo-de-dados.md: ERD, dicionário, regras calculadas.', '#modelo', '—'],
   ['Handover · instalação e acesso', 'README.md: link, perfis e códigos, como rodar, testar, publicar e manter.', '#acesso', '—'],
   ['Handover · evidências dos testes', 'Esta página + relatório Playwright + JSON + capturas de tela.', '#testes', '—'],
-  ['Handover · principais decisões técnicas', 'docs/decisoes-tecnicas.md: 8 decisões e 8 correções.', '#decisoes', '—'],
+  ['Handover · principais decisões técnicas', 'docs/decisoes-tecnicas.md: 8 decisões e 9 correções.', '#decisoes', '—'],
 ];
 
 const entidades = [
@@ -73,6 +73,7 @@ const bugs = [
   ['B6', 'Uma falha do armazenamento derrubava o app.', 'try/catch, validação e botão "Restaurar dados".'],
   ['B7', 'O cabeçalho da trajetória saía sem estilo.', 'Estilo aplicado aos cartões.'],
   ['B8', 'Uma tela nova abria na rolagem da tela anterior (ex.: a trajetória já rolada até o meio).', 'Volta ao topo a cada troca de tela.'],
+  ['B9', 'Coordenação e Psicóloga não tinham como voltar ao painel depois de abrir uma aba pelos botões do painel.', 'Toda aba fora do painel mostra "Voltar" (versão 1.0.1).'],
 ];
 
 const html = `<!DOCTYPE html>
@@ -190,7 +191,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
   <div class="kpi"><div class="n">${ok}/${testes.length}</div><div class="l">Testes aprovados</div></div>
   <div class="kpi"><div class="n">3</div><div class="l">Perfis com acesso separado</div></div>
   <div class="kpi"><div class="n">18</div><div class="l">Educandos sintéticos</div></div>
-  <div class="kpi"><div class="n">8</div><div class="l">Defeitos corrigidos</div></div>
+  <div class="kpi"><div class="n">9</div><div class="l">Defeitos corrigidos</div></div>
 </div></div>
 
 <nav class="toc"><div class="wrap">
@@ -210,7 +211,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="video">
   <h2>Vídeo demonstrativo</h2>
-  <p class="lead">Fluxo principal nos três perfis, em 85 segundos, com legendas. Gravado automaticamente a partir do app real (<span class="mono">npm run video</span>).</p>
+  <p class="lead">Fluxo principal nos três perfis, em 2 min 37 s, com narração do grupo e legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
   <div class="video-box">
     <video controls preload="metadata" playsinline src="${src('docs/video/demo-ebenezer-conecta.mp4')}"></video>
     <div class="card" style="padding:18px 20px">
@@ -258,6 +259,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
     ${img('15-caso-atividade', 'Caso clínico com atividade registrada', 'T10')}
     ${img('16-trajetoria', 'Trajetória individual com leitura da evolução', 'T11')}
     ${img('17-relatorio', 'Relatório com ficha técnica de cobertura', 'T12')}
+    ${img('18-voltar-ao-painel', 'Botão "Voltar" fora do painel (versão 1.0.1)', 'T17')}
   </div>
 </section>
 
@@ -277,7 +279,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="estabilidade">
   <h2>Estabilidade e defeitos corrigidos</h2>
-  <p class="lead">A fase de testes encontrou 8 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
+  <p class="lead">A fase de testes encontrou 9 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
   <div class="card tbl"><table class="stack-sm">
     <thead><tr><th>#</th><th>Problema encontrado</th><th>Correção</th></tr></thead>
     <tbody>${bugs.map(([i, p, c]) => `<tr><td class="mono"><b>${i}</b></td><td>${esc(p)}</td><td>${esc(c)}</td></tr>`).join('')}</tbody>
@@ -325,7 +327,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
   <div class="card" style="margin-top:12px;padding:16px 18px"><pre class="mono" style="margin:0;white-space:pre-wrap">git clone https://github.com/gabi-guerreiro/ebenezer-conecta.git
 cd ebenezer-conecta
 npm start          # app em http://localhost:4173
-npm install && npm test    # 16 testes E2E</pre></div>
+npm install && npm test    # 17 testes E2E</pre></div>
 </section>
 </main>
 

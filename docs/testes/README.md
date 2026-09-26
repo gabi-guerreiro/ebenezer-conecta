@@ -1,6 +1,6 @@
 # Evidências de testes
 
-**Resultado da última execução: 16 de 16 testes aprovados (0 falhas, 0 instáveis), em cerca de 53 s.**
+**Resultado da última execução: 17 de 17 testes aprovados (0 falhas, 0 instáveis), em cerca de 57 s.**
 
 - Relatório interativo: [`relatorio-html/index.html`](relatorio-html/index.html). Abra no navegador ou rode `npm run test:report`.
 - Resultado em formato de máquina: [`resultado-testes.json`](resultado-testes.json).
@@ -34,10 +34,11 @@
 | T14 | Regras | Frequência considerada, recorrência de falta justificada, contadores do painel | ✅ |
 | T15 | Estabilidade | Dados persistem após recarregar; "Restaurar dados" volta à carga inicial | ✅ |
 | T16 | Estabilidade | Todas as telas dos 3 perfis (inclusive as 18 trajetórias) sem erro e sem rolagem lateral em 375 px e 1280 px | ✅ |
+| T17 | Estabilidade | Toda aba fora do painel tem "Voltar", que leva ao painel do perfil (Equipe, Coordenação e Psicóloga) | ✅ |
 
 ## Defeitos encontrados e corrigidos
 
-Os 8 defeitos (B1 a B8) achados nesta fase e as respectivas correções estão em [`../decisoes-tecnicas.md`](../decisoes-tecnicas.md#correções-feitas-durante-a-fase-de-testes). Os testes T02, T03, T07, T08, T13, T15 e T16 funcionam como testes de regressão para eles.
+Os 9 defeitos (B1 a B9) achados nesta fase e as respectivas correções estão em [`../decisoes-tecnicas.md`](../decisoes-tecnicas.md#correções-feitas-durante-a-fase-de-testes). Os testes T02, T03, T07, T08, T13, T15, T16 e T17 funcionam como testes de regressão para eles.
 
 ## Como repetir os testes
 

@@ -339,6 +339,30 @@ test.describe('3. Regras de negócio e dados', () => {
 });
 
 test.describe('4. Estabilidade', () => {
+  test('T17 · Fora do painel, toda aba tem "Voltar" que leva ao painel do perfil', async ({ page }) => {
+    await abrir(page);
+    for (const perfil of ['educadora', 'coordenacao', 'psicologa']) {
+      await entrar(page, perfil);
+      const home = await page.locator('.tb-title').textContent();
+      await expect(page.locator('[data-act=tab-back]')).toHaveCount(0);
+      const tabs = await page.evaluate(p => allTabsFor(p).map(t => t[0]).slice(1), perfil);
+      for (const tab of tabs) {
+        await page.evaluate(t => { S.tab = t; S.sub = null; S.ctx = {}; render(); }, tab);
+        await expect(page.locator('[data-act=tab-back]'), `Voltar em ${perfil}/${tab}`).toHaveCount(1);
+        await page.click('[data-act=tab-back]');
+        await expect(page.locator('.tb-title')).toHaveText(home);
+      }
+      // A partir dos botões do painel (o caminho relatado)
+      const btn = page.locator('.content [data-act=nav]').first();
+      await btn.click();
+      if (perfil === 'coordenacao') await shot(page, '18-voltar-ao-painel');
+      await page.click('[data-act=tab-back]');
+      await expect(page.locator('.tb-title')).toHaveText(home);
+      if (perfil === 'educadora') await page.evaluate(() => { S.role = null; render(); });
+      else await sair(page);
+    }
+  });
+
   test('T15 · Dados persistem após recarregar e podem ser restaurados', async ({ page }) => {
     await abrir(page);
     await entrar(page, 'educadora');

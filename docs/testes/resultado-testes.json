@@ -1,0 +1,668 @@
+{
+  "config": {
+    "configFile": "/home/claude/ebenezer-conecta/playwright.config.js",
+    "rootDir": "/home/claude/ebenezer-conecta/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "docs/testes/resultado-testes.json"
+        }
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "docs/testes/relatorio-html",
+          "open": "never"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "/home/claude/ebenezer-conecta/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/home/claude/ebenezer-conecta/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.56.0",
+    "workers": 1,
+    "webServer": {
+      "command": "python3 -m http.server 4173 --bind 127.0.0.1",
+      "url": "http://127.0.0.1:4173/index.html",
+      "reuseExistingServer": true,
+      "stdout": "ignore",
+      "stderr": "ignore"
+    }
+  },
+  "suites": [
+    {
+      "title": "fluxo-principal.spec.js",
+      "file": "fluxo-principal.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "1. Acesso e perfis",
+          "file": "fluxo-principal.spec.js",
+          "line": 50,
+          "column": 6,
+          "specs": [
+            {
+              "title": "T01 · Tela inicial mostra os três perfis e a Equipe entra sem senha",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 591,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:26.263Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-a6c5bf6e7e5b23376325",
+              "file": "fluxo-principal.spec.js",
+              "line": 51,
+              "column": 3
+            },
+            {
+              "title": "T02 · Código errado é recusado; código certo libera a Coordenação",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 552,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:26.960Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-a3c04bf81f01952352dd",
+              "file": "fluxo-principal.spec.js",
+              "line": 63,
+              "column": 3
+            },
+            {
+              "title": "T03 · Segregação: só a psicóloga vê encaminhamentos, caso clínico e contato do responsável",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4109,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:27.536Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-093b57ea0599bbe18091",
+              "file": "fluxo-principal.spec.js",
+              "line": 78,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "2. Fluxo principal da coleta",
+          "file": "fluxo-principal.spec.js",
+          "line": 102,
+          "column": 6,
+          "specs": [
+            {
+              "title": "T04 · Presença: marcar todos, fechar lançamento; só a coordenação reabre",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4468,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:31.658Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-6fea8722f7ba24f96031",
+              "file": "fluxo-principal.spec.js",
+              "line": 103,
+              "column": 3
+            },
+            {
+              "title": "T05 · Avaliação bloqueada sem consentimento; liberada após a coordenação registrar",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3636,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:36.142Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-680a7f0ce7044ad8fb87",
+              "file": "fluxo-principal.spec.js",
+              "line": 126,
+              "column": 3
+            },
+            {
+              "title": "T06 · Avaliação inicial (modo rápido) + sinalização para a psicóloga; depois vira check-in",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 18605,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:39.793Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-40d72c9079c99b3106fb",
+              "file": "fluxo-principal.spec.js",
+              "line": 145,
+              "column": 3
+            },
+            {
+              "title": "T07 · Registro de observação: alerta de outro nome, envio para revisão",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2084,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:03:58.408Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-7d0feddcca3ea930fec8",
+              "file": "fluxo-principal.spec.js",
+              "line": 179,
+              "column": 3
+            },
+            {
+              "title": "T08 · Revisão humana: coordenação valida um registro e outro é devolvido e corrigido",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2925,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:00.503Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-5864eed6032e6da593d5",
+              "file": "fluxo-principal.spec.js",
+              "line": 203,
+              "column": 3
+            },
+            {
+              "title": "T09 · Intervenção percorre proposta → acompanhamento → validação",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3522,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:03.441Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-f17bb3bfe560a979fd53",
+              "file": "fluxo-principal.spec.js",
+              "line": 233,
+              "column": 3
+            },
+            {
+              "title": "T10 · Psicóloga revisa encaminhamento, abre caso e registra atividade",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4297,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:06.975Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-9f038b2b2606c029f281",
+              "file": "fluxo-principal.spec.js",
+              "line": 260,
+              "column": 3
+            },
+            {
+              "title": "T11 · Trajetória individual consolida avaliações, registros e intervenções",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2003,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:11.283Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-95855a959a8a57e45e2c",
+              "file": "fluxo-principal.spec.js",
+              "line": 284,
+              "column": 3
+            },
+            {
+              "title": "T12 · Relatório de programa mostra ficha técnica e exclusão de quem não tem consentimento",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 608,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:13.301Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-44e7e46bb8f10293ea2c",
+              "file": "fluxo-principal.spec.js",
+              "line": 297,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "3. Regras de negócio e dados",
+          "file": "fluxo-principal.spec.js",
+          "line": 307,
+          "column": 6,
+          "specs": [
+            {
+              "title": "T13 · Modelo de dados e massa sintética estão íntegros",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 351,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:13.923Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-f7239c1178dc1b664892",
+              "file": "fluxo-principal.spec.js",
+              "line": 308,
+              "column": 3
+            },
+            {
+              "title": "T14 · Frequência considera falta justificada e sinaliza recorrência",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 219,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:14.286Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-cce71f9063398e1f7bd2",
+              "file": "fluxo-principal.spec.js",
+              "line": 325,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "4. Estabilidade",
+          "file": "fluxo-principal.spec.js",
+          "line": 341,
+          "column": 6,
+          "specs": [
+            {
+              "title": "T15 · Dados persistem após recarregar e podem ser restaurados",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2230,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:14.514Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-51ccb64f2fdcaf25fb16",
+              "file": "fluxo-principal.spec.js",
+              "line": 342,
+              "column": 3
+            },
+            {
+              "title": "T16 · Todas as telas de todos os perfis abrem sem erro e sem rolagem lateral",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "",
+                  "projectName": "",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 1271,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-09-26T18:04:16.753Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "014dd00b8abae423897e-44789f997afcb4d7ecd2",
+              "file": "fluxo-principal.spec.js",
+              "line": 360,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-09-26T18:03:25.147Z",
+    "duration": 52983.767,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,1868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ebenézer Conecta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   TOKENS — paleta do Instituto Social Ebenézer, fiel ao color code do
+   documento "Plataforma de Evidência Socioemocional".
+   ========================================================================== */
+:root{
+  --brand:#2f7d3b; --brand-d:#1e5c2c; --brand-s:#e7f1e7; --brand-on:#8fcf9b;
+  --deep:#16351f; --deep-2:#1e4a2a; --deep-3:#0e2416;
+  --surface:#f7f7f2; --surface-alt:#eeefe8; --card:#ffffff; --line:#e3e6de;
+  --ink:#16241a; --ink-2:#5c6560; --ink-3:#6d766f;
+  --on-deep:#e2eae3; --on-deep-2:#a9bcae;
+
+  --data-1:#2f7d3b; --data-2:#3f6fbd; --data-3:#c2661a;
+  --data-4:#8a55c0; --data-5:#b8860b; --data-6:#0a9187;
+  --data-1s:#e7f1e7; --data-2s:#e7ecf7; --data-3s:#faeade;
+  --data-4s:#f0e8f8; --data-5s:#f8f0d9; --data-6s:#dcf0ee;
+
+  --ok:#2f7d3b; --warn:#b8860b; --bad:#b0332a; --bad-s:#fae4e1;
+
+  --shell-w:480px;
+  --shadow-card:0 1px 2px rgba(22,36,26,.05), 0 8px 24px -14px rgba(22,36,26,.18);
+  --shadow-float:0 14px 36px -14px rgba(14,36,22,.35);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --brand:#68c97c; --brand-d:#8fdf9d; --brand-s:rgba(47,125,59,.22); --brand-on:#bdeec7;
+    --deep:#0b2013; --deep-2:#0f2a17; --deep-3:#081409;
+    --surface:#0d1712; --surface-alt:#132019; --card:#152a1e; --line:#24392c;
+    --ink:#eef4ee; --ink-2:#adc0b1; --ink-3:#82988a;
+    --on-deep:#dfece1; --on-deep-2:#9fc0a5;
+    --data-1:#68c97c; --data-2:#84a6e6; --data-3:#e3924f; --data-4:#c298e8; --data-5:#e0bb52; --data-6:#4bd0c4;
+    --data-1s:rgba(104,201,124,.15); --data-2s:rgba(132,166,230,.15); --data-3s:rgba(227,146,79,.15);
+    --data-4s:rgba(194,152,232,.15); --data-5s:rgba(224,187,82,.15); --data-6s:rgba(75,208,196,.15);
+    --ok:#68c97c; --warn:#e0bb52; --bad:#e2776a; --bad-s:rgba(226,119,106,.16);
+    --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -14px rgba(0,0,0,.5);
+    --shadow-float:0 14px 36px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --brand:#68c97c; --brand-d:#8fdf9d; --brand-s:rgba(47,125,59,.22); --brand-on:#bdeec7;
+  --deep:#0b2013; --deep-2:#0f2a17; --deep-3:#081409;
+  --surface:#0d1712; --surface-alt:#132019; --card:#152a1e; --line:#24392c;
+  --ink:#eef4ee; --ink-2:#adc0b1; --ink-3:#82988a;
+  --on-deep:#dfece1; --on-deep-2:#9fc0a5;
+  --data-1:#68c97c; --data-2:#84a6e6; --data-3:#e3924f; --data-4:#c298e8; --data-5:#e0bb52; --data-6:#4bd0c4;
+  --data-1s:rgba(104,201,124,.15); --data-2s:rgba(132,166,230,.15); --data-3s:rgba(227,146,79,.15);
+  --data-4s:rgba(194,152,232,.15); --data-5s:rgba(224,187,82,.15); --data-6s:rgba(75,208,196,.15);
+  --ok:#68c97c; --warn:#e0bb52; --bad:#e2776a; --bad-s:rgba(226,119,106,.16);
+  --shadow-card:0 1px 2px rgba(0,0,0,.3), 0 8px 24px -14px rgba(0,0,0,.5);
+  --shadow-float:0 14px 36px -14px rgba(0,0,0,.6);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--surface);color:var(--ink);font-family:Nunito,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,h5,h6{font-family:Nunito,sans-serif;margin:0;color:var(--ink);text-wrap:balance}
+button,input,textarea,select{font-family:inherit}
+.tabular{font-variant-numeric:tabular-nums}
+a{color:inherit}
+
+#root{min-height:100%;display:flex;justify-content:center;background:var(--surface-alt)}
+.shell{width:100%;max-width:var(--shell-w);min-height:100vh;background:var(--surface);position:relative;box-shadow:var(--shadow-float);display:flex;flex-direction:column}
+
+/* ---------- cabeçalho — identidade do Instituto, verde escuro ---------- */
+.header{background:linear-gradient(180deg,var(--deep) 0%,var(--deep-2) 100%);padding:14px;display:flex;align-items:center;gap:11px}
+.logo-mark{width:38px;height:38px;border-radius:10px;background:var(--brand-on);color:var(--deep-3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.logo-mark svg{width:21px;height:21px}
+.brand-name{font-size:14.5px;font-weight:900;color:#fff;line-height:1.2}
+.brand-sub{font-size:10.4px;color:var(--on-deep-2);font-weight:700}
+.userbar{background:var(--card);border-bottom:1px solid var(--line);padding:10px 14px 12px;display:flex;align-items:center;gap:10px}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand-s);color:var(--brand-d);display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;border:1.5px solid var(--brand-d);flex-shrink:0}
+.userbar .nm{font-weight:900;font-size:13.5px}
+.rolepills{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.rolepill{border:1.5px solid var(--ink-3);background:var(--surface-alt);color:var(--ink-2);border-radius:100px;padding:5px 10px 5px 8px;font-size:10.2px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px}
+.rolepill svg{width:12px;height:12px;flex-shrink:0}
+.rolepill.cur{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+.sair{border:1.5px solid var(--bad);background:none;color:var(--bad);font-weight:800;font-size:11px;cursor:pointer;padding:5px 10px;border-radius:100px}
+
+.topbar{position:sticky;top:0;z-index:20;background:var(--card);border-bottom:1px solid var(--line);padding:12px 16px;display:flex;align-items:center;gap:10px;min-height:40px}
+.tb-title{font-size:14.5px;font-weight:900;color:var(--ink);line-height:1.2}
+.tb-sub{font-size:10.6px;color:var(--ink-2);font-weight:700}
+.tb-back{background:none;border:none;color:var(--brand-d);font-weight:800;font-size:13px;cursor:pointer;display:flex;align-items:center;gap:3px;padding:4px 2px}
+
+.content{flex:1;padding:14px 14px 108px}
+.subtabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;margin-bottom:12px}
+.subtab{flex-shrink:0;border:1.5px solid var(--ink-3);background:var(--card);border-radius:100px;padding:7px 12px;font-size:11px;font-weight:800;cursor:pointer;color:var(--ink-2);white-space:nowrap}
+.subtab.on{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+
+/* ---------- bottom nav — fixa na base, sem truncar rótulos ---------- */
+.navwrap{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:var(--shell-w);z-index:30}
+.bottomnav{background:var(--card);border-top:1px solid var(--line);display:flex;align-items:stretch;padding:6px 2px calc(6px + env(safe-area-inset-bottom));box-shadow:0 -8px 24px -18px rgba(0,0,0,.25)}
+.fab-help{position:absolute;right:14px;bottom:calc(100% + 14px);width:48px;height:48px;border-radius:50%;background:var(--brand-d);color:#fff;border:none;box-shadow:var(--shadow-float);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:31}
+.fab-help svg{width:22px;height:22px}
+.fab-help:active{transform:scale(.94)}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;background:none;border:none;padding:6px 2px;cursor:pointer;color:var(--ink-2);border-radius:10px;min-width:0}
+.navbtn svg{width:19px;height:19px;flex-shrink:0}
+.navbtn span{font-size:8.7px;font-weight:800;white-space:normal;line-height:1.15;text-align:center;overflow-wrap:anywhere;max-width:100%}
+.bottomnav.compact .navbtn{padding:5px 1px;gap:2px}
+.bottomnav.compact .navbtn svg{width:16px;height:16px}
+.bottomnav.compact .navbtn span{font-size:7.3px;line-height:1.1}
+.navbtn.on{color:var(--brand-d);background:var(--brand-s)}
+.navbtn .dot{position:absolute;margin-left:12px;margin-top:-2px;width:7px;height:7px;border-radius:50%;background:var(--bad)}
+
+/* ---------- sheet "mais" ---------- */
+.sheet-backdrop{position:fixed;inset:0;background:rgba(10,20,12,.42);z-index:39;display:flex;align-items:flex-end;justify-content:center}
+.sheet{width:100%;max-width:var(--shell-w);background:var(--card);border-radius:16px 16px 0 0;padding:10px 8px calc(14px + env(safe-area-inset-bottom));box-shadow:var(--shadow-float);max-height:70vh;overflow-y:auto}
+.sheet-handle{width:36px;height:4px;border-radius:3px;background:var(--line);margin:4px auto 10px}
+.sheet-row{display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:10px;cursor:pointer;font-weight:800;font-size:13.5px;color:var(--ink)}
+.sheet-row:active{background:var(--surface-alt)}
+.sheet-row svg{width:20px;height:20px;color:var(--brand-d);flex-shrink:0}
+
+/* ---------- modal genérico (código de acesso) ---------- */
+.modal-backdrop{position:fixed;inset:0;background:rgba(10,20,12,.5);z-index:50;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal{background:var(--card);border-radius:14px;padding:18px;max-width:360px;width:100%;box-shadow:var(--shadow-float)}
+.modal h3{font-size:16px;font-weight:900;display:flex;align-items:center;gap:8px}
+.modal h3 svg{width:19px;height:19px;color:var(--brand-d);flex-shrink:0}
+.modal .x{float:right;background:none;border:1.5px solid var(--ink-3);border-radius:8px;width:26px;height:26px;cursor:pointer;color:var(--ink-2);display:flex;align-items:center;justify-content:center}
+.modal .x svg{width:13px;height:13px}
+.code-hint{background:var(--brand-s);border-radius:9px;padding:9px 11px;font-size:11px;color:var(--brand-d);font-weight:800;margin:10px 0;display:flex;align-items:center;gap:7px}
+.code-hint svg{width:14px;height:14px;flex-shrink:0}
+.code-input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:12px;font-size:22px;letter-spacing:10px;text-align:center;font-weight:900}
+
+/* ---------- primitives ---------- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;box-shadow:var(--shadow-card)}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;align-items:center;gap:10px}
+.row>svg{width:16px;height:16px;flex-shrink:0}
+.between{justify-content:space-between}
+.wrap-row{display:flex;gap:8px;flex-wrap:wrap}
+.k{font-size:9.3px;font-weight:900;letter-spacing:.08em;color:var(--ink-3);text-transform:uppercase}
+.deck{font-size:12.6px;color:var(--ink-2);line-height:1.5}
+.hr{height:1px;background:var(--line);border:none;margin:14px 0}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;background:var(--brand-d);color:#fff;border:none;border-radius:10px;padding:13px;font-size:13.5px;font-weight:800;cursor:pointer}
+.btn svg{width:17px;height:17px;flex-shrink:0}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn:not(:disabled):active{transform:scale(.98)}
+.btn.ghost{background:var(--surface-alt);border:1.5px solid var(--ink-3);color:var(--ink)}
+.btn.gold{background:var(--data-5);color:#3a2a02}
+.btn.accent{background:var(--data-2);color:#fff}
+.btn.danger{background:var(--bad)}
+.btn.link{padding:4px 0;border:none}
+.btn.sm{padding:9px;font-size:12px;border-radius:9px}
+.subtab-btn{flex-direction:column;gap:6px;padding:14px 6px;font-size:10.8px;line-height:1.25;text-align:center;height:auto}
+.subtab-btn svg{width:20px;height:20px}
+
+.opt{background:var(--card);border:1.5px solid var(--ink-3);border-radius:10px;padding:11px 13px;font-size:13px;font-weight:700;cursor:pointer;color:var(--ink);display:flex;flex-direction:column;gap:2px}
+.opt .d{font-size:11px;font-weight:600;color:var(--ink-2)}
+.opt.sel{border-color:var(--brand-d);border-width:2px;background:var(--brand-s)}
+.opt .row{display:flex;align-items:center;gap:9px}
+.opt svg{width:17px;height:17px;flex-shrink:0;color:var(--brand-d)}
+
+.srow{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:9.8px;font-weight:900;padding:4px 9px;border-radius:100px;letter-spacing:.02em;white-space:nowrap}
+.pill.ok{background:var(--data-1s);color:var(--ok)}
+.pill.warn{background:var(--data-5s);color:var(--warn)}
+.pill.bad{background:var(--bad-s);color:var(--bad)}
+.pill.muted{background:var(--surface-alt);color:var(--ink-3)}
+.pill.info{background:var(--data-2s);color:var(--data-2)}
+
+.field-label{font-size:9.3px;font-weight:900;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;display:block}
+textarea,.tinput,select.tinput{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:11px;font-size:13px;color:var(--ink);background:var(--card);resize:vertical;font-family:inherit}
+input[type=search]{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-size:13px;background:var(--card);color:var(--ink)}
+textarea:focus,.tinput:focus,input:focus,button:focus-visible,.navbtn:focus-visible,.opt:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+.statcard{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px;cursor:pointer;text-align:left}
+.statcard .big{font-family:Nunito;font-size:26px;font-weight:900;color:var(--brand-d);line-height:1}
+.statcard .lbl{font-size:9.6px;font-weight:900;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase;margin-top:4px}
+.statcard .sub{font-size:10.6px;color:var(--ink-2);margin-top:5px;line-height:1.4}
+.statcard .more{font-size:10.6px;font-weight:800;color:var(--brand-d);margin-top:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.roster{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--card)}
+.roster + .roster{margin-top:8px}
+.roster-top{display:flex;gap:10px;align-items:flex-start}
+.roster .meta,.card .meta{font-size:10.6px;color:var(--ink-3);margin-top:2px}
+.roster .chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.chip-tag{font-size:9.6px;font-weight:800;background:var(--surface-alt);color:var(--ink-2);border-radius:100px;padding:3px 8px}
+.chip-sel{font-size:10.8px;font-weight:800;background:var(--card);color:var(--ink-2);border:1.5px solid var(--ink-3);border-radius:100px;padding:6px 11px;cursor:pointer}
+.chip-sel.on{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+.roster .actions{display:flex;gap:6px;margin-top:9px}
+
+.seg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.seg3 button{border:1.5px solid var(--ink-3);background:var(--card);border-radius:8px;padding:8px 4px;font-size:10.8px;font-weight:800;cursor:pointer;color:var(--ink-2)}
+.seg3 button.on-presente{background:var(--data-1s);border-color:var(--data-1);color:var(--ok)}
+.seg3 button.on-justificada{background:var(--data-5s);border-color:var(--data-5);color:var(--warn)}
+.seg3 button.on-falta{background:var(--bad-s);border-color:var(--bad);color:var(--bad)}
+
+.faces3{display:flex;gap:7px}
+.faceopt{flex:1;border:1.5px solid var(--ink-3);background:var(--card);border-radius:9px;padding:9px 4px;text-align:center;font-size:10.4px;font-weight:800;cursor:pointer;color:var(--ink-2);display:flex;flex-direction:column;align-items:center;gap:5px}
+.faceopt svg{width:19px;height:19px}
+.faceopt.sel{border-width:2px}
+.faceopt.sel.on-presente{border-color:var(--data-1);background:var(--data-1s);color:var(--ok)}
+.faceopt.sel.on-justificada{border-color:var(--data-5);background:var(--data-5s);color:var(--warn)}
+.faceopt.sel.on-falta{border-color:var(--bad);background:var(--bad-s);color:var(--bad)}
+
+.dbritem{border:1.5px solid var(--line);border-radius:10px;padding:10px 11px;margin-bottom:7px;border-left:4px solid var(--dc,var(--brand))}
+.dbritem .tx{font-size:12.4px;font-weight:800;margin-bottom:7px;display:flex;align-items:center;gap:7px}
+.dbritem .tx svg{width:16px;height:16px;flex-shrink:0;color:var(--dc,var(--brand-d))}
+.tri{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.tri button{border:1.5px solid var(--ink-3);background:var(--card);border-radius:8px;padding:7px 4px;font-size:10.6px;font-weight:800;cursor:pointer;color:var(--ink-2)}
+.tri button.on{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+
+.table-s{width:100%;border-collapse:collapse;font-size:11px}
+.table-s th{text-align:left;font-size:9.2px;font-weight:900;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase;padding:6px 6px;border-bottom:1px solid var(--line)}
+.table-s td{padding:7px 6px;border-bottom:1px solid var(--line);color:var(--ink)}
+.table-wrap{overflow-x:auto}
+
+.dimcard{border:1.5px solid var(--line);border-radius:12px;padding:12px;background:var(--card)}
+.dimcard .ic{width:26px;height:26px;border-radius:8px;background:var(--brand-s);display:flex;align-items:center;justify-content:center;color:var(--brand-d)}
+.dimcard .ic svg{width:16px;height:16px}
+.dimcard .t{font-size:12.4px;font-weight:900;margin-top:7px}
+.dimcard .d{font-size:11.2px;color:var(--ink-2);margin-top:3px;line-height:1.4}
+
+.stage3{display:flex;align-items:center;gap:4px;margin:8px 0}
+.stage3 .seg{flex:1;text-align:center}
+.stage3 .dot2{width:23px;height:23px;border-radius:50%;background:var(--surface-alt);border:2px solid var(--ink-3);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--ink-2);margin:0 auto 4px}
+.stage3 .dot2 svg{width:12px;height:12px}
+.stage3 .seg.done .dot2{background:var(--brand-d);border-color:var(--brand-d);color:#fff}
+.stage3 .seg.cur .dot2{background:var(--brand-s);border-color:var(--brand-d);color:var(--brand-d)}
+.stage3 .seg .lbl{font-size:9.6px;font-weight:800;color:var(--ink-2)}
+.stage3 .seg.done .lbl, .stage3 .seg.cur .lbl{color:var(--ink)}
+.stage3 .line{height:2px;background:var(--ink-3);flex:.6;margin-bottom:16px}
+
+.timeline-evt{display:flex;gap:10px}
+.timeline-evt .rail{display:flex;flex-direction:column;align-items:center}
+.timeline-evt .rdot{width:9px;height:9px;border-radius:50%;background:var(--brand-d);flex-shrink:0;margin-top:4px}
+.timeline-evt .rline{width:2px;flex:1;background:var(--line);margin-top:2px}
+.timeline-evt .body{padding-bottom:14px;flex:1}
+.timeline-evt .when{font-size:10px;font-weight:900;color:var(--ink-3)}
+.timeline-evt .what{font-size:12.4px;font-weight:800;margin-top:2px}
+.timeline-evt .txt{font-size:11.8px;color:var(--ink-2);margin-top:3px;font-style:italic}
+
+.freqbar{display:flex;gap:2px;flex-wrap:wrap;margin-top:6px}
+.freqbar .t{width:9px;height:9px;border-radius:2.5px;background:var(--line)}
+.freqbar .t.on{background:var(--data-1)}
+.freqbar .t.just{background:var(--data-5)}
+
+.callout{border-radius:10px;padding:11px 13px;font-size:11.8px;line-height:1.55;display:flex;gap:9px;align-items:flex-start}
+.callout.info{background:var(--data-2s);color:var(--ink)}
+.callout.warn{background:var(--data-5s);color:var(--ink)}
+.callout.ok{background:var(--data-1s);color:var(--ink)}
+.callout.bad{background:var(--bad-s);color:var(--ink)}
+.callout b{font-weight:900}
+.callout .ci{flex-shrink:0;margin-top:1px}
+.callout .ci svg{width:16px;height:16px}
+.callout.info .ci{color:var(--data-2)}
+.callout.warn .ci{color:var(--warn)}
+.callout.ok .ci{color:var(--ok)}
+.callout.bad .ci{color:var(--bad)}
+.callout .cb{flex:1;min-width:0}
+
+.stepbtn{width:27px;height:27px;border-radius:8px;border:1.5px solid var(--line);background:var(--surface-alt);color:var(--ink);font-size:15px;font-weight:900;cursor:pointer}
+.chart-card svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:6px}
+.legend span{display:inline-flex;align-items:center;gap:5px;font-size:10.6px;font-weight:800;color:var(--ink-2)}
+.legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+.empty{text-align:center;padding:26px 10px;color:var(--ink-3);font-size:12.2px}
+.fadein{animation:fade .2s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.fadein{animation:none}}
+.rec-wrap{background:var(--data-3s);border:1px solid var(--data-3);border-radius:12px;padding:14px;text-align:center}
+.wave{display:flex;gap:2px;justify-content:center;align-items:flex-end;height:24px;margin:8px 0}
+.wave span{width:3px;background:var(--data-3);border-radius:2px;animation:wv 1s ease-in-out infinite}
+@keyframes wv{0%,100%{opacity:.55}50%{opacity:1}}
+.dot-rec{width:8px;height:8px;border-radius:50%;background:var(--bad);display:inline-block;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.onboard{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:28px 24px;background:linear-gradient(180deg,var(--deep) 0%,var(--deep-2) 100%);color:var(--on-deep)}
+.onboard .mark2{width:56px;height:56px;border-radius:15px;background:var(--brand-on);color:var(--deep-3);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.onboard .mark2 svg{width:30px;height:30px}
+.onboard h1{font-size:24px;font-weight:900;color:#fff}
+.onboard p{font-size:12.6px;color:var(--on-deep-2);margin-top:8px;line-height:1.55;max-width:38ch}
+.onb-ic{width:36px;height:36px;border-radius:9px;background:var(--brand-d);border:1.5px solid rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#fff}
+.onb-ic svg{width:19px;height:19px;stroke:#fff}
+.opt .lock-white svg{width:13px;height:13px;color:#fff;stroke:#fff}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script>
+/* ==========================================================================
+   DADOS — 100% fictícios. Estrutura fiel ao app real Ebenézer Conecta
+   (ebenezer-zeta.vercel.app): educandos nominais com código EDU-xxxx,
+   consentimento por vínculo, DBR de 16 frases em 5 dimensões, fila de
+   revisão humana e trilha de auditoria.
+   ========================================================================== */
+const APP_VERSION = '1.0.0';
+const LS_KEY = 'ebenezer-conecta-v7';
+const CORRECAO_MS = 15*60*1000;
+// "Hoje" = data local do dispositivo (antes era fixa em 09/09/2026, o que gerava "registrado X dias depois" incorreto).
+const HOJE = (()=>{ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); })();
+
+const TURMAS = {
+  lab:{id:'lab', nome:'Laboratório de Sonhos'},
+  re: {id:'re',  nome:'Reforço Escolar'},
+  pi: {id:'pi',  nome:'Primeira Infância'},
+  vt: {id:'vt',  nome:'Vivência Terapêutica', presencaOnly:true},
+};
+
+// freq: p presente, j falta justificada (registrada pela própria educadora), t total de encontros no período
+const CHILDREN_SEED = [
+  {id:'EDU-0001', nome:'Alícia Almeida',  idade:11, nasc:'2015-02-14', resp:{nome:'Cláudia Almeida', rel:'Mãe', contato:'(11) 96201-4471'},  turmas:['lab'],      consentimento:false, entrada:'2026-03-07', freq:{p:4,j:2,t:10}},
+  {id:'EDU-0002', nome:'Benício Barbosa', idade:7,  nasc:'2019-05-02', resp:{nome:'Marcos Barbosa', rel:'Pai', contato:'(11) 97815-2290'},   turmas:['lab','vt'], consentimento:true,  entrada:'2026-03-07', freq:{p:8,j:0,t:9}},
+  {id:'EDU-0003', nome:'Cauã Cardoso',    idade:11, nasc:'2015-08-19', resp:{nome:'Regina Cardoso', rel:'Avó', contato:'(11) 95534-7783'},   turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:3,j:3,t:12}},
+  {id:'EDU-0004', nome:'Dandara Dias',    idade:10, nasc:'2016-01-30', resp:{nome:'Sérgio Dias', rel:'Tia', contato:'(11) 98123-0056'},      turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:10,j:0,t:10}},
+  {id:'EDU-0005', nome:'Elias Esteves',   idade:10, nasc:'2016-01-20', resp:{nome:'Luciana Esteves', rel:'Mãe', contato:'(11) 96789-3312'},  turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:3,j:1,t:11}},
+  {id:'EDU-0006', nome:'Fabiana Freitas', idade:9,  nasc:'2017-06-11', resp:{nome:'Antônio Freitas', rel:'Pai', contato:'(11) 97456-8821'},  turmas:['re'],       consentimento:false, entrada:'2026-03-07', freq:{p:6,j:1,t:10}},
+  {id:'EDU-0007', nome:'Gael Gomes',      idade:10, nasc:'2016-04-09', resp:{nome:'Fernanda Gomes', rel:'Avó', contato:'(11) 95012-6634'},   turmas:['lab','re'], consentimento:true,  entrada:'2026-03-07', freq:{p:6,j:1,t:10}},
+  {id:'EDU-0010', nome:'Joana Moreira',   idade:6,  nasc:'2020-09-25', resp:{nome:'Ronaldo Moreira', rel:'Tio', contato:'(11) 98890-1145'},  turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:9,j:1,t:11}},
+  {id:'EDU-0011', nome:'Kauê Almeida',    idade:10, nasc:'2016-02-17', resp:{nome:'Eliane Almeida', rel:'Mãe', contato:'(11) 96345-7729'},   turmas:['lab','re'], consentimento:true,  entrada:'2026-03-07', freq:{p:5,j:2,t:10}},
+  {id:'EDU-0012', nome:'Lorena Barbosa',  idade:10, nasc:'2016-03-03', resp:{nome:'Jorge Barbosa', rel:'Pai', contato:'(11) 97701-3398'},    turmas:['lab','re'], consentimento:false, entrada:'2026-03-07', freq:{p:11,j:0,t:11}},
+  {id:'EDU-0015', nome:'Otávio Esteves',  idade:9,  nasc:'2017-07-08', resp:{nome:'Adriana Esteves', rel:'Mãe', contato:'(11) 96678-4450'},  turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:6,j:2,t:11}},
+  {id:'EDU-0008', nome:'Heitor Lima',     idade:5,  nasc:'2021-03-12', resp:{nome:'Patrícia Lima', rel:'Mãe', contato:'(11) 96112-3308'},    turmas:['pi'],       consentimento:true,  entrada:'2026-03-07', freq:{p:9,j:1,t:10}},
+  {id:'EDU-0009', nome:'Isadora Nunes',   idade:4,  nasc:'2022-01-08', resp:{nome:'Rogério Nunes', rel:'Pai', contato:'(11) 97220-4419'},    turmas:['pi'],       consentimento:true,  entrada:'2026-03-07', freq:{p:7,j:0,t:10}},
+  {id:'EDU-0013', nome:'Miguel Rocha',    idade:5,  nasc:'2021-07-30', resp:{nome:'Sandra Rocha', rel:'Avó', contato:'(11) 95331-5520'},     turmas:['pi','vt'],  consentimento:true,  entrada:'2026-04-04', freq:{p:5,j:3,t:9}},
+  {id:'EDU-0014', nome:'Nina Souza',      idade:8,  nasc:'2018-10-14', resp:{nome:'Carla Souza', rel:'Mãe', contato:'(11) 98442-6631'},      turmas:['re'],       consentimento:true,  entrada:'2026-03-07', freq:{p:9,j:0,t:10}},
+  {id:'EDU-0017', nome:'Rafael Teixeira', idade:9,  nasc:'2017-02-21', resp:{nome:'Paulo Teixeira', rel:'Pai', contato:'(11) 96553-7742'},   turmas:['re','vt'],  consentimento:true,  entrada:'2026-03-07', freq:{p:8,j:1,t:10}},
+  {id:'EDU-0018', nome:'Sofia Vieira',    idade:5,  nasc:'2021-11-02', resp:{nome:'Juliana Vieira', rel:'Mãe', contato:'(11) 97664-8853'},   turmas:['pi'],       consentimento:false, entrada:'2026-05-02', freq:{p:4,j:0,t:7}},
+  {id:'EDU-0016', nome:'Pietra Freitas',  idade:10, nasc:'2016-05-27', resp:{nome:'Fábio Freitas', rel:'Pai', contato:'(11) 95890-2267'},    turmas:['lab'],      consentimento:true,  entrada:'2026-03-07', freq:{p:5,j:1,t:10}},
+];
+
+// 16 frases-fato · 5 dimensões (CASEL+BNCC) · itens "quick" = 5 de maior discriminação
+const DIMENSOES = [
+  {id:'d1', nome:'Eu e minhas emoções', cor:'var(--data-1)', ic:icoFace(), itens:[
+    {k:'disse_sentia', t:'Disse como se sentia'},
+    {k:'acalmou', t:'Se acalmou sozinho(a)'},
+    {k:'mostrou_trabalho', t:'Mostrou o próprio trabalho'},
+    {k:'falou_positivo', t:'Falou de si de forma positiva'},
+  ]},
+  {id:'d2', nome:'Eu e os outros', cor:'var(--data-4)', ic:icoUsers(), itens:[
+    {k:'ajudou', t:'Ajudou sem pedirem', quick:true, icone:icoHand()},
+    {k:'dividiu', t:'Dividiu material'},
+    {k:'conflito', t:'Entrou em conflito', quick:true, icone:icoBolt()},
+    {k:'resolveu', t:'Resolveu conversando', quick:true, icone:icoChat()},
+  ]},
+  {id:'d3', nome:'Eu e a atividade', cor:'var(--data-3)', ic:icoTarget(), itens:[
+    {k:'participou', t:'Participou do começo ao fim', quick:true, icone:icoCheck2()},
+    {k:'tentou_de_novo', t:'Tentou de novo após errar'},
+    {k:'pediu_ajuda', t:'Pediu ajuda'},
+    {k:'ficou_fora', t:'Ficou fora do grupo'},
+  ]},
+  {id:'d4', nome:'Eu e o combinado', cor:'var(--data-5)', ic:icoNote(), itens:[
+    {k:'cumpriu', t:'Cumpriu o combinado'},
+    {k:'cuidou_material', t:'Cuidou do material e do espaço'},
+  ]},
+  {id:'d5', nome:'O que a gente fez', cor:'var(--data-6)', ic:icoBulb(), itens:[
+    {k:'intervencao', t:'Intervenção aplicada', quick:true, icone:icoBulb()},
+    {k:'clima_positivo', t:'Clima do encontro foi positivo'},
+  ]},
+];
+const ALL_ITEMS = DIMENSOES.flatMap(d=>d.itens.map(i=>({...i, dim:d.id, cor:d.cor})));
+const QUICK_ITEMS = ALL_ITEMS.filter(i=>i.quick);
+
+// Prontuário psicológico — estrutura alinhada às exigências do CRP:
+// identificação, avaliação da demanda e objetivos, evolução/procedimentos técnicos,
+// encaminhamento ou encerramento.
+const TIPOS_DEMANDA = ['Emocional','Patológica','Comportamental','Familiar','Escolar','Social','Violência/violação de direitos','Conflito','Encaminhamento','Acompanhamento','Outra'];
+const TIPOS_ATIVIDADE = ['Atendimento individual','Atendimento familiar','Atendimento em grupo','Escuta','Ação socioeducativa','Visita','Reunião de equipe','Orientação','Encaminhamento','Outra'];
+
+const USERS = {
+  educadora:  {nome:'Equipe',  papel:'Sem login individual'},
+  coordenacao:{nome:'Uelington',      papel:'Coordenação Pedagógica', code:'1234'},
+  psicologa:  {nome:'Dra. Helena', papel:'Psicóloga', code:'5678'},
+};
+
+function seedDB(){
+  const db = {
+    children: JSON.parse(JSON.stringify(CHILDREN_SEED)),
+    presencas: {},
+    avaliacoes: [
+      {id:'av1', childId:'EDU-0005', turmaId:'lab', data:'2026-03-19', tipo:'inicial', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'sim',acalmou:'nao',mostrou_trabalho:'sim',falou_positivo:'nao',ajudou:'nao',dividiu:'nao',conflito:'sim',resolveu:'nao',participou:'nao',tentou_de_novo:'nao',pediu_ajuda:'sim',ficou_fora:'sim',cumpriu:'nao',cuidou_material:'nao',intervencao:'nao',clima_positivo:'nao'}, atencaoPsicologa:false},
+      {id:'av2', childId:'EDU-0005', turmaId:'lab', data:'2026-05-18', tipo:'checkin', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'sim',acalmou:'sim',mostrou_trabalho:'sim',falou_positivo:'sim',ajudou:'nao',dividiu:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',tentou_de_novo:'sim',pediu_ajuda:'nao',ficou_fora:'nao',cumpriu:'sim',cuidou_material:'sim',intervencao:'nao',clima_positivo:'sim'}, atencaoPsicologa:false},
+      {id:'av3', childId:'EDU-0005', turmaId:'lab', data:'2026-07-17', tipo:'checkin', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',intervencao:'nao'}, atencaoPsicologa:false},
+      {id:'av4', childId:'EDU-0002', turmaId:'lab', data:'2026-03-19', tipo:'inicial', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'sim',acalmou:'sim',mostrou_trabalho:'sim',falou_positivo:'sim',ajudou:'sim',dividiu:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',tentou_de_novo:'sim',pediu_ajuda:'nao',ficou_fora:'nao',cumpriu:'sim',cuidou_material:'sim',intervencao:'nao',clima_positivo:'sim'}, atencaoPsicologa:false},
+      {id:'av5', childId:'EDU-0004', turmaId:'lab', data:'2026-04-02', tipo:'inicial', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'sim',acalmou:'sim',mostrou_trabalho:'sim',falou_positivo:'sim',ajudou:'sim',dividiu:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',tentou_de_novo:'sim',pediu_ajuda:'nao',ficou_fora:'nao',cumpriu:'sim',cuidou_material:'sim',intervencao:'nao',clima_positivo:'sim'}, atencaoPsicologa:false},
+      {id:'av6', childId:'EDU-0010', turmaId:'lab', data:'2026-04-05', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',intervencao:'nao'}, atencaoPsicologa:false},
+      {id:'av7', childId:'EDU-0011', turmaId:'lab', data:'2026-04-05', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'nao',conflito:'sim',resolveu:'sim',participou:'nao',intervencao:'nao'}, atencaoPsicologa:false},
+      {id:'av8', childId:'EDU-0015', turmaId:'lab', data:'2026-04-11', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',intervencao:'nao'}, atencaoPsicologa:false},
+      {id:'av10', childId:'EDU-0008', turmaId:'pi', data:'2026-03-21', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'nao',conflito:'sim',resolveu:'nao',participou:'sim',intervencao:'sim'}, atencaoPsicologa:false},
+      {id:'av11', childId:'EDU-0008', turmaId:'pi', data:'2026-06-20', tipo:'checkin', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'sim',conflito:'nao',resolveu:'sim',participou:'sim',intervencao:'nao'}, atencaoPsicologa:false},
+      {id:'av12', childId:'EDU-0009', turmaId:'pi', data:'2026-03-21', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'nao',conflito:'nao',resolveu:'nao_observei',participou:'nao',intervencao:'sim'}, atencaoPsicologa:false},
+      {id:'av13', childId:'EDU-0014', turmaId:'re', data:'2026-03-24', tipo:'inicial', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'nao',acalmou:'sim',mostrou_trabalho:'nao',falou_positivo:'nao',ajudou:'sim',dividiu:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',tentou_de_novo:'nao',pediu_ajuda:'nao',ficou_fora:'nao',cumpriu:'sim',cuidou_material:'sim',intervencao:'nao',clima_positivo:'sim'}, atencaoPsicologa:false},
+      {id:'av14', childId:'EDU-0014', turmaId:'re', data:'2026-07-21', tipo:'checkin', modo:'completo', autor:'Equipe',
+       respostas:{disse_sentia:'sim',acalmou:'sim',mostrou_trabalho:'sim',falou_positivo:'nao',ajudou:'sim',dividiu:'sim',conflito:'nao',resolveu:'nao_observei',participou:'sim',tentou_de_novo:'sim',pediu_ajuda:'sim',ficou_fora:'nao',cumpriu:'sim',cuidou_material:'sim',intervencao:'nao',clima_positivo:'sim'}, atencaoPsicologa:false},
+      {id:'av15', childId:'EDU-0017', turmaId:'re', data:'2026-03-24', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'nao',conflito:'sim',resolveu:'nao',participou:'nao',intervencao:'sim'}, atencaoPsicologa:true},
+      {id:'av9', childId:'EDU-0016', turmaId:'lab', data:'2026-04-11', tipo:'inicial', modo:'rapido', autor:'Equipe',
+       respostas:{ajudou:'nao',conflito:'nao',resolveu:'nao_observei',participou:'sim',intervencao:'nao'}, atencaoPsicologa:false},
+    ],
+    registros: [
+      {id:'r1', childId:'EDU-0001', turmaId:'lab', data:'2026-08-11', criadoEm:Date.parse('2026-08-11T10:00:00'), autor:'Equipe', metodo:'ditado',
+       texto:'Repetiu a montagem três vezes até encaixar. Não pediu ajuda, mas aceitou quando ofereci.', status:'aguardando'},
+      {id:'r2', childId:'EDU-0016', turmaId:'lab', data:'2026-08-02', criadoEm:Date.parse('2026-08-02T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Chegou depois do início e ficou observando por uns minutos. Aceitou o convite da dupla e terminou a atividade.', status:'validado'},
+      {id:'r3', childId:'EDU-0010', turmaId:'lab', data:'2026-07-31', criadoEm:Date.parse('2026-07-31T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Escolheu a atividade de leitura e leu em voz alta para dois colegas. Saiu antes do lanche.', status:'validado'},
+      {id:'r4', childId:'EDU-0005', turmaId:'lab', data:'2026-06-19', criadoEm:Date.parse('2026-06-29T10:00:00'), autor:'Equipe', metodo:'ditado',
+       texto:'Ajudou a organizar as cadeiras sem ser pedido. Conversou pouco com o grupo neste encontro.', status:'aguardando'},
+      {id:'r5', childId:'EDU-0004', turmaId:'lab', data:'2026-06-01', criadoEm:Date.parse('2026-06-07T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Entrou na roda de conversa sozinha e apresentou o desenho ao grupo. Pediu para guardar o material no fim.',
+       status:'devolvido', motivo:'Reescrever descrevendo o comportamento observado, sem interpretar o motivo.'},
+      {id:'r6', childId:'EDU-0011', turmaId:'lab', data:'2026-05-17', criadoEm:Date.parse('2026-05-17T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Trocou de atividade quatro vezes. Voltou para a primeira e concluiu no fim do encontro.', status:'validado'},
+      {id:'r8', childId:'EDU-0008', turmaId:'pi', data:'2026-06-20', criadoEm:Date.parse('2026-06-20T10:00:00'), autor:'Equipe', metodo:'ditado',
+       texto:'Esperou a vez no escorregador e chamou um colega para brincar junto.', status:'validado'},
+      {id:'r9', childId:'EDU-0014', turmaId:'re', data:'2026-08-18', criadoEm:Date.parse('2026-08-18T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Leu o enunciado sozinha, errou a conta e refez sem pedir ajuda.', status:'aguardando'},
+      {id:'r7', childId:'EDU-0015', turmaId:'lab', data:'2026-04-11', criadoEm:Date.parse('2026-04-11T10:00:00'), autor:'Equipe', metodo:'escrito',
+       texto:'Ajudou a organizar as cadeiras sem ser pedido. Conversou pouco com o grupo neste encontro.', status:'validado'},
+    ],
+    intervencoes: [
+      {id:'iv1', childId:'EDU-0016', turmaId:'lab', acao:'Convidar para atividade em dupla antes do grupo maior.', objetivo:'Criar participação com menor exposição.', propostoPor:'Roberto Lima', propostoEm:'2026-08-02', estagio:2, resultado:null},
+      {id:'iv2', childId:'EDU-0011', turmaId:'lab', acao:'Aproximar de um colega com quem ela já interage bem.', objetivo:'Usar um vínculo existente como ponte para o grupo.', propostoPor:'Marcos Oliver', propostoEm:'2026-05-17', estagio:2, resultado:null},
+      {id:'iv3', childId:'EDU-0015', turmaId:'lab', acao:'Dar uma função concreta na organização do material.', objetivo:'Ancorar a permanência na atividade por uma tarefa clara.', propostoPor:'Marcos Oliver', propostoEm:'2026-04-11', estagio:3, resultado:'Assumiu a função nos dois encontros seguintes.'},
+    ],
+    encaminhamentos: [
+      {id:'en1', childId:'EDU-0007', turmaId:'re', data:'2026-04-12', status:'pendente'},
+      {id:'en2', childId:'EDU-0003', turmaId:'lab', data:'2026-03-19', status:'pendente'},
+      {id:'en4', childId:'EDU-0017', turmaId:'re', data:'2026-03-24', status:'pendente'},
+      {id:'en3', childId:'EDU-0006', turmaId:'re', data:'2026-03-19', status:'revisado'},
+    ],
+    frases: JSON.parse(JSON.stringify(ALL_ITEMS)).map(i=>({...i, versao:1, atualizadoEm:'2026-01-05'})),
+    casos: [
+      {id:'caso1', childId:'EDU-0007', tipos:['Comportamental','Escolar'],
+       descricao:'Dificuldade de concentração e episódios de agitação em sala.',
+       objetivo:'Fortalecer autorregulação emocional e adesão às atividades em grupo.',
+       status:'ativo', criadoEm:'2026-04-12',
+       atividades:[
+         {id:'at1', data:'2026-04-20', profissional:'Dra. Helena', tipo:'Atendimento individual',
+          objetivoAtividade:'Escuta inicial e construção de vínculo.',
+          procedimentos:'Conversa dirigida com apoio de desenho livre.',
+          evolucao:'Demonstrou abertura; relatou desentendimentos frequentes em casa.',
+          demandas:'Possível questão familiar a acompanhar.', encaminhamento:null},
+         {id:'at2', data:'2026-06-02', profissional:'Dra. Helena', tipo:'Reunião de equipe',
+          objetivoAtividade:'Alinhar estratégia de sala com a educadora.',
+          procedimentos:'Discussão de caso com a equipe pedagógica.',
+          evolucao:'Equipe orientada a usar reforço positivo e antecipar transições.',
+          demandas:'', encaminhamento:null},
+       ]},
+    ],
+    auditLog: [
+      {ts:Date.parse('2026-08-02T09:00:00'), texto:'Uelington validou o registro de Pietra Freitas (11/08 → 02/08).'},
+      {ts:Date.parse('2026-06-07T09:00:00'), texto:'Uelington devolveu o registro de Dandara Dias — motivo: reescrever sem interpretar.'},
+    ],
+  };
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(db)); }catch(e){}
+  return db;
+}
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(raw){ const d = JSON.parse(raw); if(d && Array.isArray(d.children) && Array.isArray(d.registros) && d.children.length) return d; }
+  }catch(e){}
+  return seedDB();
+}
+function saveDB(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ console.warn('Armazenamento indisponível — dados só nesta sessão.'); } }
+function resetDB(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} DB = seedDB(); }
+function uid(p){ return (p||'id')+'_'+Math.random().toString(36).slice(2,9); }
+let DB = loadDB();
+
+/* ==========================================================================
+   ESTADO DE NAVEGAÇÃO
+   ========================================================================== */
+let S = {
+  role: null,          // 'educadora' | 'coordenacao' | 'psicologa'
+  tab: null,
+  sub: null,            // sub-tela dentro da aba (ex.: detalhe de criança)
+  ctx: {},              // parâmetros da sub-tela atual
+  sheetOpen: false,
+  codeModal: null,      // 'coordenacao' | 'psicologa'
+  codeVal: '',
+  rec: false,
+  tutorialOpen: false,
+};
+
+const NAV = {
+  educadora:  {primary:[
+      ['painel','Painel',icoGrid()], ['presenca','Presença',icoCal()],
+      ['avaliacoes','Avaliações',icoLeaf()], ['registros','Registros',icoNote()],
+      ['intervencoes','Intervenções',icoBolt()],
+    ], overflow:[]},
+  coordenacao:{primary:[
+      ['painel','Painel',icoGrid()], ['registros','Registros',icoNote()],
+      ['educandos','Educandos',icoUsers()], ['intervencoes','Intervenções',icoBolt()],
+      ['presenca','Presença',icoCal()],
+    ], overflow:[
+      ['avaliacoes','Avaliações',icoLeaf()], ['relatorio','Relatório',icoExport()],
+      ['governanca','Governança',icoShield()], ['administracao','Administração',icoSettings()],
+    ]},
+  psicologa:{primary:[
+      ['painel','Painel',icoGrid()], ['encaminhamentos','Encaminhamentos',icoFlag()],
+      ['educandos','Educandos',icoUsers()], ['avaliacoes','Avaliações',icoLeaf()],
+      ['registros','Registros',icoNote()],
+    ], overflow:[['administracao','Frases de observação',icoSettings()]]},
+};
+function allTabsFor(role){ const n = NAV[role]; return n.primary.concat(n.overflow); }
+function tabLabel(role,tab){ const t = allTabsFor(role).find(x=>x[0]===tab); return t ? t[1] : ''; }
+
+function root(){ return document.getElementById('root'); }
+
+/* ==========================================================================
+   RENDER
+   ========================================================================== */
+let lastScreen = null;
+function render(){
+  const base = !S.role ? screenOnboard() : screenShell();
+  root().innerHTML = base + (!S.role && S.codeModal ? codeModal() : '');
+  bind();
+  // Ao trocar de tela, volta ao topo (antes a nova tela abria na rolagem da anterior).
+  const screen = [S.role, S.tab, S.sub, S.ctx.childId||S.ctx.casoChild||S.ctx.ivChild||''].join('|');
+  if(screen !== lastScreen){ lastScreen = screen; window.scrollTo(0,0); }
+  if(S.codeModal){
+    document.getElementById('codeInput')?.focus();
+  }
+}
+function screenShell(){
+  return `
+    <div class="shell">
+      ${headerBar()}
+      ${userBar()}
+      ${topbarFor()}
+      <div class="content fadein">${screenFor()}</div>
+      <div class="navwrap">${bottomNav()}${fabHelp()}</div>
+      ${S.sheetOpen ? sheetMore() : ''}
+      ${S.codeModal ? codeModal() : ''}
+      ${S.tutorialOpen ? tutorialModal() : ''}
+    </div>`;
+}
+function headerBar(){
+  return `<div class="header">
+    <div class="logo-mark">${logoMark()}</div>
+    <div>
+      <div class="brand-name">Instituto Social Ebenézer</div>
+      <div class="brand-sub">Ebenézer Conecta · Jardim Ângela · protótipo, dados fictícios</div>
+    </div>
+  </div>`;
+}
+function userBar(){
+  const u = USERS[S.role];
+  return `
+  <div class="userbar">
+    <div class="avatar">${initials(u.nome)}</div>
+    <div><div class="nm">${u.nome}</div><div style="font-size:10.4px;color:var(--ink-2);font-weight:700">${u.papel}</div></div>
+    <div class="rolepills">
+      ${S.role==='educadora' ? `
+        <button class="rolepill" data-act="open-code" data-role="coordenacao">${icoLockSm()}<span>Coordenação</span></button>
+        <button class="rolepill" data-act="open-code" data-role="psicologa">${icoLockSm()}<span>Psicóloga</span></button>
+      ` : `<button class="sair" data-act="logout">Sair</button>`}
+    </div>
+  </div>`;
+}
+function topbarFor(){
+  const titles = titleFor();
+  return `
+    <div class="topbar">
+      ${S.sub ? `<button class="tb-back" data-act="sub-back">${icoBack()} Voltar</button>` : ''}
+      <div>
+        <div class="tb-title">${titles[0]}</div>
+        ${titles[1] ? `<div class="tb-sub">${titles[1]}</div>` : ''}
+      </div>
+    </div>`;
+}
+function titleFor(){
+  if(S.sub) return subTitle();
+  const map = {
+    painel: S.role==='psicologa' ? ['Painel da psicóloga','Sinalizadores e frases de observação'] :
+            S.role==='coordenacao' ? ['Visão da coordenação','Estado da coleta neste ciclo'] :
+            ['Painel do educador','Estado da coleta neste ciclo'],
+    presenca:['Presença','Lançamento em lote, um encontro por vez'],
+    avaliacoes:['Avaliação inicial e check-ins','Direct Behavior Rating · 16 frases em 5 dimensões'],
+    registros:['Registros da equipe','Ditado ou digitado, o registro vira texto'],
+    intervencoes:['Acompanhamentos & Intervenções','Proposta → acompanhamento → validação'],
+    educandos:['Educandos','Cadastro único por criança'],
+    encaminhamentos:['Encaminhamentos','Sinalizadores vindos das avaliações da equipe'],
+    relatorio:['Relatório de programa','Evidência para uso externo'],
+    governanca:['Governança de dados','Consentimento, retenção e trilha de auditoria'],
+    administracao: S.role==='psicologa' ? ['Frases de observação','16 frases-fato, versionadas'] : ['Administração','Turmas, vínculos e consentimento'],
+  };
+  return map[S.tab] || ['Ebenézer Conecta',''];
+}
+const TUTORIALS = {
+  painel: 'Os botões no topo levam à ação mais comum. Toque em qualquer número abaixo para ver quem está por trás dele.',
+  presenca: 'Marque presente, justificada ou falta por educando e feche o lançamento ao terminar — depois só a coordenação corrige. Falta justificada não conta no sinal de atenção (75%).',
+  avaliacoes: 'Toque num educando para abrir a avaliação. Sem consentimento, a coleta fica bloqueada. Rápido = 5 frases; completo = 16. Cada frase é sim, não ou não observei.',
+  registros: 'Toque em "Registrar nova observação" para descrever o que um educando fez. Todo registro passa por revisão antes de contar oficialmente.',
+  intervencoes: 'Cada ação passa por três etapas: proposta, acompanhamento e validação. Avance a etapa quando houver novidade.',
+  educandos: 'Toque em "Ver trajetória" para abrir o histórico de um educando, ou em "+ Observação" para registrar algo novo.',
+  encaminhamentos: 'Sinalizadores marcados pela equipe nas avaliações, sem motivo escrito. Marque como revisado depois do encaminhamento clínico, feito fora deste sistema.',
+  relatorio: 'Escolha turma e tipo de relatório. A ficha técnica mostra a cobertura por trás do número.',
+  governanca: 'O que este protótipo guarda, o que nunca coleta, e como os rótulos automáticos são calculados — por regra, não por IA.',
+  administracao: 'Gerencie consentimento por educando, ou as frases usadas nas avaliações, dependendo do seu perfil.',
+  child: 'Histórico completo do educando: síntese por dimensão, escala de autonomia e linha do tempo de tudo que já foi registrado.',
+  avaliar: 'Escolha o modo, responda cada frase e registre. Sem consentimento do responsável, esta tela fica bloqueada.',
+  novoregistro: 'Escolha o educando, a data e dite ou escreva o que ele fez. Não cite nomes de outras crianças, nem diagnóstico, saúde ou situação familiar — isso é só da psicóloga.',
+  propor: 'Escolha o educando, uma ação-modelo (ou descreva a sua) e, se quiser, grave uma observação de apoio em áudio ou texto.',
+  casonovo: 'Marque o tipo de demanda, descreva o motivo (opcional) e defina o objetivo do trabalho. Isso abre o caso clínico do educando.',
+  casoatividade: 'Registre data, tipo de atividade, procedimentos e evolução técnica. Se houve encaminhamento externo, marque o campo e acompanhe o retorno depois.',
+};
+function tutorialFor(){
+  if(S.sub==='child' && S.role==='psicologa') return TUTORIALS.child + ' Só você vê e edita o bloco "Caso clínico" — é confidencial.';
+  return TUTORIALS[S.sub] || TUTORIALS[S.tab] || 'Sem tutorial específico para esta tela ainda.';
+}
+function tutorialModal(){
+  return `<div class="modal-backdrop" data-act="close-tutorial">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="x" data-act="close-tutorial">${icoClose()}</button>
+      <h3>${icoHelp()}Tutorial desta tela</h3>
+      <p style="font-size:12.5px;color:var(--ink-2);margin-top:10px;line-height:1.6">${tutorialFor()}</p>
+      <button class="btn" style="margin-top:14px" data-act="close-tutorial">Entendi</button>
+    </div>
+  </div>`;
+}
+function subTitle(){
+  if(S.sub==='child') return [DB.children.find(c=>c.id===S.ctx.childId)?.nome || 'Educando','Trajetória individual'];
+  if(S.sub==='avaliar') return ['Registrar avaliação', DB.children.find(c=>c.id===S.ctx.childId)?.nome || ''];
+  if(S.sub==='novoregistro') return ['Nova observação','Passo a passo'];
+  if(S.sub==='propor') return ['Propor intervenção', DB.children.find(c=>c.id===S.ctx.ivChild)?.nome || 'Escolher educando'];
+  if(S.sub==='casonovo') return ['Abrir caso', DB.children.find(c=>c.id===S.ctx.casoChild)?.nome || ''];
+  if(S.sub==='casoatividade') return ['Registrar atividade', DB.children.find(c=>c.id===S.ctx.casoChild)?.nome || ''];
+  return ['',''];
+}
+
+function bottomNav(){
+  const n = NAV[S.role];
+  const items = n.primary.slice();
+  const hasMais = n.overflow.length>0;
+  if(hasMais) items.push(['__mais__','Mais',icoMore()]);
+  const activeIsOverflow = n.overflow.some(x=>x[0]===S.tab);
+  const compact = items.length>=7 ? 'compact' : '';
+  return `<nav class="bottomnav ${compact}" aria-label="Navegação principal">
+    ${items.map(([id,label,ico])=>{
+      const isMais = id==='__mais__';
+      const on = isMais ? activeIsOverflow : (S.tab===id);
+      return `<button class="navbtn ${on?'on':''}" data-act="${isMais?'open-sheet':'nav'}" data-tab="${id}">${ico}<span>${label}</span></button>`;
+    }).join('')}
+  </nav>`;
+}
+function fabHelp(){
+  return `<button class="fab-help" data-act="open-tutorial" aria-label="Tutorial desta tela">${icoHelp()}</button>`;
+}
+function sheetMore(){
+  const n = NAV[S.role];
+  return `<div class="sheet-backdrop" data-act="close-sheet">
+    <div class="sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      ${n.overflow.map(([id,label,ico])=>`<div class="sheet-row" data-act="nav" data-tab="${id}">${ico}${label}</div>`).join('')}
+    </div>
+  </div>`;
+}
+function codeModal(){
+  const role = S.codeModal;
+  const info = role==='coordenacao'
+    ? {titulo:'Coordenação Pedagógica', code:USERS.coordenacao.code, extra:''}
+    : {titulo:'Psicóloga', code:USERS.psicologa.code, extra:' Este perfil tem acesso exclusivo aos encaminhamentos — nenhum outro perfil vê esse conteúdo.'};
+  return `<div class="modal-backdrop" data-act="close-code">
+    <div class="modal" onclick="event.stopPropagation()">
+      <button class="x" data-act="close-code">${icoClose()}</button>
+      <h3>${icoShield()}Código de acesso · ${info.titulo}</h3>
+      <p style="font-size:12px;color:var(--ink-2);margin-top:8px">Para mudar o perfil para <b>${info.titulo}</b>, digite o código de autorização institucional.${info.extra}</p>
+      <div class="code-hint">${icoLockSm()}Código de demonstração: <b class="tabular">${info.code}</b></div>
+      <button class="btn ghost sm" data-act="biometria-sim">${icoFace()} Usar biometria (simulada)</button>
+      <label class="field-label" style="margin-top:12px">Ou digite o código (4 dígitos)</label>
+      <input id="codeInput" class="code-input tabular" maxlength="4" inputmode="numeric" value="${S.codeVal}" data-act="code-input">
+      <div class="row" style="margin-top:14px;gap:8px">
+        <button class="btn ghost sm" style="flex:1" data-act="close-code">Cancelar</button>
+        <button class="btn sm" style="flex:1" data-act="confirm-code" ${S.codeVal.length===4?'':'disabled'}>Confirmar e acessar</button>
+      </div>
+      <p style="font-size:10px;color:var(--ink-2);font-style:italic;margin-top:12px">Gesto de demonstração. Num sistema em operação, o acesso depende de autenticação real, não de um código exibido na tela.</p>
+    </div>
+  </div>`;
+}
+
+function screenFor(){
+  if(S.sub==='child') return screenChild(S.ctx.childId);
+  if(S.sub==='avaliar') return screenAvaliar(S.ctx.childId);
+  if(S.sub==='novoregistro') return screenNovoRegistro();
+  if(S.sub==='propor') return screenPropor();
+  if(S.sub==='casonovo') return screenCasoNovo();
+  if(S.sub==='casoatividade') return screenCasoAtividade();
+  switch(S.tab){
+    case 'painel': return S.role==='psicologa' ? painelPsicologa() : S.role==='coordenacao' ? painelCoordenacao() : painelEducador();
+    case 'presenca': return screenPresenca();
+    case 'avaliacoes': return screenAvaliacoesLista();
+    case 'registros': return screenRegistros();
+    case 'intervencoes': return screenIntervencoes();
+    case 'educandos': return screenEducandos();
+    case 'encaminhamentos': return screenEncaminhamentos();
+    case 'relatorio': return screenRelatorio();
+    case 'governanca': return screenGovernanca();
+    case 'administracao': return S.role==='psicologa' ? screenFrases() : screenAdminCoord();
+    default: return '';
+  }
+}
+
+/* ==========================================================================
+   ONBOARDING
+   ========================================================================== */
+function screenOnboard(){
+  return `
+  <div class="onboard">
+    <div class="mark2">${logoMark()}</div>
+    <h1>Ebenézer Conecta</h1>
+    <p>Protótipo funcional alinhado ao app real do Instituto. Escolha um perfil para começar.</p>
+    <div class="stack" style="margin-top:24px">
+      <div class="opt" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.28);color:#fff" data-act="pick-role" data-role="educadora">
+        <div class="row"><div class="onb-ic">${icoLeaf()}</div><div><div>Equipe</div><span class="d" style="color:var(--on-deep-2)">Sem senha</span></div></div>
+      </div>
+      <div class="opt" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.28);color:#fff" data-act="open-code" data-role="coordenacao">
+        <div class="row"><div class="onb-ic">${icoUsers()}</div><div><div class="row" style="gap:6px">Coordenação Pedagógica <span class="lock-white" style="display:inline-flex">${icoLockSm()}</span></div><span class="d" style="color:var(--on-deep-2)">Biometria ou senha</span></div></div>
+      </div>
+      <div class="opt" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.28);color:#fff" data-act="open-code" data-role="psicologa">
+        <div class="row"><div class="onb-ic">${icoFace()}</div><div><div class="row" style="gap:6px">Psicóloga <span class="lock-white" style="display:inline-flex">${icoLockSm()}</span></div><span class="d" style="color:var(--on-deep-2)">Biometria ou senha</span></div></div>
+      </div>
+    </div>
+    <button data-act="reset-demo" style="margin-top:22px;background:none;border:1.5px solid rgba(255,255,255,.35);color:var(--on-deep-2);border-radius:100px;padding:8px 14px;font-size:11px;font-weight:800;cursor:pointer;align-self:flex-start">Restaurar dados de demonstração</button>
+    <div style="font-size:10px;color:var(--on-deep-2);margin-top:10px">versão ${APP_VERSION} · dados salvos só neste navegador</div>
+  </div>`;
+}
+
+/* ==========================================================================
+   PAINEL — educador
+   ========================================================================== */
+function stats(){
+  const children = DB.children;
+  const vinculos = children.flatMap(c=>c.turmas.map(t=>({childId:c.id,turmaId:t})));
+  const semInicial = vinculos.filter(v=>{
+    const c = children.find(x=>x.id===v.childId);
+    if(TURMAS[v.turmaId].presencaOnly) return false;
+    if(!c.consentimento) return true;
+    return !DB.avaliacoes.some(a=>a.childId===v.childId && a.turmaId===v.turmaId && a.tipo==='inicial');
+  });
+  const semConsentimento = children.filter(c=>!c.consentimento);
+  const aguardando = DB.registros.filter(r=>r.status==='aguardando');
+  return {
+    criancasUnicas: children.length,
+    vinculos: vinculos.length,
+    programas: new Set(vinculos.map(v=>v.turmaId)).size,
+    semInicial: semInicial.length,
+    semConsentimento: semConsentimento.length,
+    aguardando: aguardando.length,
+    totalRegistros: DB.registros.length,
+  };
+}
+function painelEducador(){
+  const st = stats();
+  const ultimos = DB.registros.slice().sort((a,b)=>b.data.localeCompare(a.data)).slice(0,4);
+  return `
+  <div class="stack">
+    ${callout('ok', `Seus registros mostram a participação das crianças nos encontros.`)}
+    <button class="btn gold" data-act="goto-novoregistro">${icoPlus()} Registrar nova observação</button>
+    <button class="btn ghost" data-act="nav" data-tab="presenca">${icoCal()} Lançar presença do encontro</button>
+    <button class="btn ghost" data-act="nav" data-tab="avaliacoes">${icoLeaf()} Fazer uma avaliação</button>
+    <hr class="hr">
+    ${statGrid(st)}
+    <hr class="hr">
+    <div class="row between"><div class="k">Últimas observações registradas</div><button class="btn link" style="width:auto;background:none;color:var(--brand-d);font-size:11px;font-weight:800" data-act="nav" data-tab="registros">Histórico completo →</button></div>
+    ${ultimos.map(r=>registroCard(r,false)).join('')}
+    <div style="font-size:10px;color:var(--ink-2);text-align:center">Não guarda áudio, diagnóstico, dado de saúde ou relato de violência.</div>
+  </div>`;
+}
+function statGrid(st){
+  return `<div class="grid2">
+    <button class="statcard" data-act="nav" data-tab="educandos"><div class="big tabular">${st.criancasUnicas}</div><div class="lbl">Crianças</div><div class="sub">${st.vinculos} vínculos ativos em ${st.programas} programas — a mesma criança em duas turmas conta uma vez aqui</div><div class="more">Ver quem está aqui →</div></button>
+    <button class="statcard" data-act="nav" data-tab="registros"><div class="big tabular">${st.aguardando}</div><div class="lbl">Registros aguardando revisão</div><div class="sub">de ${st.totalRegistros} registros no período</div><div class="more">Ver quem está aqui →</div></button>
+    <button class="statcard" data-act="nav" data-tab="avaliacoes"><div class="big tabular">${st.semInicial}</div><div class="lbl">Vínculos sem avaliação inicial</div><div class="sub">Sem inicial não há comparação possível depois.</div><div class="more">Ver quem está aqui →</div></button>
+    <button class="statcard" data-act="nav" data-tab="educandos"><div class="big tabular">${st.semConsentimento}</div><div class="lbl">Sem consentimento registrado</div><div class="sub">de ${DB.children.length} educandos cadastrados</div><div class="more">Ver quem está aqui →</div></button>
+  </div>`;
+}
+function registroCard(r,withActions){
+  const c = DB.children.find(x=>x.id===r.childId);
+  const statusPill = r.status==='aguardando' ? `<span class="pill warn">Aguardando revisão</span>`
+    : r.status==='validado' ? `<span class="pill ok">Validado pela coordenação</span>`
+    : `<span class="pill bad">Devolvido</span>`;
+  const editable = (Date.now() - r.criadoEm) < CORRECAO_MS;
+  return `<div class="srow stack" style="gap:6px">
+    <div class="row between"><span><span style="font-weight:900;font-size:12.6px;cursor:pointer;text-decoration:underline;text-underline-offset:2px" data-act="goto-child-from-registro" data-id="${r.id}">${c.nome}</span> <span style="font-weight:700;color:var(--ink-2);font-size:10.6px">· ${TURMAS[r.turmaId].nome}</span></span>${statusPill}</div>
+    <div style="font-size:10.6px;color:var(--ink-3)">${fmtData(r.data)}${r.criadoEm && new Date(r.criadoEm).toISOString().slice(0,10)!==r.data ? ` · registrado ${diffDias(r.data,r.criadoEm)} dias depois` : ''}</div>
+    <div style="font-size:12px;color:var(--ink);font-style:italic">"${r.texto}"</div>
+    ${r.status==='devolvido' ? `<div class="callout bad" style="padding:8px 10px;font-size:11px"><b>Devolvido:</b> ${r.motivo}</div>` : ''}
+    ${withActions ? registroActions(r, editable) : painelRegistroFooter(r, editable)}
+  </div>`;
+}
+function painelRegistroFooter(r, editable){
+  if(r.status==='validado') return `<button class="btn ghost sm" data-act="goto-child-from-registro" data-id="${r.id}">Ver detalhe · propor intervenção</button>`;
+  if(r.status==='devolvido') return `<button class="btn ghost sm" data-act="edit-registro" data-id="${r.id}">Corrigir e reenviar</button>`;
+  return editable ? `<button class="btn ghost sm" data-act="edit-registro" data-id="${r.id}">Editar registro</button>` : `<div style="font-size:10.5px;color:var(--ink-3)">Janela de edição encerrada — peça à coordenação para corrigir.</div>`;
+}
+function registroActions(r, editable){
+  if(S.role==='coordenacao' && r.status==='aguardando'){
+    return `<div class="row" style="gap:6px">
+      <button class="btn sm" style="flex:1" data-act="validar-registro" data-id="${r.id}">Validar</button>
+      <button class="btn ghost sm" style="flex:1" data-act="devolver-registro" data-id="${r.id}">Devolver</button>
+    </div>`;
+  }
+  if(r.status==='validado'){
+    return `<button class="btn ghost sm" data-act="goto-child-from-registro" data-id="${r.id}">Ver detalhe · propor intervenção</button>`;
+  }
+  if(r.status==='devolvido') return `<button class="btn ghost sm" data-act="edit-registro" data-id="${r.id}">Corrigir e reenviar</button>`;
+  return editable ? `<button class="btn ghost sm" data-act="edit-registro" data-id="${r.id}">Editar registro</button>` : '';
+}
+
+/* ==========================================================================
+   PAINEL — coordenação (sub-tabs)
+   ========================================================================== */
+function painelCoordenacao(){
+  const sub = S.ctx.painelSub || 'visao';
+  const st = stats();
+  const tabs = [['visao','Visão geral',icoGrid()],['equipe','Painel da equipe',icoUsers()],['semaforo','Semáforo de turmas',icoSemaforo()],['evolucao','Evolução & Fatores de Mudança',icoTrend()]];
+  return `
+  <div class="stack">
+    ${callout('ok', `${st.aguardando} registro(s) aguardando sua revisão.`)}
+    <button class="btn gold" data-act="nav" data-tab="registros">${icoNote()} Revisar registros (${st.aguardando})</button>
+    <button class="btn ghost" data-act="nav" data-tab="relatorio">${icoExport()} Abrir relatório de programa</button>
+    <button class="btn ghost" data-act="nav" data-tab="governanca">${icoShield()} Conferir governança de dados</button>
+    <hr class="hr">
+    <div class="grid2">${tabs.map(([id,label,ico])=>`<button class="btn ${sub===id?'':'ghost'} sm subtab-btn" data-act="painel-sub" data-sub="${id}">${ico}<span>${label}</span></button>`).join('')}</div>
+    ${sub==='visao' ? statGrid(st) : ''}
+    ${sub==='equipe' ? painelEquipe(st) : ''}
+    ${sub==='semaforo' ? painelSemaforo() : ''}
+    ${sub==='evolucao' ? painelEvolucao() : ''}
+  </div>`;
+}
+function painelEquipe(st){
+  return `<div class="card stack">
+    <div class="row between"><span style="font-weight:900;font-size:13px">Equipe</span><span class="pill info">único perfil neste ciclo</span></div>
+    <div class="grid2">
+      <div class="srow"><div class="k">Registros no período</div><div style="font-size:19px;font-weight:900" class="tabular">${st.totalRegistros}</div></div>
+      <div class="srow"><div class="k">Aguardando revisão</div><div style="font-size:19px;font-weight:900;color:var(--warn)" class="tabular">${st.aguardando}</div></div>
+    </div>
+    <div class="deck">Uma linha por educador, quando houver mais de um na equipe.</div>
+  </div>`;
+}
+function painelSemaforo(){
+  const rows = Object.values(TURMAS).map(t=>{
+    const kids = DB.children.filter(c=>c.turmas.includes(t.id));
+    const semConsent = kids.filter(k=>!k.consentimento).length;
+    const cobertura = kids.length ? Math.round(avg(kids.map(freqConsiderada))*100) : 0;
+    let status = 'estavel';
+    if(kids.length < 3) status='insuficiente';
+    else if(semConsent>0 || cobertura<75) status='atencao';
+    return {t,kids,semConsent,cobertura,status};
+  });
+  return rows.map(r=>`<div class="card" style="border-left:3px solid ${r.status==='estavel'?'var(--data-1)':r.status==='atencao'?'var(--data-5)':'var(--line)'}">
+    <div class="row between"><span style="font-weight:900;font-size:13px">${r.t.nome}</span>
+      ${r.status==='estavel'?'<span class="pill ok">estável</span>':r.status==='atencao'?'<span class="pill warn">sinal de atenção</span>':'<span class="pill muted">dados insuficientes</span>'}</div>
+    <div style="font-size:10.8px;color:var(--ink-2);margin-top:5px">${r.kids.length} educandos vinculados · frequência ${r.cobertura}% (inclui faltas justificadas)${r.semConsent?` · ${r.semConsent} sem consentimento`:''}</div>
+  </div>`).join('');
+}
+function painelEvolucao(){
+  const kidsLab = DB.children.filter(c=>c.turmas.includes('lab'));
+  const byMonth = {};
+  DB.avaliacoes.filter(a=>a.turmaId==='lab').forEach(a=>{
+    const m = a.data.slice(0,7);
+    (byMonth[m]=byMonth[m]||[]).push(a);
+  });
+  const months = Object.keys(byMonth).sort();
+  const coop = months.map(m=>avg(byMonth[m].map(a=>a.respostas.ajudou==='sim'?1:0)));
+  const part = months.map(m=>Math.round(avg(byMonth[m].map(a=>a.respostas.participou==='sim'?1:0))*100));
+  const n = months.map(m=>byMonth[m].length);
+  return `<div class="card chart-card">
+    <div class="legend"><span><i style="background:var(--data-6)"></i>taxa de "ajudou sem pedir"</span><span><i style="background:var(--data-1)"></i>participação sustentada (%)</span></div>
+    ${months.length ? trajSvg(months.map(fmtMesISO), n, coop.map(v=>v*4), part) : `<div class="empty">Sem avaliações suficientes no Laboratório de Sonhos ainda.</div>`}
+    <div style="font-size:10.5px;color:var(--ink-2);margin-top:6px">Variação é contexto, não causa provada.</div>
+  </div>`;
+}
+
+/* ==========================================================================
+   PAINEL — psicóloga
+   ========================================================================== */
+function painelPsicologa(){
+  const enc = DB.encaminhamentos;
+  const pendentes = enc.filter(e=>e.status==='pendente');
+  const revisados = enc.filter(e=>e.status==='revisado');
+  const comSinalizador = new Set(enc.map(e=>e.childId)).size;
+  const tempoMedio = revisados.length ? Math.round(avg(revisados.map(e=>7))) : 0;
+  const recentes = pendentes.slice(0,3);
+  return `
+  <div class="stack">
+    ${callout('ok', `${pendentes.length} encaminhamento(s) pendente(s) de revisão.`)}
+    <button class="btn gold" data-act="goto-novoregistro">${icoPlus()} Registrar nova observação</button>
+    <button class="btn ghost" data-act="nav" data-tab="encaminhamentos">${icoFlag()} Ver encaminhamentos (${pendentes.length})</button>
+    <button class="btn ghost" data-act="nav" data-tab="administracao">${icoSettings()} Editar frases de observação</button>
+    <button class="btn ghost" data-act="nav" data-tab="educandos">${icoUsers()} Ver educandos acompanhados</button>
+    <hr class="hr">
+    <div class="grid2">
+      <div class="statcard" style="cursor:default"><div class="big tabular">${pendentes.length}</div><div class="lbl">Encaminhamentos pendentes</div><div class="sub">de ${enc.length} sinalizados no total</div></div>
+      <div class="statcard" style="cursor:default"><div class="big tabular">${revisados.length}</div><div class="lbl">Revisados</div><div class="sub">marcados como acompanhados</div></div>
+      <div class="statcard" style="cursor:default"><div class="big tabular">${tempoMedio||'—'}${tempoMedio?' dias':''}</div><div class="lbl">Tempo médio até revisão</div><div class="sub">do sinalizador à revisão</div></div>
+      <div class="statcard" style="cursor:default"><div class="big tabular">${comSinalizador}</div><div class="lbl">Educandos com sinalizador</div><div class="sub">ao menos um encaminhamento já registrado</div></div>
+    </div>
+    <div class="k">Pendentes mais recentes</div>
+    ${recentes.length ? recentes.map(e=>encCard(e)).join('') : `<div class="empty">Nenhum encaminhamento pendente.</div>`}
+  </div>`;
+}
+
+/* ==========================================================================
+   PRESENÇA
+   ========================================================================== */
+function presKey(turmaId,data){ return turmaId+'_'+data; }
+function screenPresenca(){
+  const turmaId = S.ctx.presTurma || 'lab';
+  const data = S.ctx.presData || HOJE;
+  const key = presKey(turmaId,data);
+  let rec = DB.presencas[key];
+  if(!rec){ rec = {clima:null, fechado:false, marks:{}}; }
+  const kids = DB.children.filter(c=>c.turmas.includes(turmaId));
+  const counts = {presente:0,justificada:0,falta:0,semlancar:0};
+  kids.forEach(k=>{ const m = rec.marks[k.id]; counts[m||'semlancar']++; });
+  const locked = rec.fechado && S.role!=='coordenacao';
+  return `
+  <div class="stack">
+    <label class="field-label">Programa</label>
+    <select class="tinput" data-act="pres-turma">${Object.values(TURMAS).map(t=>`<option value="${t.id}" ${t.id===turmaId?'selected':''}>${t.nome}</option>`).join('')}</select>
+    <label class="field-label">Encontro</label>
+    <input class="tinput" type="date" value="${data}" max="${HOJE}" data-act="pres-data">
+    ${rec.fechado ? callout('ok', `Fechado${S.role==='coordenacao'?' — você pode reabrir.':'.'}`) : `
+      <button class="btn accent" data-act="pres-marcar-todos">Marcar todos presentes</button>
+    `}
+    <div class="grid2">
+      <div class="srow" style="text-align:center"><div style="font-size:19px;font-weight:900;color:var(--ok)" class="tabular">${counts.presente}</div><div class="k">Presentes</div></div>
+      <div class="srow" style="text-align:center"><div style="font-size:19px;font-weight:900;color:var(--warn)" class="tabular">${counts.justificada}</div><div class="k">Falta justificada</div></div>
+      <div class="srow" style="text-align:center"><div style="font-size:19px;font-weight:900;color:var(--bad)" class="tabular">${counts.falta}</div><div class="k">Falta</div></div>
+      <div class="srow" style="text-align:center"><div style="font-size:19px;font-weight:900;color:var(--ink-2)" class="tabular">${counts.semlancar}</div><div class="k">Sem lançar</div></div>
+    </div>
+    <label class="field-label">Clima da turma (opcional)</label>
+    <div class="faces3">
+      <div class="faceopt ${rec.clima==='tranquilo'?'sel on-presente':''}" data-act="pres-clima" data-v="tranquilo" ${locked?'style="pointer-events:none;opacity:.6"':''}>${icoSun()}<span>Tranquilo</span></div>
+      <div class="faceopt ${rec.clima==='neutro'?'sel on-justificada':''}" data-act="pres-clima" data-v="neutro" ${locked?'style="pointer-events:none;opacity:.6"':''}>${icoCloud()}<span>Neutro</span></div>
+      <div class="faceopt ${rec.clima==='agitado'?'sel on-falta':''}" data-act="pres-clima" data-v="agitado" ${locked?'style="pointer-events:none;opacity:.6"':''}>${icoRain()}<span>Agitado</span></div>
+    </div>
+    ${kids.map(k=>{
+      const m = rec.marks[k.id];
+      const pctTxt = k.freq.t ? Math.round(freqConsiderada(k)*100)+'%' : '—';
+      const qual = k.freq.t ? freqQual(k) : '';
+      return `<div class="roster">
+        <div class="roster-top">
+          <div class="avatar">${initials(k.nome)}</div>
+          <div style="flex:1">
+            <div style="font-weight:900;font-size:12.8px">${k.nome}</div>
+            <div class="meta">${k.id} · ${k.idade} anos${k.freq.j?` · ${k.freq.j} falta(s) justificada(s)`:''}</div>
+            ${faltaRecorrente(k) ? `<div class="meta" style="color:var(--warn);font-weight:800">Recorrência de falta justificada — observar vulnerabilidade</div>` : ''}
+          </div>
+          <div style="text-align:right;font-size:10.6px;color:var(--ink-2)"><span class="tabular" style="font-weight:900;color:var(--ink)">${k.freq.p}/${k.freq.t}</span><br>${pctTxt} · ${qual}</div>
+        </div>
+        <div class="seg3" style="margin-top:8px;${locked?'pointer-events:none;opacity:.6':''}">
+          <button class="${m==='presente'?'on-presente':''}" data-act="pres-mark" data-child="${k.id}" data-v="presente">Presente</button>
+          <button class="${m==='justificada'?'on-justificada':''}" data-act="pres-mark" data-child="${k.id}" data-v="justificada">Justificada</button>
+          <button class="${m==='falta'?'on-falta':''}" data-act="pres-mark" data-child="${k.id}" data-v="falta">Falta</button>
+        </div>
+      </div>`;
+    }).join('')}
+    ${!rec.fechado ? `<button class="btn" data-act="pres-fechar">Confirmar e fechar o lançamento</button>` :
+      (S.role==='coordenacao' ? `<button class="btn ghost" data-act="pres-reabrir">Reabrir para corrigir</button>` : '')}
+  </div>`;
+}
+
+/* ==========================================================================
+   AVALIAÇÕES — lista + formulário individual
+   ========================================================================== */
+function screenAvaliacoesLista(){
+  const q = (S.ctx.avalQ||'').toLowerCase();
+  const turmaFiltro = S.ctx.avalTurma||'';
+  const soSemInicial = !!S.ctx.avalSemInicial;
+  let kids = DB.children.slice();
+  if(turmaFiltro) kids = kids.filter(k=>k.turmas.includes(turmaFiltro));
+  if(q) kids = kids.filter(k=>k.nome.toLowerCase().includes(q) || k.id.toLowerCase().includes(q));
+  const semInicial = k => k.turmas.some(t=>!TURMAS[t].presencaOnly && (!k.consentimento || !DB.avaliacoes.some(a=>a.childId===k.id && a.turmaId===t && a.tipo==='inicial')));
+  if(soSemInicial) kids = kids.filter(semInicial);
+  return `
+  <div class="stack">
+    <input type="search" placeholder="Buscar educando por nome ou código" value="${S.ctx.avalQ||''}" data-act="aval-q">
+    <select class="tinput" data-act="aval-turma"><option value="">Todas as turmas</option>${Object.values(TURMAS).filter(t=>!t.presencaOnly).map(t=>`<option value="${t.id}" ${turmaFiltro===t.id?'selected':''}>${t.nome}</option>`).join('')}</select>
+    <label class="row" style="font-size:11.6px;font-weight:700;gap:8px"><input type="checkbox" data-act="aval-seminicial" ${soSemInicial?'checked':''}> Mostrar só quem falta avaliação inicial</label>
+    ${kids.length ? kids.map(k=>{
+      const flag = semInicial(k);
+      return `<div class="roster" data-act="goto-avaliar" data-child="${k.id}" style="cursor:pointer">
+        <div class="roster-top">
+          <div class="avatar">${initials(k.nome)}</div>
+          <div style="flex:1"><div style="font-weight:900;font-size:12.8px">${k.nome}</div><div class="meta">${k.id} · ${k.idade} anos</div>
+          <div class="chips">${k.turmas.map(t=>`<span class="chip-tag">${TURMAS[t].nome}</span>`).join('')}${flag?'<span class="chip-tag" style="background:var(--data-5s);color:var(--warn)">sem inicial</span>':''}</div></div>
+        </div>
+      </div>`;
+    }).join('') : `<div class="empty">Nenhum educando encontrado.</div>`}
+  </div>`;
+}
+function screenAvaliar(childId){
+  const c = DB.children.find(x=>x.id===childId);
+  if(!c.consentimento){
+    return `<div class="stack">
+      <div class="roster"><div class="roster-top"><div class="avatar">${initials(c.nome)}</div><div><div style="font-weight:900">${c.nome} · ${c.id}</div></div></div></div>
+      ${callout('bad', `Sem consentimento registrado — coleta bloqueada.`)}
+      ${S.role==='coordenacao' ? `<button class="btn" data-act="registrar-consentimento" data-child="${c.id}">Registrar consentimento agora</button>` : ''}
+    </div>`;
+  }
+  const turmaId = S.ctx.avalTurmaSel || c.turmas.find(t=>!TURMAS[t].presencaOnly);
+  const jaTemInicial = DB.avaliacoes.some(a=>a.childId===c.id && a.turmaId===turmaId && a.tipo==='inicial');
+  const modo = S.ctx.avalModo || null;
+  const respostas = S.ctx.avalRespostas || {};
+  const atencao = !!S.ctx.avalAtencao;
+  const pct = c.freq.t ? Math.round(freqConsiderada(c)*100) : 0;
+  const qual = freqQual(c);
+  const itens = modo==='rapido' ? QUICK_ITEMS : modo==='completo' ? ALL_ITEMS : [];
+  const respondidas = itens.filter(i=>respostas[i.k]).length;
+  return `
+  <div class="stack">
+    <div class="roster"><div class="roster-top"><div class="avatar">${initials(c.nome)}</div><div style="flex:1"><div style="font-weight:900;font-size:13px">${c.nome}<span style="color:var(--ink-2);font-weight:700"> · ${c.id}</span></div></div></div></div>
+    <label class="field-label">Ciclo a que esta avaliação se refere</label>
+    <input class="tinput" type="date" value="${S.ctx.avalData||HOJE}" min="${c.entrada}" max="${HOJE}" data-act="aval-data-form">
+    ${callout(jaTemInicial?'info':'warn', `${jaTemInicial?'Check-in':'Avaliação inicial'} · frequência <b class="tabular">${pct}%</b> · ${qual}`)}
+    <label class="row" style="font-size:12px;font-weight:700;gap:8px;background:var(--card);border:1.5px solid var(--ink-3);border-radius:10px;padding:10px">
+      <input type="checkbox" ${atencao?'checked':''} data-act="aval-atencao"> ${icoBell()}Precisa de atenção da psicóloga?
+    </label>
+    <label class="field-label">Como você quer registrar</label>
+    <div class="row" style="gap:8px">
+      <div class="opt ${modo==='rapido'?'sel':''}" style="flex:1" data-act="aval-modo" data-v="rapido"><div class="row">${icoBolt()}<span>Modo rápido</span></div><span class="d">5 itens · ~1 min</span></div>
+      <div class="opt ${modo==='completo'?'sel':''}" style="flex:1" data-act="aval-modo" data-v="completo"><div class="row">${icoNote()}<span>Modo completo</span></div><span class="d">16 itens · ~3 min</span></div>
+    </div>
+    ${modo ? `
+      <div style="font-size:11px;font-weight:800;color:var(--ink-2)">${respondidas} de ${itens.length} frases marcadas (modo ${modo})</div>
+      ${itens.map(i=>`
+        <div class="dbritem" style="--dc:${i.cor}">
+          <div class="tx">${i.icone||''}${i.t}</div>
+          <div class="tri">
+            ${['sim','nao','nao_observei'].map(v=>`<button class="${respostas[i.k]===v?'on':''}" data-act="aval-resp" data-k="${i.k}" data-v="${v}">${v==='sim'?'Sim':v==='nao'?'Não':'Não observei'}</button>`).join('')}
+          </div>
+        </div>`).join('')}
+      <button class="btn" data-act="aval-submit" ${respondidas===itens.length ? '':'disabled'}>Registrar ${jaTemInicial?'check-in':'avaliação inicial'}</button>
+    ` : ''}
+  </div>`;
+}
+
+/* ==========================================================================
+   REGISTROS
+   ========================================================================== */
+function screenRegistros(){
+  const filtro = S.ctx.regFiltro || 'todos';
+  let list = DB.registros.slice().sort((a,b)=>b.data.localeCompare(a.data));
+  if(filtro==='andamento') list = list.filter(r=>r.status==='aguardando');
+  if(filtro==='validados') list = list.filter(r=>r.status==='validado');
+  if(filtro==='devolvidos') list = list.filter(r=>r.status==='devolvido');
+  const counts = {todos:DB.registros.length, andamento:DB.registros.filter(r=>r.status==='aguardando').length, validados:DB.registros.filter(r=>r.status==='validado').length, devolvidos:DB.registros.filter(r=>r.status==='devolvido').length};
+  return `
+  <div class="stack">
+    <button class="btn gold" data-act="goto-novoregistro">${icoPlus()} Registrar nova observação</button>
+    ${S.role==='coordenacao' ? `<button class="btn ghost sm" data-act="noop">${icoExport()} Importar planilha de registros antigos</button>` : ''}
+    <div class="subtabs">
+      ${[['todos','Todos'],['andamento','Em andamento'],['validados','Validados'],['devolvidos','Devolvidos']].map(([id,l])=>`<div class="subtab ${filtro===id?'on':''}" data-act="reg-filtro" data-f="${id}">${l} ${counts[id]}</div>`).join('')}
+    </div>
+    ${list.length ? list.map(r=>registroCard(r,true)).join('') : `<div class="empty">Nenhum registro nesta fila.</div>`}
+  </div>`;
+}
+function screenNovoRegistro(){
+  const step = S.ctx.novoStep || 1;
+  const childId = S.ctx.novoChild;
+  const c = childId ? DB.children.find(x=>x.id===childId) : null;
+  const q = (S.ctx.novoQ||'').toLowerCase();
+  let kids = DB.children.filter(k=>k.consentimento);
+  if(q) kids = kids.filter(k=>k.nome.toLowerCase().includes(q));
+  return `
+  <div class="stack">
+    <div class="k">1 · Educando</div>
+    ${c ? `<div class="opt sel"><span>${c.nome}</span><span class="d">${c.id} · trocar abaixo</span></div><input type="search" placeholder="Buscar outro educando" data-act="novo-q">` : `<input type="search" placeholder="Buscar educando por nome" value="${S.ctx.novoQ||''}" data-act="novo-q">`}
+    ${(!c || q) ? kids.slice(0,8).map(k=>`<div class="opt" data-act="novo-pick-child" data-child="${k.id}"><span>${k.nome}</span><span class="d">${k.id} · ${k.turmas.map(t=>TURMAS[t].nome).join(', ')}</span></div>`).join('') : ''}
+    ${c ? `
+      <div class="k">2 · Quando isso aconteceu</div>
+      <input class="tinput" type="date" value="${S.ctx.novoData||HOJE}" max="${HOJE}" min="${c.entrada}" data-act="novo-data">
+      <div class="k">3 · Como você quer registrar</div>
+      <div class="row" style="gap:8px">
+        <div class="opt ${S.ctx.novoMetodo==='ditado'?'sel':''}" style="flex:1" data-act="novo-metodo" data-v="ditado"><div class="row">${icoMic()}<span>Ditar</span></div><span class="d">falar e o texto aparece</span></div>
+        <div class="opt ${S.ctx.novoMetodo==='escrito'?'sel':''}" style="flex:1" data-act="novo-metodo" data-v="escrito"><div class="row">${icoKeyboard()}<span>Escrever</span></div><span class="d">digitar direto</span></div>
+      </div>
+      ${S.ctx.novoMetodo==='ditado' ? `
+        <div class="rec-wrap">
+          <div class="row" style="justify-content:center;gap:7px"><span class="dot-rec"></span><span style="font-size:11px;font-weight:900;color:#9c3418">${S.rec?'GRAVANDO':'PARADO'}</span></div>
+          <div class="wave">${Array.from({length:8}).map((_,i)=>`<span style="height:${8+((i*7)%16)}px;animation-delay:${i*.08}s"></span>`).join('')}</div>
+          <button class="btn ${S.rec?'danger':''} sm" style="max-width:180px;margin:8px auto 0" data-act="toggle-rec">${S.rec?'Parar':'Segure para falar'}</button>
+        </div>` : ''}
+      ${S.ctx.novoMetodo ? `
+        <label class="field-label">Transcrição — edite se necessário</label>
+        <textarea rows="4" placeholder="Descreva o que a criança fez na atividade…" data-act="novo-texto">${S.ctx.novoTexto||''}</textarea>
+        <div id="novoWarn">${novoRegistroWarning(c)}</div>
+        <button class="btn" data-act="novo-submit" ${(S.ctx.novoTexto||'').trim().length>8?'':'disabled'}>Enviar para revisão</button>
+      ` : ''}
+    ` : ''}
+  </div>`;
+}
+function novoRegistroWarning(c){
+  const txt = S.ctx.novoTexto||'';
+  const others = DB.children.filter(k=>k.id!==c.id).map(k=>k.nome.split(' ')[0]);
+  const found = others.filter(n=>txt.includes(n));
+  if(!found.length) return '';
+  return callout('bad', `O texto cita outro nome próprio (${found.join(', ')}). Descreva apenas ${c.nome.split(' ')[0]}, que já está selecionado(a).`);
+}
+
+/* ==========================================================================
+   PROPOR INTERVENÇÃO — escolha de ação-modelo + observação de apoio (áudio/escrita)
+   ========================================================================== */
+const PROPOSTAS_MODELO = [
+  {acao:'Convidar para atividade em dupla antes do grupo maior.', objetivo:'Criar participação com menor exposição.'},
+  {acao:'Aproximar de um colega com quem já interage bem.', objetivo:'Usar um vínculo existente como ponte para o grupo.'},
+  {acao:'Dar uma função concreta na organização do material.', objetivo:'Ancorar a permanência na atividade por uma tarefa clara.'},
+  {acao:'Ajustar a atividade conforme o que a avaliação sinalizou.', objetivo:'Reduzir a distância entre o que foi observado e o que é pedido.'},
+];
+function screenPropor(){
+  const childId = S.ctx.ivChild;
+  const q = (S.ctx.ivQ||'').toLowerCase();
+  let kids = DB.children.slice();
+  if(q) kids = kids.filter(k=>k.nome.toLowerCase().includes(q));
+  if(!childId){
+    return `<div class="stack">
+      <div class="deck">Escolha o educando para quem esta ação será proposta.</div>
+      <input type="search" placeholder="Buscar educando por nome" value="${S.ctx.ivQ||''}" data-act="propor-q">
+      ${kids.slice(0,10).map(k=>`<div class="opt" data-act="propor-pick-child" data-child="${k.id}"><span>${k.nome}</span><span class="d">${k.id} · ${k.turmas.map(t=>TURMAS[t].nome).join(', ')}</span></div>`).join('')}
+    </div>`;
+  }
+  const c = DB.children.find(x=>x.id===childId);
+  const acaoSel = S.ctx.ivAcaoSel;
+  const isCustom = acaoSel==='outra';
+  const podeSalvar = acaoSel!=null && (isCustom ? (S.ctx.ivAcaoLivre||'').trim().length>4 && (S.ctx.ivObjetivoLivre||'').trim().length>4 : true);
+  return `<div class="stack">
+    <div class="roster"><div class="roster-top"><div class="avatar">${initials(c.nome)}</div><div style="flex:1"><div style="font-weight:900;font-size:13px">${c.nome}<span style="color:var(--ink-2);font-weight:700"> · ${c.id}</span></div></div></div></div>
+    <div class="k">Escolha uma ação</div>
+    ${PROPOSTAS_MODELO.map((p,i)=>`<div class="opt ${acaoSel===String(i)?'sel':''}" data-act="propor-acao" data-v="${i}"><span>${p.acao}</span><span class="d">${p.objetivo}</span></div>`).join('')}
+    <div class="opt ${isCustom?'sel':''}" data-act="propor-acao" data-v="outra"><span>Outra ação</span><span class="d">descrever a ação e o objetivo</span></div>
+    ${isCustom ? `
+      <label class="field-label">Ação proposta</label>
+      <textarea rows="2" placeholder="O que a equipe vai fazer de diferente…" data-act="propor-acao-livre">${S.ctx.ivAcaoLivre||''}</textarea>
+      <label class="field-label">Objetivo</label>
+      <textarea rows="2" placeholder="O que se espera com essa ação…" data-act="propor-objetivo-livre">${S.ctx.ivObjetivoLivre||''}</textarea>
+    ` : ''}
+    <label class="field-label">Observação de apoio (opcional)</label>
+    <div class="row" style="gap:8px">
+      <div class="opt ${S.ctx.ivMetodo==='ditado'?'sel':''}" style="flex:1" data-act="propor-metodo" data-v="ditado"><div class="row">${icoMic()}<span>Ditar</span></div></div>
+      <div class="opt ${S.ctx.ivMetodo==='escrito'?'sel':''}" style="flex:1" data-act="propor-metodo" data-v="escrito"><div class="row">${icoKeyboard()}<span>Escrever</span></div></div>
+    </div>
+    ${S.ctx.ivMetodo==='ditado' ? `
+      <div class="rec-wrap">
+        <div class="row" style="justify-content:center;gap:7px"><span class="dot-rec"></span><span style="font-size:11px;font-weight:900;color:#9c3418">${S.rec?'GRAVANDO':'PARADO'}</span></div>
+        <div class="wave">${Array.from({length:8}).map((_,i)=>`<span style="height:${8+((i*7)%16)}px;animation-delay:${i*.08}s"></span>`).join('')}</div>
+        <button class="btn ${S.rec?'danger':''} sm" style="max-width:180px;margin:8px auto 0" data-act="toggle-rec">${S.rec?'Parar':'Segure para falar'}</button>
+      </div>` : ''}
+    ${S.ctx.ivMetodo ? `<textarea rows="3" placeholder="O que motivou essa proposta…" data-act="propor-obs-texto">${S.ctx.ivObs||''}</textarea>` : ''}
+    <button class="btn" data-act="propor-submit" ${podeSalvar?'':'disabled'}>Propor intervenção</button>
+  </div>`;
+}
+
+/* ==========================================================================
+   INTERVENÇÕES
+   ========================================================================== */
+function screenIntervencoes(){
+  const filtro = S.ctx.ivFiltro || 'todas';
+  let list = DB.intervencoes.slice();
+  if(filtro==='andamento') list = list.filter(i=>i.estagio<3);
+  if(filtro==='concluidas') list = list.filter(i=>i.estagio===3);
+  const counts = {todas:DB.intervencoes.length, andamento:DB.intervencoes.filter(i=>i.estagio<3).length, concluidas:DB.intervencoes.filter(i=>i.estagio===3).length};
+  return `<div class="stack">
+    ${S.role==='coordenacao' ? `<button class="btn gold" data-act="goto-propor-tab">${icoPlus()} Propor nova intervenção</button>` : ''}
+    <div class="subtabs">${[['todas','Todas as ações'],['andamento','Em acompanhamento'],['concluidas','Concluídas com sucesso']].map(([id,l])=>`<div class="subtab ${filtro===id?'on':''}" data-act="iv-filtro" data-f="${id}">${l} ${counts[id]}</div>`).join('')}</div>
+    ${list.map(iv=>ivCard(iv)).join('') || `<div class="empty">Nenhuma intervenção nesta lista.</div>`}
+  </div>`;
+}
+function ivCard(iv){
+  const c = DB.children.find(x=>x.id===iv.childId);
+  const estagioLbl = iv.estagio===3?'Concluída':iv.estagio===2?'Em acompanhamento':'Proposta';
+  return `<div class="card stack">
+    <div class="row between"><span style="font-weight:900">${c.nome}</span><span class="pill ${iv.estagio===3?'ok':'info'}">${estagioLbl}</span></div>
+    <div style="font-size:10.6px;color:var(--ink-2)">${TURMAS[iv.turmaId].nome}</div>
+    ${stage3Html(iv.estagio)}
+    <div class="srow"><div class="k">Ação proposta</div><div style="font-size:12px;margin-top:3px">${iv.acao}</div>
+      <div class="k" style="margin-top:8px">Objetivo</div><div style="font-size:12px;margin-top:3px">${iv.objetivo}</div>
+      ${iv.observacao ? `<div class="k" style="margin-top:8px">Observação de apoio (${iv.metodo==='ditado'?'ditada':'escrita'})</div><div style="font-size:12px;margin-top:3px;font-style:italic">"${iv.observacao}"</div>` : ''}
+      <div style="font-size:10.4px;color:var(--ink-2);margin-top:8px">Proposto por ${iv.propostoPor} em ${fmtDataCurta(iv.propostoEm)}</div>
+    </div>
+    ${iv.estagio===3
+      ? callout('ok', `<b>Resultado observado e validado</b><br>"${iv.resultado}"`)
+      : (S.role==='coordenacao' ? (iv.estagio===1
+          ? `<button class="btn ghost sm" data-act="iv-avancar" data-id="${iv.id}">Iniciar acompanhamento</button>`
+          : `<button class="btn ghost sm" data-act="iv-registrar" data-id="${iv.id}">Registrar resultado</button>`)
+        : '')}
+  </div>`;
+}
+function stage3Html(estagio){
+  const labels=['Proposta','Acompanhamento','Validado'];
+  return `<div class="stage3">${labels.map((l,i)=>{
+    const n=i+1; const done = n<estagio || (n===3 && estagio===3); const cur = n===estagio && estagio<3;
+    return `<div class="seg ${n<=estagio?'done':''} ${cur?'cur':''}"><div class="dot2">${n<estagio || (n===3&&estagio===3) ?icoCheckTiny():n}</div><div class="lbl">${l}</div></div>${i<2?'<div class="line"></div>':''}`;
+  }).join('')}</div>`;
+}
+
+/* ==========================================================================
+   EDUCANDOS + TRAJETÓRIA INDIVIDUAL
+   ========================================================================== */
+function screenEducandos(){
+  const q = (S.ctx.eduQ||'').toLowerCase();
+  let kids = DB.children.slice();
+  if(q) kids = kids.filter(k=>k.nome.toLowerCase().includes(q) || k.id.toLowerCase().includes(q));
+  return `<div class="stack">
+    <div class="deck">Cadastro único por criança. ${kids.length} de ${DB.children.length} educandos.</div>
+    <input type="search" placeholder="Buscar por nome ou código" value="${S.ctx.eduQ||''}" data-act="edu-q">
+    ${kids.map(k=>{
+      const ultimo = DB.registros.filter(r=>r.childId===k.id).sort((a,b)=>b.data.localeCompare(a.data))[0];
+      return `<div class="roster">
+        <div class="roster-top">
+          <div class="avatar">${initials(k.nome)}</div>
+          <div style="flex:1">
+            <div style="font-weight:900;font-size:13px">${k.nome}</div>
+            <div class="meta">${k.idade} anos · Resp.: ${k.resp.nome} (${k.resp.rel})</div>
+            <div class="chips">${k.turmas.map(t=>`<span class="chip-tag">${TURMAS[t].nome}</span>`).join('')}${S.role==='psicologa' && DB.casos.some(cs=>cs.childId===k.id && cs.status==='ativo') ? `<span class="chip-tag" style="background:var(--data-2s);color:var(--data-2)">caso ativo</span>` : ''}</div>
+            <div class="meta" style="margin-top:5px">${ultimo?`Último registro: ${fmtDataCurta(ultimo.data)} · há ${diffDiasHoje(ultimo.data)} dias`:'Sem registro na trajetória'}</div>
+            ${!k.consentimento?'<div class="meta" style="color:var(--bad);font-weight:800">Consentimento do responsável não registrado.</div>':''}
+            ${faltaRecorrente(k)?'<div class="meta" style="color:var(--warn);font-weight:800">Recorrência de falta justificada — observar vulnerabilidade</div>':''}
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn ghost sm" style="flex:1" data-act="goto-child" data-child="${k.id}">Ver trajetória</button>
+          <button class="btn ghost sm" style="flex:1" data-act="novo-obs-child" data-child="${k.id}">+ Observação</button>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+function dimStatus(childId, dimId){
+  const avs = DB.avaliacoes.filter(a=>a.childId===childId).sort((a,b)=>a.data.localeCompare(b.data));
+  if(avs.length<1) return {status:'—', desc:'Sem avaliação registrada ainda.'};
+  const dim = DIMENSOES.find(d=>d.id===dimId);
+  const score = a => avg(dim.itens.map(i=>a.respostas[i.k]==='sim'?1:a.respostas[i.k]==='nao'?0:null).filter(v=>v!==null));
+  const first = score(avs[0]); const last = score(avs[avs.length-1]);
+  if(avs.length===1 || first===last) return {status:'Estável', desc:'Mantém o padrão observado desde a avaliação inicial.'};
+  return last>first ? {status:'Avanço', desc:'Mais frases marcadas como "sim" desde a avaliação inicial.'} : {status:'Atenção', desc:'Menos frases marcadas como "sim" desde a avaliação inicial — vale observar de perto.'};
+}
+function escalaAutonomia(childId){
+  const validados = DB.registros.filter(r=>r.childId===childId && r.status==='validado').length + DB.avaliacoes.filter(a=>a.childId===childId).length;
+  return validados>=5 ? 3 : validados>=2 ? 2 : 1;
+}
+function leituraTrajetoria(childId){
+  const avs = DB.avaliacoes.filter(a=>a.childId===childId).sort((a,b)=>a.data.localeCompare(b.data));
+  const validados = DB.registros.filter(r=>r.childId===childId && r.status==='validado').length;
+  if(avs.length<2) return `Apenas ${avs.length} avaliação(ões) registrada(s) — base pequena para afirmar tendência.`;
+  const first = avs[0], last = avs[avs.length-1];
+  let avanco=0, manteve=0, regrediu=0, semPar=0;
+  ALL_ITEMS.forEach(i=>{
+    const a = first.respostas[i.k], b = last.respostas[i.k];
+    if(a===undefined || b===undefined || a==='nao_observei' || b==='nao_observei'){ semPar++; return; }
+    if(a==='nao' && b==='sim') avanco++;
+    else if(a==='sim' && b==='nao') regrediu++;
+    else manteve++;
+  });
+  return `Entre ${fmtDataCurta(first.data)} e ${fmtDataCurta(last.data)}, ${avanco} frase(s) passaram de "não" para "sim", ${manteve} mantiveram e ${regrediu} regrediram (${semPar} sem dado pareado). São ${avs.length} avaliações e ${validados} registros validados — base ${avs.length>=3&&validados>=2?'adequada':'pequena'} para afirmar tendência.`;
+}
+function screenChild(childId){
+  const c = DB.children.find(x=>x.id===childId);
+  const registros = DB.registros.filter(r=>r.childId===childId);
+  const avaliacoes = DB.avaliacoes.filter(a=>a.childId===childId);
+  const ivs = DB.intervencoes.filter(i=>i.childId===childId);
+  const ultimo = registros.slice().sort((a,b)=>b.data.localeCompare(a.data))[0];
+  const escala = escalaAutonomia(childId);
+  const stageLbl = ['Acolhimento','Desenvolvimento','Autonomia'];
+  const events = []
+    .concat(c.turmas.map(t=>({data:c.entrada, tipo:'Entrada', turma:t, txt:`Entrou em ${TURMAS[t].nome}`})))
+    .concat(avaliacoes.map(a=>({data:a.data, tipo:a.tipo==='inicial'?'Avaliação inicial':'Check-in', turma:a.turmaId, txt:`${a.tipo==='inicial'?'Avaliação inicial':'Check-in'} · modo ${a.modo} · ${TURMAS[a.turmaId].nome}`})))
+    .concat(registros.map(r=>({data:r.data, tipo:'Registro', turma:r.turmaId, txt:r.texto})))
+    .concat(ivs.map(i=>({data:i.propostoEm, tipo:'Intervenção', turma:i.turmaId, txt:i.acao})))
+    .sort((a,b)=>b.data.localeCompare(a.data));
+  return `<div class="stack">
+    <div class="card">
+      <div class="roster-top">
+        <div class="avatar" style="width:44px;height:44px;font-size:14px">${initials(c.nome)}</div>
+        <div>
+          <div style="font-weight:900;font-size:15px">${c.nome}</div>
+          <div class="meta">${c.idade} anos · ${c.id} · nasc. ${fmtDataCurta(c.nasc)}</div>
+          <div class="meta">Responsável: ${c.resp.nome} (${c.resp.rel})</div>
+          ${S.role==='psicologa' ? `<div class="meta">Contato: ${c.resp.contato} · Instituto Social Ebenézer · Jardim Ângela</div>` : ''}
+          <div class="chips">${c.turmas.map(t=>`<span class="chip-tag">${TURMAS[t].nome}</span>`).join('')}</div>
+        </div>
+      </div>
+      <button class="btn ghost sm" style="margin-top:10px" data-act="novo-obs-child" data-child="${c.id}">+ Nova observação</button>
+      ${S.role==='coordenacao' || S.role==='psicologa' ? `<button class="btn ghost sm" style="margin-top:8px" data-act="goto-propor" data-child="${c.id}">${icoBolt()} Propor intervenção</button>` : ''}
+    </div>
+    ${S.role==='psicologa' ? casoClinicoBlock(childId) : ''}
+    <div class="grid2">
+      <div class="srow" style="text-align:center"><div class="tabular" style="font-size:18px;font-weight:900">${registros.length}</div><div class="k">Registros na trajetória</div></div>
+      <div class="srow" style="text-align:center"><div style="font-size:13px;font-weight:900">${ultimo?fmtDataCurta(ultimo.data):'—'}</div><div class="k">Último acompanhamento</div></div>
+      <div class="srow" style="text-align:center"><div class="tabular" style="font-size:18px;font-weight:900">${ivs.filter(i=>i.estagio<3).length}</div><div class="k">Intervenções em andamento</div></div>
+      <div class="srow" style="text-align:center"><div class="tabular" style="font-size:18px;font-weight:900">${ivs.filter(i=>i.estagio===3).length}</div><div class="k">Intervenções concluídas</div></div>
+    </div>
+    <div class="k">Síntese visual da trajetória</div>
+    <div class="grid2">
+      ${DIMENSOES.slice(0,4).map(d=>{ const r = dimStatus(childId,d.id); return `<div class="dimcard"><div class="ic">${d.ic}</div><div class="t">${d.nome}</div><span class="pill ${r.status==='Avanço'?'ok':r.status==='Atenção'?'warn':'muted'}" style="margin-top:5px">${r.status}</span><div class="d">${r.desc}</div></div>`; }).join('')}
+    </div>
+    <div class="card">
+      <div class="k">Escala pedagógica de autonomia</div>
+      <div style="font-size:11px;color:var(--ink-3);margin:3px 0 2px">Fase atual: ${stageLbl[escala-1]}</div>
+      ${stage3Html(escala===3?3:escala)}
+    </div>
+    ${callout('info', `<b>Leitura da trajetória</b> · contagem, não diagnóstico<br>${leituraTrajetoria(childId)}`)}
+    <div class="k">Frequência por turma</div>
+    ${c.turmas.map(t=>`<div class="srow"><div class="row between"><span style="font-weight:800;font-size:12px">${TURMAS[t].nome}</span><span class="tabular" style="font-weight:900">${c.freq.p}/${c.freq.t} · ${Math.round(freqConsiderada(c)*100)}% considerada</span></div>
+      <div class="freqbar">${Array.from({length:c.freq.t}).map((_,i)=>`<span class="t ${i<c.freq.p?'on':i<c.freq.p+c.freq.j?'just':''}"></span>`).join('')}</div>
+      ${c.freq.j?`<div style="font-size:10.2px;color:var(--ink-2);margin-top:5px">${c.freq.j} falta(s) justificada(s) não contam para o sinal de atenção</div>`:''}
+      ${faltaRecorrente(c)?`<div style="font-size:10.2px;color:var(--warn);font-weight:800;margin-top:2px">Recorrência de falta justificada — observar vulnerabilidade</div>`:''}
+      </div>`).join('')}
+    <div class="k">Evidências e intervenções · ${events.length} eventos</div>
+    <div class="card">${events.map((e,i)=>`<div class="timeline-evt"><div class="rail"><div class="rdot"></div>${i<events.length-1?'<div class="rline"></div>':''}</div><div class="body"><div class="when">${fmtDataCurta(e.data)} · ${TURMAS[e.turma].nome}</div><div class="what">${e.tipo}</div>${e.tipo==='Registro'||e.tipo==='Intervenção'?`<div class="txt">"${e.txt}"</div>`:''}</div></div>`).join('')}</div>
+  </div>`;
+}
+
+/* ==========================================================================
+   PRONTUÁRIO PSICOLÓGICO — caso clínico (exclusivo da psicóloga)
+   Estrutura CRP: identificação · demanda e objetivos · evolução/procedimentos
+   técnico-científicos · encaminhamento ou encerramento.
+   ========================================================================== */
+function casoClinicoBlock(childId){
+  const caso = DB.casos.find(k=>k.childId===childId);
+  if(!caso){
+    return `<div class="card stack">
+      <div class="row between"><div class="k">Caso clínico</div>${icoShield()}</div>
+      <div class="deck">Nenhum caso aberto para este educando.</div>
+      <button class="btn ghost sm" data-act="goto-caso-novo" data-child="${childId}">${icoPlus()} Abrir caso</button>
+    </div>`;
+  }
+  const ativo = caso.status==='ativo';
+  return `<div class="card stack">
+    <div class="row between"><div class="k">Caso clínico</div><span class="pill ${ativo?'info':'muted'}">${ativo?'Em acompanhamento':'Encerrado'}</span></div>
+    <div class="chips">${caso.tipos.map(t=>`<span class="chip-tag">${t}</span>`).join('')}</div>
+    <div style="font-size:12px"><b>Objetivo:</b> ${caso.objetivo}</div>
+    ${caso.descricao ? `<div style="font-size:11.4px;color:var(--ink-2)">${caso.descricao}</div>` : ''}
+    <div class="row" style="gap:6px">
+      ${ativo ? `<button class="btn ghost sm" style="flex:1" data-act="goto-caso-atividade" data-child="${childId}">${icoNote()} Registrar atividade</button>` : ''}
+      <button class="btn ghost sm" style="flex:1" data-act="caso-toggle-status" data-child="${childId}">${ativo?icoCheck2():icoBolt()}<span>${ativo?'Encerrar caso':'Reabrir caso'}</span></button>
+    </div>
+    <div class="k">Atividades registradas (${caso.atividades.length})</div>
+    ${caso.atividades.length ? caso.atividades.slice().sort((a,b)=>b.data.localeCompare(a.data)).map(atividadeRow).join('') : `<div class="empty">Nenhuma atividade registrada ainda.</div>`}
+  </div>`;
+}
+function atividadeRow(at){
+  return `<div class="srow stack" style="gap:5px">
+    <div class="row between"><span style="font-weight:800;font-size:12px">${at.tipo}</span><span style="font-size:10.5px;color:var(--ink-2)" class="tabular">${fmtDataCurta(at.data)}</span></div>
+    ${at.objetivoAtividade?`<div style="font-size:11.2px"><b>Objetivo:</b> ${at.objetivoAtividade}</div>`:''}
+    ${at.procedimentos?`<div style="font-size:11.2px"><b>Procedimentos:</b> ${at.procedimentos}</div>`:''}
+    ${at.evolucao?`<div style="font-size:11.2px"><b>Evolução:</b> ${at.evolucao}</div>`:''}
+    ${at.demandas?`<div style="font-size:11.2px"><b>Demandas identificadas:</b> ${at.demandas}</div>`:''}
+    ${at.encaminhamento ? `<div class="callout info" style="font-size:10.8px"><b>Encaminhado</b> a ${at.encaminhamento.paraQuem} — retorno: ${at.encaminhamento.retorno}</div>` : ''}
+  </div>`;
+}
+function screenCasoNovo(){
+  const childId = S.ctx.casoChild;
+  const c = DB.children.find(x=>x.id===childId);
+  const tiposSel = S.ctx.casoTipos || [];
+  const podeSalvar = tiposSel.length>0 && (S.ctx.casoObjetivo||'').trim().length>4;
+  return `<div class="stack">
+    <div class="roster"><div class="roster-top"><div class="avatar">${initials(c.nome)}</div><div style="flex:1"><div style="font-weight:900;font-size:13px">${c.nome} · ${c.id}</div></div></div></div>
+    <label class="field-label">Tipo de demanda</label>
+    <div class="wrap-row">${TIPOS_DEMANDA.map(t=>`<div class="chip-sel ${tiposSel.includes(t)?'on':''}" data-act="caso-tipo-toggle" data-t="${t}">${t}</div>`).join('')}</div>
+    <label class="field-label">Descrição sucinta (opcional)</label>
+    <textarea rows="3" placeholder="Motivo pelo qual o acompanhamento foi iniciado…" data-act="caso-descricao">${S.ctx.casoDescricao||''}</textarea>
+    <label class="field-label">Objetivo do trabalho</label>
+    <textarea rows="2" placeholder="O que se pretende alcançar com este acompanhamento…" data-act="caso-objetivo">${S.ctx.casoObjetivo||''}</textarea>
+    <button class="btn" data-act="caso-abrir-submit" ${podeSalvar?'':'disabled'}>Abrir caso</button>
+  </div>`;
+}
+function screenCasoAtividade(){
+  const childId = S.ctx.casoChild;
+  const c = DB.children.find(x=>x.id===childId);
+  const tipo = S.ctx.atTipo || '';
+  const houveEnc = !!S.ctx.atEncaminhamento;
+  const podeSalvar = tipo && (S.ctx.atEvolucao||'').trim().length>4;
+  return `<div class="stack">
+    <div class="roster"><div class="roster-top"><div class="avatar">${initials(c.nome)}</div><div style="flex:1"><div style="font-weight:900;font-size:13px">${c.nome} · ${c.id}</div></div></div></div>
+    <label class="field-label">Data</label>
+    <input class="tinput" type="date" value="${S.ctx.atData||HOJE}" max="${HOJE}" data-act="at-data">
+    <label class="field-label">Tipo de atividade</label>
+    <select class="tinput" data-act="at-tipo"><option value="">Selecione</option>${TIPOS_ATIVIDADE.map(t=>`<option value="${t}" ${tipo===t?'selected':''}>${t}</option>`).join('')}</select>
+    <label class="field-label">Objetivo da atividade</label>
+    <textarea rows="2" data-act="at-objetivo">${S.ctx.atObjetivo||''}</textarea>
+    <label class="field-label">Procedimentos/intervenções realizados</label>
+    <textarea rows="2" data-act="at-procedimentos">${S.ctx.atProcedimentos||''}</textarea>
+    <label class="field-label">Evolução/observações técnicas</label>
+    <textarea rows="3" data-act="at-evolucao">${S.ctx.atEvolucao||''}</textarea>
+    <label class="field-label">Demandas identificadas (opcional)</label>
+    <textarea rows="2" data-act="at-demandas">${S.ctx.atDemandas||''}</textarea>
+    <label class="row" style="font-size:12px;font-weight:700;gap:8px;background:var(--card);border:1.5px solid var(--ink-3);border-radius:10px;padding:10px">
+      <input type="checkbox" ${houveEnc?'checked':''} data-act="at-enc-toggle"> Houve encaminhamento?
+    </label>
+    ${houveEnc ? `
+      <label class="field-label">Para quem / qual serviço</label>
+      <input class="tinput" data-act="at-enc-paraquem" value="${S.ctx.atEncParaQuem||''}">
+      <label class="field-label">Motivo do encaminhamento</label>
+      <textarea rows="2" data-act="at-enc-motivo">${S.ctx.atEncMotivo||''}</textarea>
+      <label class="field-label">Retorno</label>
+      <div class="row" style="gap:6px">
+        ${[['aguardando','Aguardando'],['sim','Sim'],['nao','Não']].map(([v,l])=>`<button class="btn ${S.ctx.atEncRetorno===v?'':'ghost'} sm" style="flex:1" data-act="at-enc-retorno" data-v="${v}">${l}</button>`).join('')}
+      </div>
+    ` : ''}
+    <button class="btn" data-act="caso-atividade-submit" ${podeSalvar?'':'disabled'}>Registrar atividade</button>
+  </div>`;
+}
+
+/* ==========================================================================
+   ENCAMINHAMENTOS (psicóloga)
+   ========================================================================== */
+function encCard(e){
+  const c = DB.children.find(x=>x.id===e.childId);
+  return `<div class="roster">
+    <div class="roster-top">
+      <div class="avatar">${initials(c.nome)}</div>
+      <div style="flex:1"><div style="font-weight:900;font-size:12.8px">${c.nome}</div><div class="meta">${c.id} · ${TURMAS[e.turmaId].nome}</div><div class="meta">${fmtDataCurta(e.data)}</div></div>
+      <span class="pill ${e.status==='pendente'?'warn':'ok'}">${e.status}</span>
+    </div>
+    ${e.status==='pendente' ? `<button class="btn ghost sm" style="margin-top:8px" data-act="enc-revisar" data-id="${e.id}">Marcar como revisado</button>` : ''}
+  </div>`;
+}
+function screenEncaminhamentos(){
+  const filtro = S.ctx.encFiltro||'pendentes';
+  let list = DB.encaminhamentos.slice();
+  if(filtro==='pendentes') list = list.filter(e=>e.status==='pendente');
+  if(filtro==='revisados') list = list.filter(e=>e.status==='revisado');
+  return `<div class="stack">
+    <div class="subtabs">${[['pendentes','Pendentes'],['revisados','Revisados'],['todos','Todos']].map(([id,l])=>`<div class="subtab ${filtro===id?'on':''}" data-act="enc-filtro" data-f="${id}">${l}</div>`).join('')}</div>
+    ${list.map(e=>encCard(e)).join('') || `<div class="empty">Nada por aqui.</div>`}
+  </div>`;
+}
+
+/* ==========================================================================
+   FRASES (administração · psicóloga)
+   ========================================================================== */
+function screenFrases(){
+  return `<div class="stack">
+    ${DIMENSOES.map(d=>`<div class="k row" style="gap:6px"><span style="width:15px;height:15px;display:inline-flex;color:var(--brand-d)">${d.ic}</span>${d.nome}</div>${DB.frases.filter(f=>f.dim===d.id).map(f=>`
+      <div class="srow">
+        ${S.ctx.editFrase===f.k ? `
+          <textarea rows="2" data-act="frase-edit-text">${f.t}</textarea>
+          <div class="row" style="gap:6px;margin-top:6px"><button class="btn sm" style="flex:1" data-act="frase-salvar" data-k="${f.k}">Salvar nova versão</button><button class="btn ghost sm" style="flex:1" data-act="frase-cancelar">Cancelar</button></div>
+        ` : `
+          <div class="row between"><span style="font-size:12.4px;font-weight:700;display:flex;align-items:center;gap:7px"><span style="width:15px;height:15px;flex-shrink:0;display:inline-flex;color:var(--brand-d)">${f.icone||''}</span>${f.t}</span><button class="btn ghost sm" style="width:auto;padding:6px 10px" data-act="frase-editar" data-k="${f.k}">Editar</button></div>
+          <div style="font-size:10px;color:var(--ink-2);margin-top:4px">v${f.versao} · atualizado em ${fmtDataCurta(f.atualizadoEm)}</div>
+        `}
+      </div>`).join('')}`).join('')}
+  </div>`;
+}
+
+/* ==========================================================================
+   ADMINISTRAÇÃO (coordenação) — consentimento e vínculos
+   ========================================================================== */
+function screenAdminCoord(){
+  return `<div class="stack">
+    <div class="k">Equipe</div>
+    <div class="srow">Equipe (sem login) · Uelington — coordenação · Dra. Helena — psicóloga</div>
+    <div class="k">Consentimento por educando</div>
+    ${DB.children.map(c=>`<div class="roster">
+      <div class="roster-top"><div class="avatar">${initials(c.nome)}</div>
+        <div style="flex:1"><div style="font-weight:900;font-size:12.6px">${c.nome}</div><div class="meta">${c.id} · Resp.: ${c.resp.nome} (${c.resp.rel})</div></div>
+        <span class="pill ${c.consentimento?'ok':'bad'}">${c.consentimento?'registrado':'ausente'}</span>
+      </div>
+      ${!c.consentimento?`<button class="btn ghost sm" style="margin-top:8px" data-act="registrar-consentimento" data-child="${c.id}">Registrar consentimento</button>`:''}
+    </div>`).join('')}
+  </div>`;
+}
+
+/* ==========================================================================
+   RELATÓRIO / EXPORTAR (coordenação)
+   ========================================================================== */
+function screenRelatorio(){
+  const turmaId = S.ctx.repTurma || 'lab';
+  const tipo = S.ctx.repTipo || 'impacto';
+  const kids = DB.children.filter(c=>c.turmas.includes(turmaId));
+  const regs = DB.registros.filter(r=>r.turmaId===turmaId);
+  const avs = DB.avaliacoes.filter(a=>a.turmaId===turmaId);
+  const cobertura = kids.length ? Math.round(avg(kids.map(freqConsiderada))*100) : 0;
+  const autores = new Set(regs.map(r=>r.autor)).size || 1;
+  const suficiente = cobertura>=70;
+  const semConsentimento = kids.filter(k=>!k.consentimento);
+  return `<div class="stack">
+    <select class="tinput" data-act="rep-turma">${Object.values(TURMAS).map(t=>`<option value="${t.id}" ${t.id===turmaId?'selected':''}>${t.nome}</option>`).join('')}</select>
+    <div class="subtabs">
+      <div class="subtab ${tipo==='impacto'?'on':''}" data-act="rep-tipo" data-t="impacto">Evidência de impacto · 0/1/2</div>
+      <div class="subtab ${tipo==='crp'?'on':''}" data-act="rep-tipo" data-t="crp">Relatório profissional · CRP</div>
+    </div>
+    <div class="k">Ficha técnica</div>
+    <div class="card">
+      ${fichaRow('Cobertura de frequência', cobertura+'%')}
+      ${fichaRow('Registros no período', regs.length)}
+      ${fichaRow('Avaliações no período', avs.length)}
+      ${fichaRow('Autores distintos', autores, true)}
+    </div>
+    ${callout(suficiente?'ok':'warn', suficiente?'Cobertura suficiente — liberado para uso externo.':'Abaixo do limiar — pode exportar como parcial.')}
+    ${semConsentimento.length ? callout('warn', `${semConsentimento.length} educando(s) sem consentimento ficam de fora do agregado.`) : ''}
+    <div style="font-size:10.4px;color:var(--ink-2);text-align:center">Exportação de arquivo desativada nesta demonstração.</div>
+  </div>`;
+}
+function fichaRow(label,val,last){ return `<div class="row between" style="padding:5px 0;${last?'':'border-bottom:1px solid var(--line)'}"><span style="color:var(--ink-3);font-size:11.5px">${label}</span><b class="tabular">${val}</b></div>`; }
+
+/* ==========================================================================
+   GOVERNANÇA (coordenação)
+   ========================================================================== */
+function screenGovernanca(){
+  const total = DB.children.length;
+  const comConsent = DB.children.filter(c=>c.consentimento).length;
+  const pctConsent = Math.round(comConsent/total*100);
+  const emLote = 0;
+  return `<div class="stack">
+    <div class="card"><div class="k">Consentimento do responsável</div><div style="font-size:22px;font-weight:900;margin-top:4px" class="tabular">${pctConsent}%</div><div class="deck">${comConsent} de ${total} educandos.</div></div>
+    <div class="card"><div class="k">Retenção de áudio</div><div class="deck" style="margin-top:4px">Descartado após a transcrição. 0 arquivos retidos.</div></div>
+    <div class="card"><div class="k">Nunca coletado aqui</div><div class="deck" style="margin-top:4px">Diagnóstico, saúde, situação familiar, violência, atendimento psicológico individual.</div></div>
+    <div class="card"><div class="k">Como o painel calcula os rótulos</div><div class="deck" style="margin-top:4px">Por regra e limiar (ex.: 75% de frequência) — sem IA em tempo real.</div></div>
+    <div class="card"><div class="k">Falta justificada</div><div class="deck" style="margin-top:4px">Não conta no sinal de atenção. Recorrência (3+) é observada à parte, como vulnerabilidade.</div></div>
+    <button class="btn ghost sm" data-act="reset-demo">Restaurar dados de demonstração</button>
+    <div class="k">Trilha de auditoria</div>
+    <div class="card">${DB.auditLog.slice().sort((a,b)=>b.ts-a.ts).map(l=>`<div class="srow" style="margin-bottom:6px"><div style="font-size:11.6px">${l.texto}</div><div style="font-size:10px;color:var(--ink-2);margin-top:3px">${new Date(l.ts).toLocaleString('pt-BR')}</div></div>`).join('') || `<div class="empty">Nenhum evento ainda nesta sessão.</div>`}</div>
+  </div>`;
+}
+
+/* ==========================================================================
+   GRÁFICO DE TRAJETÓRIA (reaproveitado)
+   ========================================================================== */
+function trajSvg(meses,n,coop,part){
+  const W=560,H=180,padL=32,padR=12,padT=12,padB=28;
+  const maxCoop = Math.max(4, ...coop);
+  const xs = meses.map((_,i)=> meses.length>1 ? padL + i*((W-padL-padR)/(meses.length-1)) : W/2);
+  const yCoop = v => padT + (H-padT-padB) * (1 - v/maxCoop);
+  const yPart = v => padT + (H-padT-padB) * (1 - v/100);
+  const ptsCoop = xs.map((x,i)=>`${x.toFixed(1)},${yCoop(coop[i]).toFixed(1)}`).join(' ');
+  const ptsPart = xs.map((x,i)=>`${x.toFixed(1)},${yPart(part[i]).toFixed(1)}`).join(' ');
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" font-family="Nunito, sans-serif">
+    <g stroke="var(--line)">${[0,1,2,3].map(i=>`<line x1="${padL}" y1="${padT+i*(H-padT-padB)/3}" x2="${W-padR}" y2="${padT+i*(H-padT-padB)/3}"/>`).join('')}</g>
+    <polyline points="${ptsCoop}" fill="none" stroke="var(--data-6)" stroke-width="2.5" stroke-linecap="round"/>
+    <polyline points="${ptsPart}" fill="none" stroke="var(--data-1)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="6 4"/>
+    ${xs.map((x,i)=>`<circle cx="${x}" cy="${yCoop(coop[i])}" r="4" fill="var(--data-6)"/>`).join('')}
+    ${xs.map((x,i)=>`<circle cx="${x}" cy="${yPart(part[i])}" r="3.5" fill="var(--data-1)"/>`).join('')}
+    ${xs.map((x,i)=>`<text x="${x}" y="${H-10}" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">${meses[i]}</text>`).join('')}
+    ${xs.map((x,i)=>`<text x="${x}" y="${H-1}" font-size="8.5" fill="var(--ink-3)" text-anchor="middle">n=${n[i]}</text>`).join('')}
+  </svg>`;
+}
+
+/* ==========================================================================
+   ÍCONES
+   ========================================================================== */
+function ico(paths,vb){ return `<svg viewBox="${vb||'0 0 24 24'}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`; }
+function icoGrid(){ return ico('<rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/>'); }
+function icoCal(){ return ico('<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>'); }
+function icoLeaf(){ return ico('<path d="M5 21c0-9 6-16 15-16-1 12-7 16-15 16Z"/><path d="M5 21c3-4 6-7 12-11"/>'); }
+function icoNote(){ return ico('<path d="M6 3h9l3 3v15H6z"/><path d="M9 9h6M9 13h6M9 17h4"/>'); }
+function icoBolt(){ return ico('<path d="M13 3 5 13h6l-2 8 8-10h-6z"/>'); }
+function icoUsers(){ return ico('<circle cx="9" cy="8" r="3.2"/><path d="M2.5 20c0-3.5 3-6 6.5-6s6.5 2.5 6.5 6"/><circle cx="17" cy="9" r="2.6"/><path d="M15.5 14c2.7.2 5 2.3 5 6"/>'); }
+function icoFlag(){ return ico('<path d="M5 21V4"/><path d="M5 5h13l-3 4 3 4H5"/>'); }
+function icoExport(){ return ico('<path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 21h14"/>'); }
+function icoShield(){ return ico('<path d="M12 3l7 3v6c0 4.5-3 8-7 9-4-1-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/>'); }
+function icoSettings(){ return ico('<circle cx="12" cy="12" r="3"/><path d="M4 12h2M18 12h2M12 4v2M12 18v2M6.3 6.3l1.4 1.4M16.3 16.3l1.4 1.4M6.3 17.7l1.4-1.4M16.3 7.7l1.4-1.4"/>'); }
+function icoMore(){ return ico('<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>'); }
+function icoPlus(){ return ico('<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'); }
+function icoBack(){ return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>`; }
+function logoMark(){ return ico('<path d="M12 21V11"/><path d="M12 11C12 6 8 4 4 4c0 5 2.5 8 8 8Z"/><path d="M12 13c0-4.5 3-7 8-7 0 4.5-2 7-8 7Z"/>'); }
+function icoFace(){ return ico('<circle cx="12" cy="12" r="9"/><path d="M8.5 15c1 1 2.2 1.5 3.5 1.5s2.5-.5 3.5-1.5"/><path d="M9 9.5h.01M15 9.5h.01" stroke-width="2.6"/>'); }
+function icoTarget(){ return ico('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.2"/><circle cx="12" cy="12" r=".6" fill="currentColor"/>'); }
+function icoBulb(){ return ico('<path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.6.45 1 1.15 1 1.95v.15h5v-.15c0-.8.4-1.5 1-1.95A6 6 0 0 0 12 3Z"/>'); }
+function icoHand(){ return ico('<path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12"/><path d="M11 12V5a1.5 1.5 0 0 1 3 0v7"/><path d="M14 12V6a1.5 1.5 0 0 1 3 0v7"/><path d="M17 12.5V9a1.5 1.5 0 0 1 3 0v6c0 3.5-2 6.5-6 6.5h-1c-3 0-4.2-1-5.5-3L5 13.5c-.6-1 0-2.2 1.2-2.2.5 0 1 .2 1.3.7L9 14"/>'); }
+function icoChat(){ return ico('<path d="M4 5h16v11H8l-4 4z"/>'); }
+function icoCheck2(){ return ico('<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.6 2.6L16 9.5"/>'); }
+function icoLockSm(){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`; }
+function icoMic(){ return ico('<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>'); }
+function icoKeyboard(){ return ico('<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h.01M11 10h.01M15 10h.01M17 10h.01M7 14h8"/>'); }
+function icoSun(){ return ico('<circle cx="12" cy="12" r="4.2"/><path d="M12 3v2.2M12 18.8V21M4.4 4.4l1.6 1.6M18 18l1.6 1.6M3 12h2.2M18.8 12H21M4.4 19.6L6 18M18 6l1.6-1.6"/>'); }
+function icoCloud(){ return ico('<path d="M7 18a4.5 4.5 0 0 1-.5-9 5.5 5.5 0 0 1 10.7-1.6A4 4 0 0 1 17 18Z"/>'); }
+function icoRain(){ return ico('<path d="M7 15a4.5 4.5 0 0 1-.5-9 5.5 5.5 0 0 1 10.7-1.6A4 4 0 0 1 17 15Z"/><path d="M8 19l-1 2M12 19l-1 2M16 19l-1 2"/>'); }
+function icoBell(){ return ico('<path d="M6 17h12l-1.4-2.1c-.4-.6-.6-1.3-.6-2V10a4 4 0 0 0-8 0v2.9c0 .7-.2 1.4-.6 2Z"/><path d="M10 20a2 2 0 0 0 4 0"/>'); }
+function icoAlert(){ return ico('<path d="M12 3 2 20h20Z"/><path d="M12 10v4M12 17h.01" stroke-width="2.4"/>'); }
+function icoInfoIc(){ return ico('<circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.5h.01" stroke-width="2.4"/>'); }
+function icoClose(){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`; }
+function icoCheckTiny(){ return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>`; }
+function icoHelp(){ return ico('<circle cx="12" cy="12" r="9"/><path d="M9.3 9.3a2.7 2.7 0 1 1 3.9 2.4c-.8.4-1.2 1-1.2 1.9v.3"/><path d="M12 17.2h.01" stroke-width="2.6"/>'); }
+function icoTrend(){ return ico('<path d="M4 16l5-5 4 3 7-8"/><path d="M15 6h5v5"/>'); }
+function icoSemaforo(){ return ico('<rect x="8" y="3" width="8" height="18" rx="3.5"/><circle cx="12" cy="7.2" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="16.8" r="1.2" fill="currentColor"/>'); }
+function calloutIco(type){ return {info:icoInfoIc(), warn:icoAlert(), ok:icoCheck2(), bad:icoAlert()}[type] || icoInfoIc(); }
+function callout(type, html){ return `<div class="callout ${type}"><div class="ci">${calloutIco(type)}</div><div class="cb">${html}</div></div>`; }
+
+/* ==========================================================================
+   HELPERS
+   ========================================================================== */
+function avg(arr){ return arr.length ? arr.reduce((a,b)=>a+b,0)/arr.length : 0; }
+// Regra de negócio (validada com a coordenação): falta justificada é registrada pela própria
+// educadora e não conta contra a criança — o sinal de atenção usa presença + justificadas.
+// Recorrência de faltas justificadas (>=3) é observada à parte, como possível vulnerabilidade.
+function freqConsiderada(k){ return k.freq.t ? (k.freq.p + k.freq.j) / k.freq.t : 0; }
+function freqBruta(k){ return k.freq.t ? k.freq.p / k.freq.t : 0; }
+function freqQual(k){ const f = freqConsiderada(k); return f>=.75 ? 'boa' : f>=.5 ? 'média' : 'baixa'; }
+function faltaRecorrente(k){ return k.freq.j>=3; }
+function initials(name){ return (name||'').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase(); }
+function fmtData(iso){ const d=new Date(iso+'T12:00:00'); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'}); }
+function fmtDataCurta(iso){ const d=new Date(iso+'T12:00:00'); return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'}); }
+function fmtMesISO(iso){ const d=new Date(iso+'-01T12:00:00'); return d.toLocaleDateString('pt-BR',{month:'short'}).replace('.',''); }
+function diffDias(dataISO, tsCriado){ const a = Date.parse(dataISO+'T12:00:00'); return Math.max(0,Math.round((tsCriado-a)/86400000)); }
+function diffDiasHoje(dataISO){ const hoje = Date.parse(HOJE+'T12:00:00'); const a = Date.parse(dataISO+'T12:00:00'); return Math.max(0,Math.round((hoje-a)/86400000)); }
+
+/* ==========================================================================
+   AÇÕES
+   ========================================================================== */
+// Campos de texto livre atualizam o estado a cada tecla SEM re-renderizar a tela.
+// (Antes, o re-render no evento "change" disparado pelo blur engolia o clique no botão de enviar.)
+const LIVE = {
+  'novo-texto':'novoTexto','propor-acao-livre':'ivAcaoLivre','propor-objetivo-livre':'ivObjetivoLivre',
+  'propor-obs-texto':'ivObs','caso-descricao':'casoDescricao','caso-objetivo':'casoObjetivo',
+  'at-objetivo':'atObjetivo','at-procedimentos':'atProcedimentos','at-evolucao':'atEvolucao','at-demandas':'atDemandas',
+  'at-enc-paraquem':'atEncParaQuem','at-enc-motivo':'atEncMotivo','frase-edit-text':'fraseTextoTmp',
+};
+function liveInput(act, el){
+  if(act==='code-input'){ el.value = el.value.replace(/\D/g,'').slice(0,4); S.codeVal = el.value; }
+  else { S.ctx[LIVE[act]] = el.value; }
+  refreshGates();
+}
+function setDis(sel, off){ const b = root().querySelector(sel); if(b) b.disabled = !!off; }
+function refreshGates(){
+  const t = k => (S.ctx[k]||'').trim().length;
+  setDis('[data-act=confirm-code]', (S.codeVal||'').length!==4);
+  setDis('[data-act=novo-submit]', t('novoTexto')<=8);
+  if(S.ctx.ivAcaoSel!=null) setDis('[data-act=propor-submit]', S.ctx.ivAcaoSel==='outra' && (t('ivAcaoLivre')<=4 || t('ivObjetivoLivre')<=4));
+  setDis('[data-act=caso-abrir-submit]', !((S.ctx.casoTipos||[]).length && t('casoObjetivo')>4));
+  setDis('[data-act=caso-atividade-submit]', !(S.ctx.atTipo && t('atEvolucao')>4));
+  const w = document.getElementById('novoWarn'); const c = DB.children.find(x=>x.id===S.ctx.novoChild);
+  if(w && c) w.innerHTML = novoRegistroWarning(c);
+}
+function bind(){
+  root().querySelectorAll('[data-act]').forEach(el=>{
+    const act = el.dataset.act;
+    if(LIVE[act] || act==='code-input'){ el.addEventListener('input', ()=>liveInput(act, el)); return; }
+    const isFormEl = el.tagName==='SELECT' || (el.tagName==='INPUT' && el.type!=='checkbox') || el.tagName==='TEXTAREA';
+    const evt = isFormEl ? 'change' : (el.type==='checkbox' ? 'change' : 'click');
+    el.addEventListener(evt, (e)=>{ e.stopPropagation(); handle(act, el, e); });
+  });
+}
+function ctx(patch){ S.ctx = Object.assign({}, S.ctx, patch); }
+
+function handle(act, el){
+  switch(act){
+    case 'pick-role':
+      S.role = el.dataset.role; S.tab = NAV[S.role].primary[0][0]; S.sub=null; S.ctx={}; render(); break;
+    case 'logout':
+      S.role = null; S.tab=null; S.sub=null; S.ctx={}; S.codeModal=null; S.codeVal=''; render(); break;
+    case 'open-code':
+      S.codeModal = el.dataset.role; S.codeVal=''; render(); break;
+    case 'close-code':
+      S.codeModal = null; S.codeVal=''; render(); break;
+    case 'code-input':
+      S.codeVal = el.value.replace(/\D/g,'').slice(0,4); render(); break;
+    case 'biometria-sim': {
+      S.role = S.codeModal; S.tab = NAV[S.role].primary[0][0]; S.sub=null; S.ctx={}; S.codeModal=null; S.codeVal=''; render(); break;
+    }
+    case 'confirm-code': {
+      const need = USERS[S.codeModal].code;
+      if(S.codeVal===need){ S.role = S.codeModal; S.tab = NAV[S.role].primary[0][0]; S.sub=null; S.ctx={}; S.codeModal=null; S.codeVal=''; render(); }
+      else { alert('Código incorreto. Use o código de demonstração exibido acima.'); }
+      break;
+    }
+    case 'nav':
+      S.tab = el.dataset.tab; S.sub=null; S.ctx={}; S.sheetOpen=false; S.tutorialOpen=false; render(); break;
+    case 'open-sheet': S.sheetOpen = true; render(); break;
+    case 'close-sheet': S.sheetOpen = false; render(); break;
+    case 'open-tutorial': S.tutorialOpen = true; render(); break;
+    case 'close-tutorial': S.tutorialOpen = false; render(); break;
+    case 'sub-back': S.sub=null; S.ctx={}; render(); break;
+
+    case 'painel-sub': ctx({painelSub:el.dataset.sub}); render(); break;
+
+    case 'goto-child': S.sub='child'; S.ctx={childId:el.dataset.child}; render(); break;
+    case 'goto-child-from-registro': { const r = DB.registros.find(x=>x.id===el.dataset.id); S.sub='child'; S.ctx={childId:r.childId}; render(); break; }
+    case 'goto-avaliar': S.sub='avaliar'; S.ctx={childId:el.dataset.child}; render(); break;
+    case 'goto-novoregistro': S.sub='novoregistro'; S.ctx={}; render(); break;
+    case 'novo-obs-child': S.sub='novoregistro'; S.ctx={novoChild:el.dataset.child}; render(); break;
+    case 'goto-propor-tab': S.sub='propor'; S.ctx={}; render(); break;
+    case 'goto-propor': S.sub='propor'; S.ctx={ivChild:el.dataset.child}; render(); break;
+
+    /* prontuário psicológico — caso clínico */
+    case 'goto-caso-novo': S.sub='casonovo'; S.ctx={casoChild:el.dataset.child, casoTipos:[]}; render(); break;
+    case 'goto-caso-atividade': S.sub='casoatividade'; S.ctx={casoChild:el.dataset.child}; render(); break;
+    case 'caso-tipo-toggle': { const arr = (S.ctx.casoTipos||[]).slice(); const i = arr.indexOf(el.dataset.t); if(i>-1) arr.splice(i,1); else arr.push(el.dataset.t); ctx({casoTipos:arr}); render(); break; }
+    case 'caso-descricao': ctx({casoDescricao:el.value}); render(); break;
+    case 'caso-objetivo': ctx({casoObjetivo:el.value}); render(); break;
+    case 'caso-abrir-submit': submitCasoNovo(); break;
+    case 'caso-toggle-status': { const caso = DB.casos.find(k=>k.childId===el.dataset.child); caso.status = caso.status==='ativo' ? 'encerrado' : 'ativo'; logAudit(`${USERS[S.role].nome} ${caso.status==='ativo'?'reabriu':'encerrou'} o caso de ${DB.children.find(c=>c.id===el.dataset.child).nome}.`); saveDB(); render(); break; }
+    case 'at-data': ctx({atData:el.value}); render(); break;
+    case 'at-tipo': ctx({atTipo:el.value}); render(); break;
+    case 'at-objetivo': ctx({atObjetivo:el.value}); render(); break;
+    case 'at-procedimentos': ctx({atProcedimentos:el.value}); render(); break;
+    case 'at-evolucao': ctx({atEvolucao:el.value}); render(); break;
+    case 'at-demandas': ctx({atDemandas:el.value}); render(); break;
+    case 'at-enc-toggle': ctx({atEncaminhamento:el.checked}); render(); break;
+    case 'at-enc-paraquem': ctx({atEncParaQuem:el.value}); render(); break;
+    case 'at-enc-motivo': ctx({atEncMotivo:el.value}); render(); break;
+    case 'at-enc-retorno': ctx({atEncRetorno:el.dataset.v}); render(); break;
+    case 'caso-atividade-submit': submitCasoAtividade(); break;
+
+    /* stats/painel */
+    case 'aval-q': ctx({avalQ:el.value}); render(); break;
+    case 'aval-turma': ctx({avalTurma:el.value}); render(); break;
+    case 'aval-seminicial': ctx({avalSemInicial:el.checked}); render(); break;
+
+    /* presença */
+    case 'pres-turma': ctx({presTurma:el.value, presData:null}); render(); break;
+    case 'pres-data': ctx({presData:el.value}); render(); break;
+    case 'pres-clima': { const {turmaId,data,key,rec} = presCtx(); rec.clima = el.dataset.v; DB.presencas[key]=rec; saveDB(); render(); break; }
+    case 'pres-mark': { const {rec,key} = presCtx(); rec.marks[el.dataset.child] = el.dataset.v; DB.presencas[key]=rec; saveDB(); render(); break; }
+    case 'pres-marcar-todos': { const {turmaId,rec,key} = presCtx(); DB.children.filter(c=>c.turmas.includes(turmaId)).forEach(c=>rec.marks[c.id]='presente'); DB.presencas[key]=rec; saveDB(); render(); break; }
+    case 'pres-fechar': { const {rec,key} = presCtx(); rec.fechado = true; DB.presencas[key]=rec; saveDB(); render(); break; }
+    case 'pres-reabrir': { const {rec,key} = presCtx(); rec.fechado = false; DB.presencas[key]=rec; saveDB(); render(); break; }
+
+    /* avaliação individual */
+    case 'aval-data-form': ctx({avalData:el.value}); render(); break;
+    case 'aval-atencao': ctx({avalAtencao:el.checked}); render(); break;
+    case 'aval-modo': ctx({avalModo:el.dataset.v, avalRespostas:{}}); render(); break;
+    case 'aval-resp': { const r = Object.assign({}, S.ctx.avalRespostas); r[el.dataset.k]=el.dataset.v; ctx({avalRespostas:r}); render(); break; }
+    case 'aval-submit': submitAvaliacao(); break;
+    case 'registrar-consentimento': { const c = DB.children.find(x=>x.id===el.dataset.child); c.consentimento=true; logAudit(`${USERS[S.role].nome} registrou consentimento do responsável para ${c.nome} (${c.id}).`); saveDB(); render(); break; }
+
+    /* registros / novo registro */
+    case 'reg-filtro': ctx({regFiltro:el.dataset.f}); render(); break;
+    case 'novo-q': ctx({novoQ:el.value}); render(); break;
+    case 'novo-pick-child': ctx({novoChild:el.dataset.child, novoQ:''}); render(); break;
+    case 'novo-data': ctx({novoData:el.value}); render(); break;
+    case 'novo-metodo': ctx({novoMetodo:el.dataset.v}); render(); break;
+    case 'novo-texto': ctx({novoTexto:el.value}); render(); break;
+    case 'toggle-rec': S.rec = !S.rec; render(); break;
+    case 'novo-submit': submitRegistro(); break;
+    case 'validar-registro': { const r = DB.registros.find(x=>x.id===el.dataset.id); r.status='validado'; logAudit(`${USERS[S.role].nome} validou o registro de ${DB.children.find(c=>c.id===r.childId).nome}.`); saveDB(); render(); break; }
+    case 'devolver-registro': { const r = DB.registros.find(x=>x.id===el.dataset.id); const motivo = prompt('Motivo da devolução:', 'Reescrever descrevendo o comportamento observado, sem interpretar o motivo.'); if(motivo===null) return; r.status='devolvido'; r.motivo=motivo; logAudit(`${USERS[S.role].nome} devolveu o registro de ${DB.children.find(c=>c.id===r.childId).nome} — motivo: ${motivo}`); saveDB(); render(); break; }
+    case 'edit-registro': { const r = DB.registros.find(x=>x.id===el.dataset.id); const novo = prompt('Editar registro:', r.texto); if(novo===null||!novo.trim()) return; r.texto=novo.trim(); if(r.status==='devolvido'){ r.status='aguardando'; r.motivo=null; logAudit(`${USERS[S.role].nome} corrigiu e reenviou o registro de ${DB.children.find(c=>c.id===r.childId).nome}.`); } saveDB(); render(); break; }
+
+    /* intervenções */
+    case 'iv-filtro': ctx({ivFiltro:el.dataset.f}); render(); break;
+    case 'iv-avancar': { const iv = DB.intervencoes.find(x=>x.id===el.dataset.id); iv.estagio=2; logAudit(`${USERS[S.role].nome} iniciou o acompanhamento da intervenção de ${DB.children.find(c=>c.id===iv.childId).nome}.`); saveDB(); render(); break; }
+    case 'iv-registrar': { const iv = DB.intervencoes.find(x=>x.id===el.dataset.id); const res = prompt('Resultado observado:'); if(res===null||!res.trim()) return; iv.resultado=res.trim(); iv.estagio=3; logAudit(`${USERS[S.role].nome} validou o resultado da intervenção de ${DB.children.find(c=>c.id===iv.childId).nome}.`); saveDB(); render(); break; }
+
+    /* propor intervenção */
+    case 'propor-q': ctx({ivQ:el.value}); render(); break;
+    case 'propor-pick-child': ctx({ivChild:el.dataset.child}); render(); break;
+    case 'propor-acao': ctx({ivAcaoSel:el.dataset.v}); render(); break;
+    case 'propor-acao-livre': ctx({ivAcaoLivre:el.value}); render(); break;
+    case 'propor-objetivo-livre': ctx({ivObjetivoLivre:el.value}); render(); break;
+    case 'propor-metodo': ctx({ivMetodo:el.dataset.v}); render(); break;
+    case 'propor-obs-texto': ctx({ivObs:el.value}); break;
+    case 'propor-submit': submitPropor(); break;
+
+    /* educandos */
+    case 'edu-q': ctx({eduQ:el.value}); render(); break;
+
+    /* encaminhamentos */
+    case 'enc-filtro': ctx({encFiltro:el.dataset.f}); render(); break;
+    case 'enc-revisar': { const e = DB.encaminhamentos.find(x=>x.id===el.dataset.id); e.status='revisado'; logAudit(`${USERS[S.role].nome} marcou como revisado o encaminhamento de ${DB.children.find(c=>c.id===e.childId).nome}.`); saveDB(); render(); break; }
+
+    /* frases */
+    case 'frase-editar': ctx({editFrase:el.dataset.k}); render(); break;
+    case 'frase-cancelar': ctx({editFrase:null}); render(); break;
+    case 'frase-edit-text': ctx({fraseTextoTmp:el.value}); break;
+    case 'frase-salvar': { const f = DB.frases.find(x=>x.k===el.dataset.k); if(S.ctx.fraseTextoTmp) f.t = S.ctx.fraseTextoTmp; f.versao++; f.atualizadoEm=HOJE; ctx({editFrase:null, fraseTextoTmp:null}); saveDB(); render(); break; }
+
+    /* relatório */
+    case 'rep-turma': ctx({repTurma:el.value}); render(); break;
+    case 'rep-tipo': ctx({repTipo:el.dataset.t}); render(); break;
+
+    case 'reset-demo':
+      if(!confirm('Apagar tudo que foi lançado neste navegador e voltar aos dados de demonstração?')) return;
+      resetDB(); S.role=null; S.tab=null; S.sub=null; S.ctx={}; render(); break;
+    case 'noop': break;
+  }
+}
+function presCtx(){
+  const turmaId = S.ctx.presTurma || 'lab';
+  const data = S.ctx.presData || HOJE;
+  const key = presKey(turmaId,data);
+  let rec = DB.presencas[key];
+  if(!rec){ rec = {clima:null, fechado:false, marks:{}}; DB.presencas[key]=rec; }
+  return {turmaId,data,key,rec};
+}
+function logAudit(texto){ DB.auditLog.push({ts:Date.now(), texto}); }
+
+function submitAvaliacao(){
+  const childId = S.ctx.childId;
+  const c = DB.children.find(x=>x.id===childId);
+  const turmaId = S.ctx.avalTurmaSel || c.turmas.find(t=>!TURMAS[t].presencaOnly);
+  const jaTemInicial = DB.avaliacoes.some(a=>a.childId===childId && a.turmaId===turmaId && a.tipo==='inicial');
+  const av = {id:uid('av'), childId, turmaId, data:S.ctx.avalData||HOJE, tipo: jaTemInicial?'checkin':'inicial', modo:S.ctx.avalModo, autor:USERS[S.role].nome, respostas:Object.assign({},S.ctx.avalRespostas), atencaoPsicologa:!!S.ctx.avalAtencao};
+  DB.avaliacoes.push(av);
+  if(av.atencaoPsicologa){ DB.encaminhamentos.push({id:uid('en'), childId, turmaId, data:av.data, status:'pendente'}); }
+  logAudit(`${av.autor} registrou ${av.tipo==='inicial'?'avaliação inicial':'check-in'} (modo ${av.modo}) de ${c.nome}${av.atencaoPsicologa?' e sinalizou atenção da psicóloga':''}.`);
+  saveDB();
+  S.sub=null; S.ctx={}; S.tab='avaliacoes'; render();
+}
+function submitRegistro(){
+  const childId = S.ctx.novoChild;
+  const r = {id:uid('r'), childId, turmaId:DB.children.find(c=>c.id===childId).turmas[0], data:S.ctx.novoData||HOJE,
+    criadoEm:Date.now(), autor:USERS[S.role].nome, metodo:S.ctx.novoMetodo, texto:(S.ctx.novoTexto||'').trim(), status:'aguardando'};
+  DB.registros.push(r);
+  logAudit(`${r.autor} enviou um registro de ${DB.children.find(c=>c.id===childId).nome} para revisão.`);
+  saveDB();
+  S.sub=null; S.ctx={}; S.tab='registros'; render();
+}
+function submitPropor(){
+  const childId = S.ctx.ivChild;
+  const c = DB.children.find(x=>x.id===childId);
+  const isCustom = S.ctx.ivAcaoSel==='outra';
+  const modelo = isCustom ? null : PROPOSTAS_MODELO[Number(S.ctx.ivAcaoSel)];
+  const iv = {
+    id:uid('iv'), childId, turmaId:c.turmas.find(t=>!TURMAS[t].presencaOnly) || c.turmas[0],
+    acao: isCustom ? S.ctx.ivAcaoLivre.trim() : modelo.acao,
+    objetivo: isCustom ? S.ctx.ivObjetivoLivre.trim() : modelo.objetivo,
+    propostoPor:USERS[S.role].nome, propostoEm:HOJE, estagio:1, resultado:null,
+    observacao:(S.ctx.ivObs||'').trim() || null, metodo:S.ctx.ivMetodo || null,
+  };
+  DB.intervencoes.push(iv);
+  logAudit(`${USERS[S.role].nome} propôs uma intervenção para ${c.nome}.`);
+  saveDB();
+  S.sub='child'; S.ctx={childId}; render();
+}
+function submitCasoNovo(){
+  const childId = S.ctx.casoChild;
+  const caso = {
+    id:uid('caso'), childId, tipos:(S.ctx.casoTipos||[]).slice(),
+    descricao:(S.ctx.casoDescricao||'').trim(), objetivo:S.ctx.casoObjetivo.trim(),
+    status:'ativo', criadoEm:HOJE, atividades:[],
+  };
+  DB.casos.push(caso);
+  logAudit(`${USERS[S.role].nome} abriu um caso clínico para ${DB.children.find(c=>c.id===childId).nome}.`);
+  saveDB();
+  S.sub='child'; S.ctx={childId}; render();
+}
+function submitCasoAtividade(){
+  const childId = S.ctx.casoChild;
+  const caso = DB.casos.find(k=>k.childId===childId);
+  const at = {
+    id:uid('at'), data:S.ctx.atData||HOJE, profissional:USERS[S.role].nome, tipo:S.ctx.atTipo,
+    objetivoAtividade:(S.ctx.atObjetivo||'').trim(), procedimentos:(S.ctx.atProcedimentos||'').trim(),
+    evolucao:(S.ctx.atEvolucao||'').trim(), demandas:(S.ctx.atDemandas||'').trim(),
+    encaminhamento: S.ctx.atEncaminhamento ? {
+      paraQuem:(S.ctx.atEncParaQuem||'').trim(), motivo:(S.ctx.atEncMotivo||'').trim(),
+      data:S.ctx.atData||HOJE, responsavel:USERS[S.role].nome, retorno:S.ctx.atEncRetorno||'aguardando',
+    } : null,
+  };
+  caso.atividades.push(at);
+  logAudit(`${USERS[S.role].nome} registrou uma atividade (${at.tipo}) para ${DB.children.find(c=>c.id===childId).nome}.`);
+  saveDB();
+  S.sub='child'; S.ctx={childId}; render();
+}
+
+render();
+</script>
+</body>
+</html>
+

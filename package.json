@@ -1,0 +1,19 @@
+{
+  "name": "ebenezer-conecta",
+  "version": "1.0.0",
+  "description": "MVP Ebenézer Conecta — plataforma de evidência socioemocional (dados fictícios)",
+  "scripts": {
+    "start": "python3 -m http.server 4173",
+    "test": "playwright test",
+    "video": "node demo/gravar-video.js",
+    "test:report": "playwright show-report docs/testes/relatorio-html",
+    "evidencias": "node demo/gerar-evidencias.js"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "playwright": "^1.56.0"
+  },
+  "private": true
+}

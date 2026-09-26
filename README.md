@@ -102,4 +102,4 @@ playwright.config.js · package.json
 
 ## Créditos
 
-MBA Inteli, Grupo 5. Projeto desenvolvido com o Instituto Social Ebenézer.
+MBA Inteli, Grupo 5 (Adele Abdalla, Juliana Almeida, Marilia Pinheiro e Thaysa Benz). Projeto desenvolvido com o Instituto Social Ebenézer.

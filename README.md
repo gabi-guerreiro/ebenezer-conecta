@@ -8,7 +8,7 @@ Plataforma de evidência socioemocional do **Instituto Social Ebenézer** (Jardi
 
 | Documento de handover | Onde está |
 |---|---|
-| Vídeo demonstrativo (85 s) | [`docs/video/demo-ebenezer-conecta.mp4`](docs/video/demo-ebenezer-conecta.mp4) |
+| Vídeo demonstrativo narrado (2 min 37 s) | [`docs/video/demo-ebenezer-conecta.mp4`](docs/video/demo-ebenezer-conecta.mp4) |
 | Registro do modelo de dados | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
 | Instruções de instalação e acesso | nesta página, abaixo |
 | Evidências dos testes | [`docs/testes/README.md`](docs/testes/README.md) · [página de evidências](https://gabi-guerreiro.github.io/ebenezer-conecta/evidencias.html) |
@@ -60,7 +60,7 @@ npm install
 npx playwright install chromium   # só na primeira vez
 npm test                          # roda os 16 testes (~1 min)
 npm run test:report               # abre o relatório HTML
-npm run video                     # regrava o vídeo demonstrativo (precisa de ffmpeg)
+npm run video                     # regrava as imagens do vídeo, sem narração (precisa de ffmpeg)
 ```
 
 **Publicar uma nova versão no GitHub Pages:** faça o commit das alterações na branch `main`. O Pages atualiza sozinho em 1 ou 2 minutos (Settings → Pages → Branch `main`, pasta `/ (root)`).
@@ -102,4 +102,4 @@ playwright.config.js · package.json
 
 ## Créditos
 
-MBA Inteli, Grupo 5 (Adele Abdalla, Juliana Almeida, Marilia Pinheiro e Thaysa Benz). Projeto desenvolvido com o Instituto Social Ebenézer.
+MBA Inteli, Grupo 5. Projeto desenvolvido com o Instituto Social Ebenézer.

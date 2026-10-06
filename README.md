@@ -37,9 +37,12 @@ Os códigos são de demonstração e aparecem na própria tela. Sair: botão **S
 3. **Observação:** a Equipe descreve o que a criança fez. O registro vai para a fila da coordenação.
 4. **Revisão humana:** a Coordenação **valida** ou **devolve** com motivo. A Equipe corrige e reenvia.
 5. **Intervenção:** proposta → acompanhamento → validação do resultado.
-6. **Trajetória:** tudo o que foi registrado sobre a criança, em linha do tempo, com leitura por dimensão.
-7. **Psicóloga:** revisa encaminhamentos e registra atividades do caso clínico (confidencial).
-8. **Relatório e governança:** ficha técnica de cobertura, consentimento e trilha de auditoria.
+6. **Registro do grupo:** na tela de Presença, a Equipe registra o encontro como um todo: atividade realizada, participação do grupo e uma observação geral opcional. Na aba **Grupos**, a Psicóloga registra os encontros coletivos que conduz (Vivência Terapêutica e Começos que Protegem): tema trabalhado, participação, movimentos do grupo e observação. Sem nomes de crianças; os outros perfis veem só que o encontro foi registrado.
+7. **Trajetória:** tudo o que foi registrado sobre a criança, em linha do tempo, com leitura por dimensão.
+8. **Psicóloga:** revisa encaminhamentos e registra atividades do caso clínico (confidencial).
+9. **Relatório básico:** por programa, agregado e sem nomes: crianças atendidas, frequência, encontros com registro do grupo, o que foi trabalhado e os primeiros sinais de evolução (avanços e recuos por dimensão entre a avaliação inicial e a mais recente). A evolução só aparece com pelo menos 5 crianças com duas avaliações. Gera um texto pronto para apoiadores.
+10. **Relatório completo (Coordenação):** o botão "Gerar relatório completo", no painel e na aba Relatório, consolida todos os programas num painel: números do ciclo, como o dado vira evidência (presença → avaliação → observação e grupo → revisão → evidência), um card por programa, a evolução onde já há base, o trabalho da equipe com conquistas e o que falta para o próximo relatório, texto para apoiadores e ficha técnica. Agregado e sem nomes; pode ser impresso ou salvo em PDF.
+11. **Governança:** ficha técnica de cobertura, consentimento e trilha de auditoria.
 
 ## 3. Instalação (para rodar ou alterar)
 
@@ -58,7 +61,7 @@ O app é um único arquivo (`index.html`). Também dá para simplesmente dar doi
 ```bash
 npm install
 npx playwright install chromium   # só na primeira vez
-npm test                          # roda os 17 testes (~1 min)
+npm test                          # roda os 21 testes (~1 min)
 npm run test:report               # abre o relatório HTML
 npm run video                     # regrava as imagens do vídeo, sem narração (precisa de ffmpeg)
 ```
@@ -99,6 +102,15 @@ tests/fluxo-principal.spec.js testes E2E
 demo/gravar-video.js          script que grava o vídeo
 playwright.config.js · package.json
 ```
+
+## Histórico de versões
+
+| Versão | O que mudou |
+|---|---|
+| 1.2.0 | Relatório completo da coordenação (todos os programas num painel, com fluxo do dado, evolução, conquistas da equipe e próximos passos; imprimir ou salvar PDF), teste T21. Relatório básico de programa (participação, o que foi trabalhado, evolução agregada com base mínima de 5 crianças e texto para apoiadores), teste T20. Correção B10: data de registro feita depois das 21h aparecia como "registrado dias depois". |
+| 1.1.0 | Registro do grupo (esfera coletiva): aba **Grupos** da psicóloga para Vivência Terapêutica e o novo programa Começos que Protegem; na Presença, a Equipe registra atividade, participação e observação geral do encontro. Testes T18 e T19. |
+| 1.0.1 | Botão "Voltar" em todas as abas fora do painel (T17). |
+| 1.0.0 | MVP com os três perfis e 17 testes E2E. |
 
 ## Créditos
 

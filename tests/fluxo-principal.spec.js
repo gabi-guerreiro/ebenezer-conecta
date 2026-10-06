@@ -196,7 +196,7 @@ test.describe('2. Fluxo principal da coleta', () => {
     expect(r.status).toBe('aguardando');
     expect(r.childId).toBe('EDU-0003');
     // Regressão: registro feito hoje não pode aparecer como "registrado X dias depois".
-    await expect(page.locator('.srow', { hasText: 'Montou o quebra-cabeça' })).not.toContainText('dias depois');
+    await expect(page.locator('.srow', { hasText: 'Montou o quebra-cabeça' })).not.toContainText('depois');
     await shot(page, '09-registro-enviado');
   });
 
@@ -404,5 +404,121 @@ test.describe('4. Estabilidade', () => {
       });
       expect(problemas, `telas com rolagem lateral em ${w}px`).toEqual([]);
     }
+  });
+});
+
+test.describe('5. Registro do grupo (esfera coletiva) · v1.1.0', () => {
+  test('T18 · Psicóloga registra encontro coletivo de Começos que Protegem; outros perfis não veem o conteúdo', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'psicologa');
+    await aba(page, 'grupos');
+    await expect(page.locator('.tb-title')).toHaveText('Encontros em grupo');
+    const opcoes = await page.locator('[data-act=pres-turma] option').allTextContents();
+    expect(opcoes).toEqual(['Vivência Terapêutica', 'Começos que Protegem']); // só os grupos que ela conduz
+    await page.selectOption('[data-act=pres-turma]', 'cp');
+    await page.click('[data-act=grp-ativ][data-v="Masculinidades"]');
+    await page.click('[data-act=grp-engaj][data-v=maioria]');
+    await page.click('[data-act=grp-mov][data-v="Escuta entre os participantes"]');
+    // Nome de criança no texto coletivo gera aviso
+    await page.fill('[data-act=grupo-obs]', 'O Elias puxou a conversa.');
+    await expect(page.locator('#grupoWarn')).toContainText('cita Elias');
+    await page.fill('[data-act=grupo-obs]', 'O grupo falou sobre pedir ajuda quando está com raiva.');
+    await expect(page.locator('#grupoWarn')).toHaveText('');
+    await page.click('[data-act=grp-salvar]');
+    await expect(page.locator('.content')).toContainText('Registro do grupo salvo.');
+    const hoje = await page.evaluate(() => HOJE);
+    const g = (await db(page)).presencas['cp_' + hoje].grupo;
+    expect(g).toMatchObject({ atividades: ['Masculinidades'], engaj: 'maioria', movimentos: ['Escuta entre os participantes'], autor: 'Dra. Helena' });
+    expect(g.obs).toContain('pedir ajuda');
+    expect((await db(page)).auditLog.some(l => l.texto.includes('Começos que Protegem'))).toBe(true);
+    await shot(page, '19-grupo-psicologa');
+    // A Equipe vê só que o encontro foi registrado, sem o conteúdo
+    await sair(page);
+    await entrar(page, 'educadora');
+    await aba(page, 'presenca');
+    await page.selectOption('[data-act=pres-turma]', 'cp');
+    await expect(page.locator('.content')).toContainText('Registrado pela psicóloga');
+    await expect(page.locator('.content')).not.toContainText('pedir ajuda');
+    await expect(page.locator('[data-act=grupo-obs]')).toHaveCount(0);
+  });
+
+  test('T19 · Equipe registra o grupo de outras atividades com observação geral, que sobrevive ao fechamento', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'educadora');
+    await aba(page, 'presenca');
+    await page.click('[data-act=pres-clima][data-v=tranquilo]');
+    await page.click('[data-act=grp-ativ][data-v="Oficina e arte"]');
+    await page.click('[data-act=grp-ativ][data-v="Roda de conversa"]');
+    await page.click('[data-act=grp-engaj][data-v=parte]');
+    await page.fill('[data-act=grupo-obs]', 'Turma animada com a oficina de mandalas.');
+    await page.click('[data-act=pres-marcar-todos]'); // re-render não apaga o texto digitado
+    await expect(page.locator('[data-act=grupo-obs]')).toHaveValue('Turma animada com a oficina de mandalas.');
+    await page.click('[data-act=pres-fechar]');      // fechar a presença grava a observação junto
+    const hoje = await page.evaluate(() => HOJE);
+    const rec = (await db(page)).presencas['lab_' + hoje];
+    expect(rec.fechado).toBe(true);
+    expect(rec.clima).toBe('tranquilo');
+    expect(rec.grupo).toMatchObject({ atividades: ['Oficina e arte', 'Roda de conversa'], engaj: 'parte', autor: 'Equipe' });
+    expect(rec.grupo.obs).toContain('mandalas');
+    await page.locator('[data-gblock=lab]').scrollIntoViewIfNeeded();
+    await shot(page, '20-grupo-equipe');
+  });
+});
+
+test.describe('6. Relatório básico · v1.2.0', () => {
+  test('T20 · Relatório básico mostra participação, o que foi trabalhado e evolução agregada só com base mínima', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'coordenacao');
+    await aba(page, 'relatorio');
+    const c = page.locator('.content');
+    await expect(c).toContainText('Relatório básico · ciclo 2026');
+    await expect(c).toContainText('Crianças atendidas');
+    await expect(c).toContainText('Roda de conversa · 1');               // vem do registro do grupo
+    const ev = await page.evaluate(() => evolucaoPrograma('lab'));
+    expect(ev.pares).toBeGreaterThanOrEqual(5);
+    expect(ev.totalAv).toBeGreaterThan(ev.totalRe);
+    await expect(page.locator('[data-rep=evolucao]')).toBeVisible();
+    await expect(page.locator('#repTexto')).toContainText(`${ev.totalAv} avanços e ${ev.totalRe} recuos`);
+    await expect(page.locator('#repTexto')).not.toContainText('Elias');  // agregado, sem nomes
+    await page.locator('[data-rep=evolucao]').scrollIntoViewIfNeeded();
+    await shot(page, '21-relatorio-basico');
+    // Programa com menos de 5 pares: a evolução é suprimida
+    await page.selectOption('[data-act=rep-turma]', 're');
+    await expect(c).toContainText('Ainda sem base');
+    await expect(page.locator('[data-rep=evolucao]')).toHaveCount(0);
+    // Grupo da psicóloga: sem conteúdo dos encontros
+    await page.selectOption('[data-act=rep-turma]', 'cp');
+    await expect(c).toContainText('Grupo conduzido pela psicóloga');
+    await expect(c).not.toContainText('Masculinidades');
+  });
+});
+
+test.describe('7. Relatório completo · v1.2.0', () => {
+  test('T21 · Coordenação gera o relatório completo: todos os programas, fluxo do dado, evolução e próximos passos, sem nomes', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'coordenacao');
+    await page.click('[data-act=goto-relcompleto]');               // botão no painel da coordenação
+    await expect(page.locator('.tb-title')).toHaveText('Relatório completo');
+    const c = page.locator('.content');
+    await expect(c).toContainText('Relatório do ciclo 2026');
+    await expect(c).toContainText('Como o dado vira evidência');
+    const nProg = await page.evaluate(() => Object.keys(TURMAS).length);
+    await expect(page.locator('.rc-pc')).toHaveCount(nProg);       // um card por programa
+    await expect(page.locator('[data-rc=evolucao]')).toBeVisible(); // Laboratório tem base mínima
+    await expect(c).toContainText('Para o próximo relatório ficar mais completo');
+    await expect(c).toContainText('Não é avaliação da equipe');
+    const nomes = await page.evaluate(() => DB.children.map(k => k.nome));
+    const texto = await c.innerText();
+    for (const n of nomes) expect(texto).not.toContain(n);         // nenhuma criança identificada
+    await expect(page.locator('[data-prog=cp]')).not.toContainText('Masculinidades'); // conteúdo da psicóloga protegido
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)).toBe(false);
+    await shot(page, '22-relatorio-completo');
+    await page.click('[data-act=rep-copiar]');
+    await expect(c).toContainText('Texto copiado.');
+    // Também abre pela aba Relatório, e "Voltar" sai do relatório
+    await page.click('[data-act=sub-back]');
+    await aba(page, 'relatorio');
+    await page.click('[data-act=goto-relcompleto]');
+    await expect(page.locator('.tb-title')).toHaveText('Relatório completo');
   });
 });

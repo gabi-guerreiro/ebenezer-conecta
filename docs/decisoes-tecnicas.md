@@ -40,9 +40,22 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 
 ## DT-07 · Testes ponta a ponta com Playwright
 
-- **Decisão:** 17 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
+- **Decisão:** 21 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
 - **Por quê:** o valor do MVP está no fluxo entre perfis, e testes de interface são o que prova isso.
 - **Consequência:** `npm test` roda tudo em cerca de 1 minuto e gera um relatório HTML e as capturas de tela usadas como evidência.
+
+## DT-09 · Registro do grupo na esfera coletiva (versão 1.1.0)
+
+- **Decisão:** o encontro ganha um registro coletivo, guardado junto da presença (`presencas[turma_data].grupo`). A Equipe registra atividade realizada, participação e observação geral nos programas pedagógicos. A Psicóloga registra, na aba Grupos, os encontros que conduz (Vivência Terapêutica e Começos que Protegem): tema trabalhado, participação, movimentos do grupo e observação.
+- **Por quê:** o clima de três opções não guardava o que aconteceu no encontro, e os grupos da psicóloga, entre eles o Começos que Protegem, não tinham nenhum registro estruturado.
+- **Consequência:** o registro é coletivo e o app avisa quando o texto cita uma criança pelo nome. Nos grupos da psicóloga, os outros perfis veem só que o encontro foi registrado, sem o conteúdo. A observação digitada na Presença é gravada também ao fechar o lançamento, para não se perder (T18 e T19).
+
+## DT-10 · Relatório básico antecipado, com base mínima (versão 1.2.0)
+
+- **Decisão:** o relatório de programa deixa de ser só uma ficha técnica e passa a mostrar participação, o que foi trabalhado e os primeiros sinais de evolução, agregados, com um texto pronto para apoiadores.
+- **Por quê:** feedback da banca: sem mostrar resultado, a solução resolve só parte do problema de prestar contas e captar. Esperar 6 a 12 meses pelo relatório completo deixava o Instituto sem nada para mostrar no piloto.
+- **Consequência:** a evolução só aparece com pelo menos 5 crianças com duas avaliações, para não identificar ninguém e não tirar conclusão de base pequena. O texto sempre diz que é leitura preliminar, sem atribuição de causa (T20).
+- **Relatório completo:** a coordenação gera, com um botão, um painel de todos os programas que mostra como o dado vira evidência e reconhece o trabalho da equipe (registros por mês, conquistas e próximos passos concretos), para estimular a continuidade dos registros. Os programas aparecem sempre na mesma ordem, sem ranking, e o relatório avisa que os indicadores não avaliam pessoas (T21).
 
 ## DT-08 · Mobile-first com navegação inferior
 
@@ -62,4 +75,5 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 | B6 | Uma falha do `localStorage` (modo privado) derrubava o app, e não havia como voltar aos dados iniciais. | `try/catch` e validação na leitura, mais o botão "Restaurar dados de demonstração" (T15). |
 | B7 | O texto do cabeçalho da trajetória saía sem estilo (fonte grande). | Estilo `.meta` aplicado também aos cartões. |
 | B8 | Ao abrir uma tela nova, ela aparecia na rolagem da anterior (por exemplo, a trajetória já rolada até o meio). | A página volta ao topo a cada troca de tela (T03). |
+| B10 | Registro feito depois das 21h (horário de Brasília) aparecia como "registrado 0 dias depois", porque a data de criação era lida em UTC. | Data de criação lida no fuso do aparelho; versão 1.2.0 (T07). |
 | B9 | Nos perfis Coordenação e Psicóloga, ao abrir uma aba pelos botões do painel, não havia como voltar ao painel. | Toda aba fora do painel mostra "Voltar", que leva ao painel do perfil; versão 1.0.1 (T17). |

@@ -32,8 +32,8 @@ const rubrica = [
   ['MVP funcional executando o fluxo principal', 'Presença → avaliação DBR → observação → revisão humana → intervenção → trajetória → encaminhamento à psicóloga, nos 3 perfis.', '#fluxo', 'T04–T12'],
   ['Modelo de dados implementado', '9 coleções com chaves e regras de integridade (ERD e dicionário documentados).', '#modelo', 'T13'],
   ['Populado com dados sintéticos representativos', '18 educandos em 4 turmas, 15 avaliações, 9 registros, 3 intervenções, 4 encaminhamentos e 1 caso, cobrindo todos os estados.', '#dados', 'T13'],
-  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T17'],
-  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 9 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
+  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T21'],
+  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 10 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
   ['Entrega via repositório', 'Código, testes, scripts e documentos versionados no GitHub e publicados no GitHub Pages.', '#acesso', '—'],
   ['Handover · vídeo demonstrativo', 'Vídeo narrado de 2 min 37 s, com legendas, gravado a partir do app real.', '#video', '—'],
   ['Handover · registro do modelo de dados', 'docs/modelo-de-dados.md: ERD, dicionário, regras calculadas.', '#modelo', '—'],
@@ -74,6 +74,7 @@ const bugs = [
   ['B7', 'O cabeçalho da trajetória saía sem estilo.', 'Estilo aplicado aos cartões.'],
   ['B8', 'Uma tela nova abria na rolagem da tela anterior (ex.: a trajetória já rolada até o meio).', 'Volta ao topo a cada troca de tela.'],
   ['B9', 'Coordenação e Psicóloga não tinham como voltar ao painel depois de abrir uma aba pelos botões do painel.', 'Toda aba fora do painel mostra "Voltar" (versão 1.0.1).'],
+  ['B10', 'Registro feito depois das 21h aparecia como "registrado 0 dias depois" (data lida em UTC).', 'Data de criação lida no fuso do aparelho (versão 1.2.0).'],
 ];
 
 const html = `<!DOCTYPE html>
@@ -260,6 +261,10 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
     ${img('16-trajetoria', 'Trajetória individual com leitura da evolução', 'T11')}
     ${img('17-relatorio', 'Relatório com ficha técnica de cobertura', 'T12')}
     ${img('18-voltar-ao-painel', 'Botão "Voltar" fora do painel (versão 1.0.1)', 'T17')}
+    ${img('19-grupo-psicologa', 'Psicóloga registra o encontro coletivo de Começos que Protegem (versão 1.1.0)', 'T18')}
+    ${img('20-grupo-equipe', 'Equipe registra o grupo com observação geral (versão 1.1.0)', 'T19')}
+    ${img('21-relatorio-basico', 'Relatório básico com evolução agregada e texto para apoiadores (versão 1.2.0)', 'T20')}
+    ${img('22-relatorio-completo', 'Relatório completo da coordenação: todos os programas num painel (versão 1.2.0)', 'T21')}
   </div>
 </section>
 
@@ -279,7 +284,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="estabilidade">
   <h2>Estabilidade e defeitos corrigidos</h2>
-  <p class="lead">A fase de testes encontrou 9 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
+  <p class="lead">Os testes encontraram 10 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
   <div class="card tbl"><table class="stack-sm">
     <thead><tr><th>#</th><th>Problema encontrado</th><th>Correção</th></tr></thead>
     <tbody>${bugs.map(([i, p, c]) => `<tr><td class="mono"><b>${i}</b></td><td>${esc(p)}</td><td>${esc(c)}</td></tr>`).join('')}</tbody>
@@ -327,7 +332,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
   <div class="card" style="margin-top:12px;padding:16px 18px"><pre class="mono" style="margin:0;white-space:pre-wrap">git clone https://github.com/gabi-guerreiro/ebenezer-conecta.git
 cd ebenezer-conecta
 npm start          # app em http://localhost:4173
-npm install && npm test    # 17 testes E2E</pre></div>
+npm install && npm test    # 21 testes E2E</pre></div>
 </section>
 </main>
 

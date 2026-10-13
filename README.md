@@ -111,6 +111,7 @@ playwright.config.js · package.json
 
 | Versão | O que mudou |
 |---|---|
+| 1.3.1 | Governança deixa claro que violência e saúde ficam fora dos registros pedagógicos e dos relatórios, e vão só pela notificação urgente, que é restrita. Vídeo regravado em blocos que seguem o roteiro de locução. Links de download da entrega corrigidos. |
 | 1.3.0 | Notificação urgente por criança, com urgência, prazo, protocolo de proteção, ações e desfecho (aba Urgências na Coordenação e na Psicóloga). Backup em JSON (exportar e restaurar). Documentação do banco de dados com diagrama e esquema SQL. Vídeo regravado. Testes T22 a T24. |
 | 1.2.0 | Relatório completo da coordenação (todos os programas num painel, com fluxo do dado, evolução, conquistas da equipe e próximos passos; imprimir ou salvar PDF), teste T21. Relatório básico de programa (participação, o que foi trabalhado, evolução agregada com base mínima de 5 crianças e texto para apoiadores), teste T20. Correção B10: data de registro feita depois das 21h aparecia como "registrado dias depois". |
 | 1.1.0 | Registro do grupo (esfera coletiva): aba **Grupos** da psicóloga para Vivência Terapêutica e o novo programa Começos que Protegem; na Presença, a Equipe registra atividade, participação e observação geral do encontro. Testes T18 e T19. |

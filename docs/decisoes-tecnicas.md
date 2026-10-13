@@ -22,7 +22,7 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 
 ## DT-04 · Privacidade por desenho
 
-- **Decisão:** o app não coleta diagnóstico, saúde, situação familiar nem relato de violência nos registros da equipe. O áudio é só um gesto de ditado (nenhum arquivo é guardado). O encaminhamento para a psicóloga não tem motivo escrito, e o contato do responsável e o caso clínico aparecem só para ela.
+- **Decisão:** diagnóstico, saúde, situação familiar e relato de violência nunca entram nas avaliações, observações e relatórios. Suspeita de violência ou risco tem um canal próprio e restrito, a notificação urgente (DT-11). O áudio é só um gesto de ditado (nenhum arquivo é guardado). O encaminhamento para a psicóloga não tem motivo escrito, e o contato do responsável e o caso clínico aparecem só para ela.
 - **Por quê:** proteção de dados de crianças (ECA/LGPD) e alinhamento às exigências do CRP para prontuário.
 - **Consequência:** o campo de observação avisa quando o texto cita outra criança pelo nome.
 
@@ -43,6 +43,12 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 - **Decisão:** 24 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
 - **Por quê:** o valor do MVP está no fluxo entre perfis, e testes de interface são o que prova isso.
 - **Consequência:** `npm test` roda tudo em cerca de 1 minuto e gera um relatório HTML e as capturas de tela usadas como evidência.
+
+## DT-08 · Mobile-first com navegação inferior
+
+- **Decisão:** layout de até 480 px, barra inferior com até 6 itens e menu "Mais" para o resto.
+- **Por quê:** a equipe lança dados no celular, durante ou logo após o encontro.
+- **Consequência:** o teste T16 garante que nenhuma tela tem rolagem lateral em 375 px e em 1280 px.
 
 ## DT-09 · Registro do grupo na esfera coletiva (versão 1.1.0)
 
@@ -75,12 +81,6 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 - **Por quê o Google:** o Instituto já tem mais contato com o Google, e o Google for Nonprofits dá acesso sem custo ao app Gemini no Google Workspace for Nonprofits. A API em si é cobrada por uso; vale confirmar com o programa se há crédito para ONGs antes de contratar.
 - **Cuidados obrigatórios:** usar só o nível **pago** da API. Nos termos do Gemini API, o nível gratuito pode usar o conteúdo enviado para melhorar produtos, com revisão humana, e pede que não se envie dado pessoal. Mesmo no pago, enviar só texto **sem nome nem identificador da criança**, e só depois de a diretoria aprovar no termo LGPD. A chave fica no servidor (nível 2), nunca no código publicado no GitHub.
 
-## DT-08 · Mobile-first com navegação inferior
-
-- **Decisão:** layout de até 480 px, barra inferior com até 6 itens e menu "Mais" para o resto.
-- **Por quê:** a equipe lança dados no celular, durante ou logo após o encontro.
-- **Consequência:** o teste T16 garante que nenhuma tela tem rolagem lateral em 375 px e em 1280 px.
-
 ## Correções feitas durante a fase de testes
 
 | # | Problema encontrado | Correção |
@@ -93,6 +93,6 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 | B6 | Uma falha do `localStorage` (modo privado) derrubava o app, e não havia como voltar aos dados iniciais. | `try/catch` e validação na leitura, mais o botão "Restaurar dados de demonstração" (T15). |
 | B7 | O texto do cabeçalho da trajetória saía sem estilo (fonte grande). | Estilo `.meta` aplicado também aos cartões. |
 | B8 | Ao abrir uma tela nova, ela aparecia na rolagem da anterior (por exemplo, a trajetória já rolada até o meio). | A página volta ao topo a cada troca de tela (T03). |
+| B9 | Nos perfis Coordenação e Psicóloga, ao abrir uma aba pelos botões do painel, não havia como voltar ao painel. | Toda aba fora do painel mostra "Voltar", que leva ao painel do perfil; versão 1.0.1 (T17). |
 | B10 | Registro feito depois das 21h (horário de Brasília) aparecia como "registrado 0 dias depois", porque a data de criação era lida em UTC. | Data de criação lida no fuso do aparelho; versão 1.2.0 (T07). |
 | B11 | O botão "Copiar texto" gerava um erro quando o navegador negava acesso à área de transferência. | O erro é tratado e o app segue normalmente; versão 1.2.0 (T21). |
-| B9 | Nos perfis Coordenação e Psicóloga, ao abrir uma aba pelos botões do painel, não havia como voltar ao painel. | Toda aba fora do painel mostra "Voltar", que leva ao painel do perfil; versão 1.0.1 (T17). |

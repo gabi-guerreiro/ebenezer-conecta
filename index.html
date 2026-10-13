@@ -340,7 +340,7 @@ textarea:focus,.tinput:focus,input:focus,button:focus-visible,.navbtn:focus-visi
    consentimento por vínculo, DBR de 16 frases em 5 dimensões, fila de
    revisão humana e trilha de auditoria.
    ========================================================================== */
-const APP_VERSION = '1.3.0';
+const APP_VERSION = '1.3.1';
 const LS_KEY = 'ebenezer-conecta-v10';
 const CORRECAO_MS = 15*60*1000;
 // "Hoje" = data local do dispositivo (antes era fixa em 09/09/2026, o que gerava "registrado X dias depois" incorreto).
@@ -707,7 +707,7 @@ const TUTORIALS = {
   administracao: 'Gerencie consentimento por educando, ou as frases usadas nas avaliações, dependendo do seu perfil.',
   child: 'Histórico completo do educando: síntese por dimensão, escala de autonomia e linha do tempo de tudo que já foi registrado.',
   avaliar: 'Escolha o modo, responda cada frase e registre. Sem consentimento do responsável, esta tela fica bloqueada.',
-  novoregistro: 'Escolha o educando, a data e dite ou escreva o que ele fez. Não cite nomes de outras crianças, nem diagnóstico, saúde ou situação familiar — isso é só da psicóloga.',
+  novoregistro: 'Escolha o educando, a data e dite ou escreva o que ele fez. Não cite nomes de outras crianças, nem diagnóstico, saúde ou situação familiar — isso é só da psicóloga. Se for algo urgente, como sinal de violência, use "Notificar situação urgente" no painel.',
   propor: 'Escolha o educando, uma ação-modelo (ou descreva a sua) e, se quiser, grave uma observação de apoio em áudio ou texto.',
   casonovo: 'Marque o tipo de demanda, descreva o motivo (opcional) e defina o objetivo do trabalho. Isso abre o caso clínico do educando.',
   casoatividade: 'Registre data, tipo de atividade, procedimentos e evolução técnica. Se houve encaminhamento externo, marque o campo e acompanhe o retorno depois.',
@@ -2083,7 +2083,7 @@ function screenGovernanca(){
   return `<div class="stack">
     <div class="card"><div class="k">Consentimento do responsável</div><div style="font-size:22px;font-weight:900;margin-top:4px" class="tabular">${pctConsent}%</div><div class="deck">${comConsent} de ${total} educandos.</div></div>
     <div class="card"><div class="k">Retenção de áudio</div><div class="deck" style="margin-top:4px">Descartado após a transcrição. 0 arquivos retidos.</div></div>
-    <div class="card"><div class="k">Nunca coletado aqui</div><div class="deck" style="margin-top:4px">Diagnóstico, saúde, situação familiar, violência, atendimento psicológico individual.</div></div>
+    <div class="card"><div class="k">Fora dos registros pedagógicos e dos relatórios</div><div class="deck" style="margin-top:4px">Diagnóstico, saúde, situação familiar, violência e atendimento psicológico individual nunca entram em avaliação, observação ou relatório. Suspeita de violência ou risco vai só pela notificação urgente, restrita à coordenação e à psicóloga; o atendimento fica no caso clínico, só da psicóloga.</div></div>
     <div class="card"><div class="k">Como o painel calcula os rótulos</div><div class="deck" style="margin-top:4px">Por regra e limiar (ex.: 75% de frequência) — sem IA em tempo real.</div></div>
     <div class="card"><div class="k">Notificações urgentes</div><div class="deck" style="margin-top:4px">Qualquer perfil notifica; só a coordenação e a psicóloga veem e tratam. Não dependem de consentimento, porque proteger a criança vem antes. Nunca entram em relatórios. Suspeita de violência só se encerra com o Conselho Tutelar comunicado (ECA, art. 13).</div></div>
     <div class="card"><div class="k">Registro do grupo</div><div class="deck" style="margin-top:4px">Coletivo, sem nome de criança (o app avisa se o texto citar um nome). Nos grupos conduzidos pela psicóloga — Vivência Terapêutica e Começos que Protegem — o conteúdo é visível só para ela; os demais perfis veem apenas que o encontro foi registrado.</div></div>

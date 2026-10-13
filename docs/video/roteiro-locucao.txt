@@ -1,59 +1,59 @@
 ROTEIRO DE LOCUÇÃO · VÍDEO EBENÉZER CONECTA · VERSÃO 1.3
-Duração do vídeo sem narração: 1 min 50 s. Fala total estimada: cerca de 2 min.
+Vídeo sem narração: 2 min 9 s, em 10 blocos. Cada bloco tem o tempo de cena indicado; o texto cabe nesse tempo em ritmo de fala normal.
 
 COMO GRAVAR
 - Grave tudo num único arquivo de áudio (o gravador do celular serve: m4a, mp3 ou mp4).
 - Faça uma PAUSA DE 2 SEGUNDOS entre um bloco e outro. É assim que eu encaixo cada bloco na cena certa.
-- Fale no seu ritmo natural, sem pressa. Se um bloco ficar mais longo que a cena, eu estico a cena; não precisa correr.
+- Fale no seu ritmo natural, sem pressa. Se um bloco passar do tempo, eu estico a cena.
 - Lugar silencioso, celular a um palmo da boca. Se errar, faça a pausa e repita o bloco inteiro: eu fico com a última versão.
 
 ----------------------------------------------------------------------
-BLOCO 1 · Abertura (cena: tela inicial · 0:00)
+BLOCO 1 · Abertura · cena 0:00 a 0:10 (tela inicial)
 Olá! Este é o Ebenézer Conecta, na versão 1.3, com dados fictícios. São três perfis: Equipe, Coordenação e Psicóloga.
 
 [pausa de 2 segundos]
 
-BLOCO 2 · Equipe, presença e registro do grupo (cena: 0:05)
+BLOCO 2 · Equipe: presença e registro do grupo · cena 0:10 a 0:26
 A Equipe entra sem senha, direto no celular. Na presença do encontro, marca todos e ajusta as exceções. No fim da tela, registra o grupo: a atividade, a participação e uma observação geral.
 
 [pausa de 2 segundos]
 
-BLOCO 3 · Avaliação (cena: 0:18)
+BLOCO 3 · Avaliação · cena 0:26 a 0:38
 Sem o consentimento do responsável, a avaliação fica bloqueada. Com consentimento, são cinco frases, cada uma com sim, não ou não observei.
 
 [pausa de 2 segundos]
 
-BLOCO 4 · Observação individual (cena: 0:27)
+BLOCO 4 · Observação individual · cena 0:38 a 0:48
 Na observação individual, o app avisa se o texto cita o nome de outra criança, para proteger a privacidade de todas.
 
 [pausa de 2 segundos]
 
-BLOCO 5 · Notificação urgente (cena: 0:35)
+BLOCO 5 · Notificação urgente · cena 0:48 a 1:01
 Quando algo foge da curva, como um sinal de violência, a Equipe notifica na hora. O app mostra o protocolo de proteção e já sugere urgência crítica.
 
 [pausa de 2 segundos]
 
-BLOCO 6 · A Coordenação trata a urgência (cena: 0:49)
+BLOCO 6 · A Coordenação trata a urgência · cena 1:01 a 1:18
 A Coordenação vê o alerta assim que entra, com as urgências críticas em primeiro lugar. Ela assume o caso e registra o que foi feito. Uma suspeita de violência só pode ser encerrada com o Conselho Tutelar comunicado.
 
 [pausa de 2 segundos]
 
-BLOCO 7 · Revisão (cena: 1:03)
+BLOCO 7 · Revisão · cena 1:18 a 1:25
 E nenhuma observação entra no relatório sem a Coordenação validar.
 
 [pausa de 2 segundos]
 
-BLOCO 8 · Relatório completo (cena: 1:07)
+BLOCO 8 · Relatório completo · cena 1:25 a 1:42
 Com um botão, a Coordenação gera o relatório completo: como o dado vira evidência, um card por programa, os primeiros sinais de evolução e um texto pronto para enviar aos apoiadores, sem nomes de crianças.
 
 [pausa de 2 segundos]
 
-BLOCO 9 · Psicóloga e grupos (cena: 1:30)
+BLOCO 9 · Psicóloga e grupos · cena 1:42 a 1:56
 A Psicóloga registra os grupos que conduz, como o Começos que Protegem: o tema, a participação e o que surgiu no coletivo. Esse conteúdo fica visível só para ela.
 
 [pausa de 2 segundos]
 
-BLOCO 10 · Encerramento (cena: 1:39)
+BLOCO 10 · Encerramento · cena 1:56 a 2:09 (tela inicial)
 O app está publicado, com testes automáticos e toda a documentação para o Instituto seguir com autonomia. Obrigada!
 ----------------------------------------------------------------------
 Depois de gravar, é só enviar o arquivo aqui na conversa.

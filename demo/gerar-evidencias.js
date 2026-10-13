@@ -29,17 +29,17 @@ const src = rel => {
 const img = (arq, leg, teste) => `<figure class="shot"><img loading="lazy" src="${src('docs/evidencias/' + arq + '.png')}" alt="${esc(leg)}"><figcaption><span class="tid">${teste}</span>${esc(leg)}</figcaption></figure>`;
 
 const rubrica = [
-  ['MVP funcional executando o fluxo principal', 'Presença → avaliação DBR → observação → revisão humana → intervenção → trajetória → encaminhamento à psicóloga, nos 3 perfis.', '#fluxo', 'T04–T12'],
-  ['Modelo de dados implementado', '9 coleções com chaves e regras de integridade (ERD e dicionário documentados).', '#modelo', 'T13'],
-  ['Populado com dados sintéticos representativos', '18 educandos em 4 turmas, 15 avaliações, 9 registros, 3 intervenções, 4 encaminhamentos e 1 caso, cobrindo todos os estados.', '#dados', 'T13'],
+  ['MVP funcional executando o fluxo principal', 'Presença e registro do grupo → avaliação DBR → observação → revisão humana → intervenção → trajetória → relatório completo, mais notificação urgente e caso clínico, nos 3 perfis.', '#fluxo', 'T04–T12, T18–T22'],
+  ['Modelo de dados implementado', '10 coleções com chaves e regras de integridade (diagrama ER, dicionário e esquema SQL documentados).', '#modelo', 'T13'],
+  ['Populado com dados sintéticos representativos', '18 educandos em 5 programas, 19 avaliações, 9 registros, 3 intervenções, 4 encaminhamentos, 1 caso, 2 notificações e 3 registros do grupo, cobrindo todos os estados.', '#dados', 'T13'],
   ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T24'],
-  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 11 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
+  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, backup e restauração, sem rolagem lateral em 375 px e 1280 px, 11 defeitos corrigidos.', '#estabilidade', 'T15–T17, T24'],
   ['Entrega via repositório', 'Código, testes, scripts e documentos versionados no GitHub e publicados no GitHub Pages.', '#acesso', '—'],
-  ['Handover · vídeo demonstrativo', 'Vídeo da versão 1.3, com legendas e narração do grupo, gravado a partir do app real.', '#video', '—'],
+  ['Handover · vídeo demonstrativo', 'Vídeo da versão 1.3, com legendas, gravado a partir do app real.', '#video', '—'],
   ['Handover · registro do modelo de dados', 'docs/banco-de-dados.md e docs/entrega/banco-de-dados.pdf: diagrama ER, dicionário, regras, matriz de acesso, LGPD e esquema SQL.', '#modelo', '—'],
   ['Handover · instalação e acesso', 'README.md: link, perfis e códigos, como rodar, testar, publicar e manter.', '#acesso', '—'],
   ['Handover · evidências dos testes', 'Esta página + relatório Playwright + JSON + capturas de tela.', '#testes', '—'],
-  ['Handover · principais decisões técnicas', 'docs/decisoes-tecnicas.md: 8 decisões e 9 correções.', '#decisoes', '—'],
+  ['Handover · principais decisões técnicas', 'docs/decisoes-tecnicas.md: 13 decisões e 11 correções.', '#decisoes', '—'],
 ];
 
 const entidades = [
@@ -59,11 +59,16 @@ const decisoes = [
   ['Arquivo único, sem build', 'Hospedagem gratuita, funciona offline e qualquer pessoa consegue editar.'],
   ['Dados no navegador (localStorage)', 'Valida o fluxo sem expor dados reais de crianças. Para produção: backend com autenticação.'],
   ['Perfis com código de demonstração', 'Mostra a segregação de acesso. Não é segurança real.'],
-  ['Privacidade por desenho', 'Sem diagnóstico, saúde ou violência nos registros; o caso clínico e o contato do responsável ficam só com a psicóloga.'],
+  ['Privacidade por desenho', 'Sem diagnóstico, saúde ou violência nos registros e relatórios; o caso clínico e o contato do responsável ficam só com a psicóloga.'],
   ['Regras explicáveis, sem IA', 'Limiares fixos (ex.: 75% de frequência) que a coordenação consegue justificar.'],
   ['Revisão humana obrigatória', 'Um registro só conta depois de validado, com trilha de auditoria.'],
   ['Testes E2E com Playwright', 'Simulam o usuário real nos 3 perfis, com tela de celular.'],
   ['Mobile-first', 'Barra inferior com até 6 itens e menu "Mais"; testado em 375 px.'],
+  ['Registro do grupo', 'Equipe e psicóloga registram o encontro como um todo; nos grupos da psicóloga, o conteúdo é só dela.'],
+  ['Relatório com base mínima', 'Evolução só com 5 crianças ou mais com duas avaliações; agregado e sem nomes.'],
+  ['Notificação urgente', 'Canal próprio para violência e risco, com prazo e protocolo; só coordenação e psicóloga veem; violência só se encerra com o Conselho Tutelar comunicado.'],
+  ['Backup em JSON', 'No nível 1 o dado fica num aparelho só: exportar toda semana e restaurar quando preciso.'],
+  ['IA por API de fornecedor', 'Gemini, do Google, no nível pago, sem nomes de crianças; modelo próprio é inviável em custo.'],
 ];
 const bugs = [
   ['B1', 'O 1º toque em "Enviar" era perdido depois de digitar (observação, código, intervenção, caso).', 'Estado atualizado a cada tecla, sem redesenhar a tela.'],
@@ -214,7 +219,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="video">
   <h2>Vídeo demonstrativo</h2>
-  <p class="lead">Fluxo principal nos três perfis da versão 1.3, com narração do grupo e legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
+  <p class="lead">Fluxo principal nos três perfis da versão 1.3, com legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
   <div class="video-box">
     <video controls preload="metadata" playsinline src="${src('docs/video/demo-ebenezer-conecta.mp4')}"></video>
     <div class="card" style="padding:18px 20px">
@@ -342,7 +347,7 @@ npm install && npm test    # 24 testes E2E</pre></div>
 </section>
 </main>
 
-<footer><div class="wrap">Ebenézer Conecta v1.0 · MBA Inteli, Grupo 5 · Página gerada automaticamente a partir do resultado dos testes (<span class="mono">npm run evidencias</span>).</div></footer>
+<footer><div class="wrap">Ebenézer Conecta v1.3.1 · MBA em IA e Dados, Grupo 5 · Página gerada automaticamente a partir do resultado dos testes (<span class="mono">npm run evidencias</span>).</div></footer>
 
 <div class="lb" id="lb" onclick="this.classList.remove('on')"><img alt=""></div>
 <script>

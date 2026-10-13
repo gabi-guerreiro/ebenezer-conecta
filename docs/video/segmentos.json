@@ -1,65 +1,65 @@
 {
-  "duracao": 128.68,
+  "duracao": 103.56,
   "blocos": [
     {
       "n": 1,
       "titulo": "Ebenézer Conecta · versão 1.3 · dados 100% fictícios. Três perfis: Equipe, Coordenação e Psicóloga.",
-      "t": 0.432,
-      "fim": 10.447
+      "t": 0,
+      "fim": 8.629000000000001
     },
     {
       "n": 2,
       "titulo": "1 · Equipe: presença do encontro e registro do grupo.",
-      "t": 10.447,
-      "fim": 26.45
+      "t": 8.629000000000001,
+      "fim": 21.569000000000003
     },
     {
       "n": 3,
       "titulo": "2 · Avaliação: sem consentimento, a coleta fica bloqueada.",
-      "t": 26.45,
-      "fim": 38.452
+      "t": 21.569000000000003,
+      "fim": 31.830000000000002
     },
     {
       "n": 4,
       "titulo": "3 · Observação: o app avisa se o texto cita outra criança.",
-      "t": 38.452,
-      "fim": 48.454
+      "t": 31.830000000000002,
+      "fim": 39.477999999999994
     },
     {
       "n": 5,
       "titulo": "4 · Caso urgente: a Equipe notifica na hora, com protocolo de proteção.",
-      "t": 48.454,
-      "fim": 61.456
+      "t": 39.477999999999994,
+      "fim": 49.696999999999996
     },
     {
       "n": 6,
       "titulo": "5 · Coordenação: alerta no painel, assume, registra a ação e encerra.",
-      "t": 61.456,
-      "fim": 78.459
+      "t": 49.696999999999996,
+      "fim": 63.407
     },
     {
       "n": 7,
       "titulo": "6 · Revisão: nada entra no relatório sem a Coordenação validar.",
-      "t": 78.459,
-      "fim": 85.462
+      "t": 63.407,
+      "fim": 68.29700000000001
     },
     {
       "n": 8,
       "titulo": "7 · Com um botão, a Coordenação gera o relatório completo.",
-      "t": 85.462,
-      "fim": 102.465
+      "t": 68.29700000000001,
+      "fim": 80.298
     },
     {
       "n": 9,
       "titulo": "8 · Psicóloga: registro dos grupos que conduz, como o Começos que Protegem.",
-      "t": 102.465,
-      "fim": 116.468
+      "t": 80.298,
+      "fim": 92.262
     },
     {
       "n": 10,
       "titulo": "Publicado no GitHub Pages, com 24 testes automáticos e documentação para o Instituto.",
-      "t": 116.468,
-      "fim": 126.474
+      "t": 92.262,
+      "fim": 101.683
     }
   ]
 }

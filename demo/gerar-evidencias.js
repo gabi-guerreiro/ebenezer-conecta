@@ -35,7 +35,7 @@ const rubrica = [
   ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T24'],
   ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, backup e restauração, sem rolagem lateral em 375 px e 1280 px, 11 defeitos corrigidos.', '#estabilidade', 'T15–T17, T24'],
   ['Entrega via repositório', 'Código, testes, scripts e documentos versionados no GitHub e publicados no GitHub Pages.', '#acesso', '—'],
-  ['Handover · vídeo demonstrativo', 'Vídeo da versão 1.3, com legendas, gravado a partir do app real.', '#video', '—'],
+  ['Handover · vídeo demonstrativo', 'Vídeo narrado da versão 1.3 (1 min 43 s), com legendas, gravado a partir do app real.', '#video', '—'],
   ['Handover · registro do modelo de dados', 'docs/banco-de-dados.md e docs/entrega/banco-de-dados.pdf: diagrama ER, dicionário, regras, matriz de acesso, LGPD e esquema SQL.', '#modelo', '—'],
   ['Handover · instalação e acesso', 'README.md: link, perfis e códigos, como rodar, testar, publicar e manter.', '#acesso', '—'],
   ['Handover · evidências dos testes', 'Esta página + relatório Playwright + JSON + capturas de tela.', '#testes', '—'],
@@ -219,7 +219,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="video">
   <h2>Vídeo demonstrativo</h2>
-  <p class="lead">Fluxo principal nos três perfis da versão 1.3, com legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
+  <p class="lead">Fluxo principal nos três perfis da versão 1.3, com narração do grupo e legendas, em 1 min 43 s. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
   <div class="video-box">
     <video controls preload="metadata" playsinline src="${src('docs/video/demo-ebenezer-conecta.mp4')}"></video>
     <div class="card" style="padding:18px 20px">

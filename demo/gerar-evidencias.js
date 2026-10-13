@@ -32,11 +32,11 @@ const rubrica = [
   ['MVP funcional executando o fluxo principal', 'Presença → avaliação DBR → observação → revisão humana → intervenção → trajetória → encaminhamento à psicóloga, nos 3 perfis.', '#fluxo', 'T04–T12'],
   ['Modelo de dados implementado', '9 coleções com chaves e regras de integridade (ERD e dicionário documentados).', '#modelo', 'T13'],
   ['Populado com dados sintéticos representativos', '18 educandos em 4 turmas, 15 avaliações, 9 registros, 3 intervenções, 4 encaminhamentos e 1 caso, cobrindo todos os estados.', '#dados', 'T13'],
-  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T21'],
-  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 10 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
+  ['Fase de testes validando o fluxo principal', `${testes.length} testes E2E automatizados (Playwright): ${ok}/${testes.length} aprovados.`, '#testes', 'T01–T24'],
+  ['Operação estável', 'Zero erros de JavaScript em todos os testes, navegação com "Voltar" em todas as abas, persistência após recarregar, restauração de dados, sem rolagem lateral em 375 px e 1280 px, 11 defeitos corrigidos.', '#estabilidade', 'T15–T17'],
   ['Entrega via repositório', 'Código, testes, scripts e documentos versionados no GitHub e publicados no GitHub Pages.', '#acesso', '—'],
-  ['Handover · vídeo demonstrativo', 'Vídeo narrado de 2 min 37 s, com legendas, gravado a partir do app real.', '#video', '—'],
-  ['Handover · registro do modelo de dados', 'docs/modelo-de-dados.md: ERD, dicionário, regras calculadas.', '#modelo', '—'],
+  ['Handover · vídeo demonstrativo', 'Vídeo da versão 1.3, com legendas e narração do grupo, gravado a partir do app real.', '#video', '—'],
+  ['Handover · registro do modelo de dados', 'docs/banco-de-dados.md e docs/entrega/banco-de-dados.pdf: diagrama ER, dicionário, regras, matriz de acesso, LGPD e esquema SQL.', '#modelo', '—'],
   ['Handover · instalação e acesso', 'README.md: link, perfis e códigos, como rodar, testar, publicar e manter.', '#acesso', '—'],
   ['Handover · evidências dos testes', 'Esta página + relatório Playwright + JSON + capturas de tela.', '#testes', '—'],
   ['Handover · principais decisões técnicas', 'docs/decisoes-tecnicas.md: 8 decisões e 9 correções.', '#decisoes', '—'],
@@ -44,13 +44,14 @@ const rubrica = [
 
 const entidades = [
   ['Educando', ['id · EDU-xxxx (PK)', 'nome, idade, nasc', 'resp{nome, rel, contato}', 'turmas[] (FK)', 'consentimento', 'freq{p, j, t}']],
-  ['Turma', ['id · lab/re/pi/vt (PK)', 'nome', 'presencaOnly']],
+  ['Programa', ['id · lab/re/pi/vt/cp (PK)', 'nome', 'presencaOnly, lider']],
   ['Avaliação (DBR)', ['childId, turmaId (FK)', 'tipo · inicial | checkin', 'modo · rápido 5 | completo 16', 'respostas{frase: sim|não|não observei}', 'atencaoPsicologa']],
   ['Registro', ['childId, turmaId (FK)', 'texto, método', 'status · aguardando | validado | devolvido', 'motivo, criadoEm']],
   ['Intervenção', ['childId (FK)', 'ação, objetivo', 'estágio 1 → 2 → 3', 'resultado']],
   ['Encaminhamento', ['childId (FK)', 'data', 'status · pendente | revisado', 'sem motivo escrito']],
   ['Caso clínico', ['childId (FK)', 'tipos[], objetivo', 'status · ativo | encerrado', 'atividades[] (estrutura CRP)']],
-  ['Presença', ['chave turmaId_data (PK)', 'marks{childId: presente|justificada|falta}', 'clima, fechado']],
+  ['Presença e grupo', ['chave turmaId_data (PK)', 'marks{childId: presente|justificada|falta}', 'clima, fechado', 'grupo{atividades, engaj, movimentos, obs}']],
+  ['Notificação urgente', ['childId (FK)', 'tipo · violência | risco | atípico | ausência | saúde | outro', 'urgência · crítica | alta | atenção', 'status, responsável, ações[], desfecho']],
   ['Auditoria', ['ts', 'texto (quem fez o quê)']],
 ];
 
@@ -75,6 +76,7 @@ const bugs = [
   ['B8', 'Uma tela nova abria na rolagem da tela anterior (ex.: a trajetória já rolada até o meio).', 'Volta ao topo a cada troca de tela.'],
   ['B9', 'Coordenação e Psicóloga não tinham como voltar ao painel depois de abrir uma aba pelos botões do painel.', 'Toda aba fora do painel mostra "Voltar" (versão 1.0.1).'],
   ['B10', 'Registro feito depois das 21h aparecia como "registrado 0 dias depois" (data lida em UTC).', 'Data de criação lida no fuso do aparelho (versão 1.2.0).'],
+  ['B11', 'O botão "Copiar texto" gerava erro quando o navegador negava acesso à área de transferência.', 'Erro tratado; o app segue normalmente (versão 1.2.0).'],
 ];
 
 const html = `<!DOCTYPE html>
@@ -212,7 +214,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="video">
   <h2>Vídeo demonstrativo</h2>
-  <p class="lead">Fluxo principal nos três perfis, em 2 min 37 s, com narração do grupo e legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
+  <p class="lead">Fluxo principal nos três perfis da versão 1.3, com narração do grupo e legendas. As imagens foram gravadas automaticamente a partir do app real (<span class="mono">npm run video</span>) e sincronizadas com a locução.</p>
   <div class="video-box">
     <video controls preload="metadata" playsinline src="${src('docs/video/demo-ebenezer-conecta.mp4')}"></video>
     <div class="card" style="padding:18px 20px">
@@ -265,6 +267,8 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
     ${img('20-grupo-equipe', 'Equipe registra o grupo com observação geral (versão 1.1.0)', 'T19')}
     ${img('21-relatorio-basico', 'Relatório básico com evolução agregada e texto para apoiadores (versão 1.2.0)', 'T20')}
     ${img('22-relatorio-completo', 'Relatório completo da coordenação: todos os programas num painel (versão 1.2.0)', 'T21')}
+    ${img('23-notificacao-enviada', 'Equipe notifica situação urgente, com protocolo de proteção (versão 1.3.0)', 'T22')}
+    ${img('24-notificacao-tratada', 'Coordenação assume, registra a ação e encerra com o Conselho Tutelar comunicado (versão 1.3.0)', 'T22')}
   </div>
 </section>
 
@@ -284,7 +288,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="estabilidade">
   <h2>Estabilidade e defeitos corrigidos</h2>
-  <p class="lead">Os testes encontraram 10 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
+  <p class="lead">Os testes encontraram 11 defeitos, todos corrigidos. Os testes de regressão impedem que eles voltem.</p>
   <div class="card tbl"><table class="stack-sm">
     <thead><tr><th>#</th><th>Problema encontrado</th><th>Correção</th></tr></thead>
     <tbody>${bugs.map(([i, p, c]) => `<tr><td class="mono"><b>${i}</b></td><td>${esc(p)}</td><td>${esc(c)}</td></tr>`).join('')}</tbody>
@@ -293,23 +297,25 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
 
 <section id="modelo">
   <h2>Modelo de dados</h2>
-  <p class="lead">Um objeto <span class="mono">DB</span> com 9 coleções, salvo em JSON no navegador. O educando é a entidade central: toda coleção aponta para ele por <span class="mono">childId</span>, e o teste T13 verifica essa integridade. ERD completo em <span class="mono">docs/modelo-de-dados.md</span>.</p>
+  <p class="lead">Um objeto <span class="mono">DB</span> com 10 coleções, salvo em JSON no navegador. O educando é a entidade central: toda coleção aponta para ele por <span class="mono">childId</span>, e o teste T13 verifica essa integridade. ERD completo em <span class="mono">docs/banco-de-dados.md</span>.</p>
   <div class="ents">${entidades.map(([n, f]) => `<div class="card ent"><h3>${esc(n)}</h3><ul>${f.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
   <div class="card rel"><b>Relações:</b> Educando 1—N Turma (vínculo) · Educando 1—N Avaliação, Registro, Intervenção, Encaminhamento · Educando 1—0..1 Caso clínico 1—N Atividade · uma Avaliação com "atenção" gera 1 Encaminhamento · Turma 1—N Presença por encontro. <b>Regras calculadas:</b> frequência considerada = (presenças + justificadas) ÷ encontros, boa a partir de 75%; 3+ faltas justificadas indicam possível vulnerabilidade; 1ª avaliação do vínculo = inicial, as seguintes = check-in.</div>
 </section>
 
 <section id="dados">
   <h2>Dados sintéticos representativos</h2>
-  <p class="lead">Nomes, datas e telefones 100% fictícios, cobrindo as 4 turmas e todos os estados de cada fluxo, para que qualquer tela possa ser demonstrada.</p>
+  <p class="lead">Nomes, datas e telefones 100% fictícios, cobrindo os 5 programas e todos os estados de cada fluxo, para que qualquer tela possa ser demonstrada.</p>
   <div class="card tbl"><table class="stack-sm">
     <thead><tr><th>Entidade</th><th>Qtd.</th><th>O que a massa cobre</th></tr></thead>
     <tbody>
-      <tr><td><b>Educandos</b></td><td class="mono">18</td><td>4 turmas (Laboratório de Sonhos 11, Reforço Escolar 6, Primeira Infância 4, Vivência Terapêutica 3 vínculos); 4 sem consentimento; 4 a 11 anos; casos de falta justificada recorrente</td></tr>
-      <tr><td><b>Avaliações</b></td><td class="mono">15</td><td>iniciais e check-ins; modos rápido e completo; 1 com sinalização para a psicóloga</td></tr>
+      <tr><td><b>Educandos</b></td><td class="mono">18</td><td>5 programas (Laboratório de Sonhos 11, Reforço Escolar 6, Primeira Infância 4, Vivência Terapêutica 3, Começos que Protegem 5 vínculos); 4 sem consentimento; 4 a 11 anos; casos de falta justificada recorrente</td></tr>
+      <tr><td><b>Avaliações</b></td><td class="mono">19</td><td>iniciais e check-ins; modos rápido e completo; 1 com sinalização para a psicóloga</td></tr>
       <tr><td><b>Registros</b></td><td class="mono">9</td><td>aguardando, validado e devolvido; ditado e escrito</td></tr>
       <tr><td><b>Intervenções</b></td><td class="mono">3</td><td>em acompanhamento e concluída com resultado</td></tr>
       <tr><td><b>Encaminhamentos</b></td><td class="mono">4</td><td>pendentes e revisado</td></tr>
       <tr><td><b>Casos clínicos</b></td><td class="mono">1</td><td>ativo, com 2 atividades no formato CRP</td></tr>
+      <tr><td><b>Notificações urgentes</b></td><td class="mono">2</td><td>uma aberta (comportamento atípico, alta) e uma encerrada (suspeita de violência, Conselho Tutelar comunicado)</td></tr>
+      <tr><td><b>Registros do grupo</b></td><td class="mono">3</td><td>equipe (Laboratório) e psicóloga (Vivência e Começos que Protegem)</td></tr>
       <tr><td><b>Frases DBR</b></td><td class="mono">16</td><td>5 dimensões (CASEL + BNCC), 5 no modo rápido, versionadas</td></tr>
     </tbody>
   </table></div>
@@ -332,7 +338,7 @@ footer{padding:40px 0 60px;color:var(--ink-3);font-size:13px}
   <div class="card" style="margin-top:12px;padding:16px 18px"><pre class="mono" style="margin:0;white-space:pre-wrap">git clone https://github.com/gabi-guerreiro/ebenezer-conecta.git
 cd ebenezer-conecta
 npm start          # app em http://localhost:4173
-npm install && npm test    # 21 testes E2E</pre></div>
+npm install && npm test    # 24 testes E2E</pre></div>
 </section>
 </main>
 

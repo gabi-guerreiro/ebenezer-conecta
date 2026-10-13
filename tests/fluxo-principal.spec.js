@@ -522,3 +522,85 @@ test.describe('7. Relatório completo · v1.2.0', () => {
     await expect(page.locator('.tb-title')).toHaveText('Relatório completo');
   });
 });
+
+test.describe('8. Notificações urgentes · v1.3.0', () => {
+  test('T22 · Equipe notifica caso crítico; coordenação vê alerta, assume, registra ação e encerra', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'educadora');
+    await page.click('[data-act=goto-notificar]');
+    await expect(page.locator('[data-act=nt-submit]')).toBeDisabled();
+    await page.selectOption('[data-act=nt-child]', 'EDU-0010');
+    await page.click('[data-act=nt-tipo][data-v=violencia]');
+    await expect(page.locator('.content')).toContainText('Protocolo de proteção');      // orienta antes de enviar
+    await expect(page.locator('[data-act=nt-urg][data-v=critica]')).toHaveClass(/on/);    // violência sugere urgência crítica
+    await page.fill('[data-act=nt-texto]', 'Disse: “não quero voltar para casa hoje”. Estava com medo.');
+    await page.click('[data-act=nt-submit]');
+    await expect(page.locator('.content')).toContainText('Notificação enviada');
+    await shot(page, '23-notificacao-enviada');
+    const n = (await db(page)).notificacoes.find(x => x.childId === 'EDU-0010');
+    expect(n).toMatchObject({ tipo: 'violencia', urgencia: 'critica', status: 'aberta', autor: 'Equipe' });
+    // Coordenação: alerta no painel e lista ordenada por urgência
+    await page.click('[data-act=tab-back]');
+    await entrar(page, 'coordenacao');
+    await expect(page.locator('.content')).toContainText('notificação(ões) urgente(s) aberta(s)');
+    await aba(page, 'notificacoes');
+    await expect(page.locator('.nt-card').first()).toContainText('Joana Moreira');         // crítica vem antes da alta
+    await page.locator('.nt-card').first().click();
+    await page.click('[data-act=nt-assumir]');
+    await page.selectOption('[data-act=nt-acao-tipo]', 'Conselho Tutelar comunicado');
+    await page.fill('[data-act=nt-acao-texto]', 'Ligação ao Conselho Tutelar às 17h.');
+    await page.click('[data-act=nt-acao-submit]');
+    // Violência só se encerra com o Conselho Tutelar comunicado
+    const opcoes = await page.locator('[data-act=nt-desfecho] option').allTextContents();
+    expect(opcoes.slice(1)).toEqual(['Conselho Tutelar comunicado', 'Conselho Tutelar já acompanhava o caso']);
+    await page.selectOption('[data-act=nt-desfecho]', 'Conselho Tutelar comunicado');
+    await page.locator('[data-act=nt-encerrar]').scrollIntoViewIfNeeded();
+    await shot(page, '24-notificacao-tratada');
+    await page.click('[data-act=nt-encerrar]');
+    const fim = (await db(page)).notificacoes.find(x => x.id === n.id);
+    expect(fim).toMatchObject({ status: 'encerrada', responsavel: 'Uelington', desfecho: 'Conselho Tutelar comunicado' });
+    expect(fim.acoes).toHaveLength(1);
+    const audit = (await db(page)).auditLog.map(l => l.texto).join(' | ');
+    expect(audit).toContain('abriu uma notificação crítica');
+    expect(audit).not.toContain('não quero voltar');                                         // auditoria não copia o relato
+  });
+
+  test('T23 · Notificação é restrita: Equipe não vê a lista, relatórios não mostram, psicóloga vê na trajetória', async ({ page }) => {
+    await abrir(page);
+    const tabsEquipe = await page.evaluate(() => allTabsFor('educadora').map(t => t[0]));
+    expect(tabsEquipe).not.toContain('notificacoes');
+    await entrar(page, 'coordenacao');
+    await page.click('[data-act=goto-relcompleto]');
+    const rel = await page.locator('.content').innerText();
+    expect(rel).not.toContain('Comportamento atípico');
+    expect(rel).not.toContain('chorou quando um adulto');
+    await sair(page);
+    await entrar(page, 'psicologa');
+    await expect(page.locator('.content')).toContainText('notificação(ões) urgente(s) aberta(s)');
+    await page.evaluate(() => { S.sub = 'child'; S.ctx = { childId: 'EDU-0012' }; render(); });
+    await expect(page.locator('.content')).toContainText('Notificações urgentes · 1');
+    await expect(page.locator('.content')).toContainText('Comportamento atípico');
+  });
+});
+
+test.describe('9. Backup · v1.3.0', () => {
+  test('T24 · Coordenação exporta backup em JSON e restaura a partir dele', async ({ page }) => {
+    await abrir(page);
+    await entrar(page, 'coordenacao');
+    await aba(page, 'governanca');
+    const [dl] = await Promise.all([page.waitForEvent('download'), page.click('[data-act=exportar-dados]')]);
+    expect(dl.suggestedFilename()).toMatch(/^ebenezer-conecta-backup-\d{4}-\d{2}-\d{2}\.json$/);
+    const arq = await dl.path();
+    const conteudo = JSON.parse(require('fs').readFileSync(arq, 'utf8'));
+    expect(conteudo.db.children.length).toBeGreaterThanOrEqual(18);
+    expect(conteudo.versao).toBe(await page.evaluate(() => APP_VERSION));
+    // Apaga um educando e restaura o backup
+    await page.evaluate(() => { DB.children.pop(); saveDB(); });
+    await page.setInputFiles('[data-act=importar-dados]', arq);
+    await expect(page.locator('.content')).toContainText(`Backup restaurado: ${conteudo.db.children.length} educandos.`);
+    expect((await db(page)).children.length).toBe(conteudo.db.children.length);
+    // Arquivo inválido é recusado
+    await page.setInputFiles('[data-act=importar-dados]', { name: 'x.json', mimeType: 'application/json', buffer: Buffer.from('{"a":1}') });
+    await expect(page.locator('.content')).toContainText('Arquivo inválido');
+  });
+});

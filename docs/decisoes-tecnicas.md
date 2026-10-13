@@ -28,7 +28,7 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 
 ## DT-05 · Regras calculadas por limiar, sem IA
 
-- **Decisão:** rótulos como "boa frequência", "Avanço" e "sinal de atenção" são regras fixas e explicáveis (ver `modelo-de-dados.md`).
+- **Decisão:** rótulos como "boa frequência", "Avanço" e "sinal de atenção" são regras fixas e explicáveis (ver `banco-de-dados.md`).
 - **Por quê:** a coordenação precisa conseguir explicar qualquer número a financiadores e famílias.
 - **Consequência:** os limiares podem ser ajustados nas funções `freqQual`, `dimStatus` e `painelSemaforo`.
 
@@ -40,7 +40,7 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 
 ## DT-07 · Testes ponta a ponta com Playwright
 
-- **Decisão:** 21 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
+- **Decisão:** 24 testes automatizados simulam o usuário real (cliques e digitação) num Chromium com tela de celular.
 - **Por quê:** o valor do MVP está no fluxo entre perfis, e testes de interface são o que prova isso.
 - **Consequência:** `npm test` roda tudo em cerca de 1 minuto e gera um relatório HTML e as capturas de tela usadas como evidência.
 
@@ -56,6 +56,24 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 - **Por quê:** feedback da banca: sem mostrar resultado, a solução resolve só parte do problema de prestar contas e captar. Esperar 6 a 12 meses pelo relatório completo deixava o Instituto sem nada para mostrar no piloto.
 - **Consequência:** a evolução só aparece com pelo menos 5 crianças com duas avaliações, para não identificar ninguém e não tirar conclusão de base pequena. O texto sempre diz que é leitura preliminar, sem atribuição de causa (T20).
 - **Relatório completo:** a coordenação gera, com um botão, um painel de todos os programas que mostra como o dado vira evidência e reconhece o trabalho da equipe (registros por mês, conquistas e próximos passos concretos), para estimular a continuidade dos registros. Os programas aparecem sempre na mesma ordem, sem ranking, e o relatório avisa que os indicadores não avaliam pessoas (T21).
+
+## DT-11 · Notificação urgente por criança (versão 1.3.0)
+
+- **Decisão:** um registro próprio para o que foge da curva (sinal de violência ou abuso, risco à integridade, comportamento atípico, ausência sem explicação, saúde), por criança, com urgência e prazo (crítica 24 h, alta 48 h, atenção 7 dias), responsável, ações e desfecho.
+- **Por quê:** o encaminhamento para a psicóloga é só um sinalizador sem motivo; um caso de proteção precisa de prazo, dono e rastreabilidade.
+- **Consequência:** qualquer perfil notifica, mas só coordenação e psicóloga veem e tratam. Não depende de consentimento, porque proteger a criança vem antes. O app mostra o protocolo (acolher sem investigar, não prometer segredo, Conselho Tutelar, 190 e Disque 100). Suspeita de violência só se encerra com o Conselho Tutelar comunicado (ECA, art. 13). Nada entra em relatórios, e a auditoria não copia o relato (T22 e T23).
+
+## DT-12 · Backup do nível 1 (versão 1.3.0)
+
+- **Decisão:** exportar e restaurar todo o banco em JSON, na tela de Governança.
+- **Por quê:** no nível 1 o dado fica num só aparelho; sem backup, perder o aparelho seria perder a série histórica.
+- **Consequência:** backup semanal guardado no Drive institucional, com acesso só da coordenação. O app confere a estrutura antes de restaurar (T24).
+
+## DT-13 · Inteligência artificial: API de fornecedor, não modelo próprio
+
+- **Decisão:** quando o Instituto quiser recursos de IA (por exemplo, resumir observações validadas para o relatório anual), usar a **API do Gemini, do Google**, com chave do próprio Instituto. Rodar um modelo na infraestrutura do Instituto foi descartado por custo de máquina e de manutenção.
+- **Por quê o Google:** o Instituto já tem mais contato com o Google, e o Google for Nonprofits dá acesso sem custo ao app Gemini no Google Workspace for Nonprofits. A API em si é cobrada por uso; vale confirmar com o programa se há crédito para ONGs antes de contratar.
+- **Cuidados obrigatórios:** usar só o nível **pago** da API. Nos termos do Gemini API, o nível gratuito pode usar o conteúdo enviado para melhorar produtos, com revisão humana, e pede que não se envie dado pessoal. Mesmo no pago, enviar só texto **sem nome nem identificador da criança**, e só depois de a diretoria aprovar no termo LGPD. A chave fica no servidor (nível 2), nunca no código publicado no GitHub.
 
 ## DT-08 · Mobile-first com navegação inferior
 
@@ -76,4 +94,5 @@ Registro no formato "decisão → por quê → consequência", para quem assumir
 | B7 | O texto do cabeçalho da trajetória saía sem estilo (fonte grande). | Estilo `.meta` aplicado também aos cartões. |
 | B8 | Ao abrir uma tela nova, ela aparecia na rolagem da anterior (por exemplo, a trajetória já rolada até o meio). | A página volta ao topo a cada troca de tela (T03). |
 | B10 | Registro feito depois das 21h (horário de Brasília) aparecia como "registrado 0 dias depois", porque a data de criação era lida em UTC. | Data de criação lida no fuso do aparelho; versão 1.2.0 (T07). |
+| B11 | O botão "Copiar texto" gerava um erro quando o navegador negava acesso à área de transferência. | O erro é tratado e o app segue normalmente; versão 1.2.0 (T21). |
 | B9 | Nos perfis Coordenação e Psicóloga, ao abrir uma aba pelos botões do painel, não havia como voltar ao painel. | Toda aba fora do painel mostra "Voltar", que leva ao painel do perfil; versão 1.0.1 (T17). |

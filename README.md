@@ -8,8 +8,8 @@ Plataforma de evidência socioemocional do **Instituto Social Ebenézer** (Jardi
 
 | Documento de handover | Onde está |
 |---|---|
-| Vídeo demonstrativo narrado (2 min 37 s) | [`docs/video/demo-ebenezer-conecta.mp4`](docs/video/demo-ebenezer-conecta.mp4) |
-| Registro do modelo de dados | [`docs/modelo-de-dados.md`](docs/modelo-de-dados.md) |
+| Vídeo demonstrativo da versão 1.3 | [`docs/video/demo-ebenezer-conecta.mp4`](docs/video/demo-ebenezer-conecta.mp4) |
+| Banco de dados: diagrama, dicionário, acesso, LGPD | [`docs/banco-de-dados.md`](docs/banco-de-dados.md) · [PDF](docs/entrega/banco-de-dados.pdf) · [esquema SQL](docs/schema-supabase.sql) |
 | Instruções de instalação e acesso | nesta página, abaixo |
 | Evidências dos testes | [`docs/testes/README.md`](docs/testes/README.md) · [página de evidências](https://gabi-guerreiro.github.io/ebenezer-conecta/evidencias.html) |
 | Principais decisões técnicas | [`docs/decisoes-tecnicas.md`](docs/decisoes-tecnicas.md) |
@@ -42,7 +42,8 @@ Os códigos são de demonstração e aparecem na própria tela. Sair: botão **S
 8. **Psicóloga:** revisa encaminhamentos e registra atividades do caso clínico (confidencial).
 9. **Relatório básico:** por programa, agregado e sem nomes: crianças atendidas, frequência, encontros com registro do grupo, o que foi trabalhado e os primeiros sinais de evolução (avanços e recuos por dimensão entre a avaliação inicial e a mais recente). A evolução só aparece com pelo menos 5 crianças com duas avaliações. Gera um texto pronto para apoiadores.
 10. **Relatório completo (Coordenação):** o botão "Gerar relatório completo", no painel e na aba Relatório, consolida todos os programas num painel: números do ciclo, como o dado vira evidência (presença → avaliação → observação e grupo → revisão → evidência), um card por programa, a evolução onde já há base, o trabalho da equipe com conquistas e o que falta para o próximo relatório, texto para apoiadores e ficha técnica. Agregado e sem nomes; pode ser impresso ou salvo em PDF.
-11. **Governança:** ficha técnica de cobertura, consentimento e trilha de auditoria.
+11. **Notificação urgente:** qualquer perfil notifica, por criança, uma situação fora da curva (sinal de violência, risco, comportamento atípico, ausência, saúde) com urgência crítica, alta ou atenção. O app mostra o protocolo de proteção. Coordenação e psicóloga recebem um alerta no painel, assumem, registram cada ação e encerram com o desfecho; suspeita de violência só se encerra com o Conselho Tutelar comunicado (ECA, art. 13). A Equipe não vê a lista, e nada disso entra em relatório.
+12. **Governança e backup:** ficha técnica, consentimento, trilha de auditoria e backup: exportar e restaurar os dados em JSON.
 
 ## 3. Instalação (para rodar ou alterar)
 
@@ -61,7 +62,7 @@ O app é um único arquivo (`index.html`). Também dá para simplesmente dar doi
 ```bash
 npm install
 npx playwright install chromium   # só na primeira vez
-npm test                          # roda os 21 testes (~1 min)
+npm test                          # roda os 24 testes (~1 min)
 npm run test:report               # abre o relatório HTML
 npm run video                     # regrava as imagens do vídeo, sem narração (precisa de ffmpeg)
 ```
@@ -91,7 +92,10 @@ npm run video                     # regrava as imagens do vídeo, sem narração
 index.html                    aplicação completa (HTML + CSS + JS)
 evidencias.html               página de evidências da entrega
 docs/
-  modelo-de-dados.md          ERD + dicionário + regras + massa sintética
+  banco-de-dados.md           diagrama ER, dicionário, regras, acesso, LGPD, versões
+  schema-supabase.sql         esquema PostgreSQL para o nível 2, com regras de acesso
+  entrega/                    diagramas (SVG), banco-de-dados.pdf e .html
+  modelo-de-dados.md          aponta para banco-de-dados.md
   decisoes-tecnicas.md        decisões técnicas e defeitos corrigidos
   testes/README.md            plano, casos e resultado dos testes
   testes/relatorio-html/      relatório do Playwright
@@ -107,6 +111,7 @@ playwright.config.js · package.json
 
 | Versão | O que mudou |
 |---|---|
+| 1.3.0 | Notificação urgente por criança, com urgência, prazo, protocolo de proteção, ações e desfecho (aba Urgências na Coordenação e na Psicóloga). Backup em JSON (exportar e restaurar). Documentação do banco de dados com diagrama e esquema SQL. Vídeo regravado. Testes T22 a T24. |
 | 1.2.0 | Relatório completo da coordenação (todos os programas num painel, com fluxo do dado, evolução, conquistas da equipe e próximos passos; imprimir ou salvar PDF), teste T21. Relatório básico de programa (participação, o que foi trabalhado, evolução agregada com base mínima de 5 crianças e texto para apoiadores), teste T20. Correção B10: data de registro feita depois das 21h aparecia como "registrado dias depois". |
 | 1.1.0 | Registro do grupo (esfera coletiva): aba **Grupos** da psicóloga para Vivência Terapêutica e o novo programa Começos que Protegem; na Presença, a Equipe registra atividade, participação e observação geral do encontro. Testes T18 e T19. |
 | 1.0.1 | Botão "Voltar" em todas as abas fora do painel (T17). |

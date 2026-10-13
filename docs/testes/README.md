@@ -1,6 +1,6 @@
 # Evidências de testes
 
-**Resultado da última execução: 21 de 21 testes aprovados (0 falhas, 0 instáveis), em cerca de 72 s.**
+**Resultado da última execução: 24 de 24 testes aprovados (0 falhas, 0 instáveis), em cerca de 80 s.**
 
 - Relatório interativo: [`relatorio-html/index.html`](relatorio-html/index.html). Abra no navegador ou rode `npm run test:report`.
 - Resultado em formato de máquina: [`resultado-testes.json`](resultado-testes.json).
@@ -36,13 +36,16 @@
 | T16 | Estabilidade | Todas as telas dos 3 perfis (inclusive as 18 trajetórias) sem erro e sem rolagem lateral em 375 px e 1280 px | ✅ |
 | T17 | Estabilidade | Toda aba fora do painel tem "Voltar", que leva ao painel do perfil (Equipe, Coordenação e Psicóloga) | ✅ |
 | T18 | Registro do grupo | Psicóloga registra o encontro coletivo de Começos que Protegem (tema, participação, movimentos, observação); aviso de nome de criança; a Equipe vê só que foi registrado | ✅ |
+| T22 | Notificação urgente | Equipe notifica suspeita de violência (protocolo e urgência crítica sugerida); coordenação vê o alerta, assume, registra a ação e só consegue encerrar com o Conselho Tutelar comunicado; auditoria sem o relato | ✅ |
+| T23 | Notificação urgente | Equipe não tem a lista; relatório completo não mostra notificações; psicóloga vê na trajetória da criança | ✅ |
+| T24 | Backup | Coordenação exporta o JSON, restaura e o app recusa arquivo inválido | ✅ |
 | T21 | Relatório completo | Botão no painel e na aba Relatório; um card por programa, fluxo do dado, evolução com base mínima, próximos passos; nenhum nome de criança; conteúdo da psicóloga protegido; sem rolagem lateral | ✅ |
 | T20 | Relatório básico | Participação, o que foi trabalhado e evolução agregada com base mínima de 5 crianças; programa com base menor suprime a evolução; grupo da psicóloga não mostra conteúdo; texto para apoiadores sem nomes | ✅ |
 | T19 | Registro do grupo | Equipe registra atividade, participação e observação geral; o texto sobrevive ao re-render e é gravado ao fechar a presença | ✅ |
 
 ## Defeitos encontrados e corrigidos
 
-Os 10 defeitos (B1 a B10) achados nesta fase e as respectivas correções estão em [`../decisoes-tecnicas.md`](../decisoes-tecnicas.md#correções-feitas-durante-a-fase-de-testes). Os testes T02, T03, T07, T08, T13, T15, T16 e T17 funcionam como testes de regressão para eles.
+Os 11 defeitos (B1 a B11) achados nesta fase e as respectivas correções estão em [`../decisoes-tecnicas.md`](../decisoes-tecnicas.md#correções-feitas-durante-a-fase-de-testes). Os testes T02, T03, T07, T08, T13, T15, T16 e T17 funcionam como testes de regressão para eles.
 
 ## Como repetir os testes
 

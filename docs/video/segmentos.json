@@ -1,0 +1,77 @@
+{
+  "duracao": 109.6,
+  "segmentos": [
+    {
+      "t": 0.535,
+      "texto": "Ebenézer Conecta · versão 1.3 · dados 100% fictícios. Três perfis: Equipe, Coordenação e Psicóloga."
+    },
+    {
+      "t": 4.744,
+      "texto": "1 · A Equipe entra sem senha, direto no celular."
+    },
+    {
+      "t": 8.663,
+      "texto": "2 · Presença do encontro: marcar todos e ajustar as exceções."
+    },
+    {
+      "t": 12.953,
+      "texto": "Registro do grupo: atividade, participação e uma observação geral."
+    },
+    {
+      "t": 18.229,
+      "texto": "3 · Avaliação: sem consentimento do responsável, a coleta fica bloqueada."
+    },
+    {
+      "t": 22.497,
+      "texto": "Com consentimento: 5 frases, cada uma sim, não ou não observei."
+    },
+    {
+      "t": 27.078,
+      "texto": "4 · Observação individual: o app avisa se o texto cita outra criança."
+    },
+    {
+      "t": 35.375,
+      "texto": "5 · Caso urgente ou fora da curva: a Equipe notifica na hora."
+    },
+    {
+      "t": 38.776,
+      "texto": "Em suspeita de violência, o app mostra o protocolo e sugere urgência crítica."
+    },
+    {
+      "t": 49.263,
+      "texto": "6 · A Coordenação vê o alerta assim que entra."
+    },
+    {
+      "t": 53.306,
+      "texto": "As críticas vêm primeiro. Ela assume, registra a ação e encerra com o desfecho."
+    },
+    {
+      "t": 63.144,
+      "texto": "7 · Revisão: nada entra no relatório sem a Coordenação validar."
+    },
+    {
+      "t": 67.407,
+      "texto": "8 · Com um botão, a Coordenação gera o relatório completo."
+    },
+    {
+      "t": 71.155,
+      "texto": "Como o dado vira evidência e um card por programa, sem ranking."
+    },
+    {
+      "t": 75.805,
+      "texto": "Sinais de evolução só com base mínima, e o que falta para o próximo relatório."
+    },
+    {
+      "t": 81.072,
+      "texto": "Texto pronto para apoiadores: agregado, sem nomes de crianças."
+    },
+    {
+      "t": 90.544,
+      "texto": "9 · A Psicóloga registra os grupos que conduz, como o Começos que Protegem."
+    },
+    {
+      "t": 98.661,
+      "texto": "Fim · app no GitHub Pages, testes automatizados e documentação de handover."
+    }
+  ]
+}

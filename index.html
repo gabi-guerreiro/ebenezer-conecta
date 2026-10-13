@@ -229,6 +229,14 @@ textarea:focus,.tinput:focus,input:focus,button:focus-visible,.navbtn:focus-visi
 .rc-quote{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--brand);border-radius:10px;padding:12px 13px;font-size:12.6px;line-height:1.6}
 .rc-small{font-size:10.6px;color:var(--ink-2);margin-top:2px;line-height:1.35}
 @media print{ .header,.userbar,.topbar,.navwrap,.fab-help,.rcomp .btn{display:none!important} body,.shell{background:#fff!important} .content{padding:0!important} .rcomp{gap:10px} .rc-pc,.card,.rc-flow>div{break-inside:avoid} *{-webkit-print-color-adjust:exact;print-color-adjust:exact} }
+.btn.alert{background:var(--bad-s);color:var(--bad);border:1.5px solid var(--bad)}
+.nt-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--ink-3);border-radius:10px;padding:11px 12px;cursor:pointer}
+.nt-card.critica{border-left-color:var(--bad)}.nt-card.alta{border-left-color:var(--warn)}.nt-card.atencao{border-left-color:var(--data-2)}
+.nt-q{font-size:12.2px;line-height:1.5;background:var(--surface-alt);border-radius:8px;padding:9px 10px;color:var(--ink)}
+.nt-meta{font-size:10.6px;color:var(--ink-3);margin-top:4px}
+.urg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}.urg3 button{border:1.5px solid var(--ink-3);background:var(--card);border-radius:8px;padding:8px 4px;font-size:10.8px;font-weight:800;cursor:pointer;color:var(--ink-2);line-height:1.25}
+.urg3 button small{display:block;font-weight:700;font-size:9.6px;color:var(--ink-3)}
+.urg3 button.on.critica{background:var(--bad-s);border-color:var(--bad);color:var(--bad)}.urg3 button.on.alta{background:var(--data-5s);border-color:var(--data-5);color:var(--warn)}.urg3 button.on.atencao{background:var(--data-2s);border-color:var(--data-2);color:var(--data-2)}
 .pickchips{display:flex;flex-wrap:wrap;gap:6px}
 .pick{border:1.5px solid var(--ink-3);background:var(--card);border-radius:100px;padding:7px 11px;font-size:11.4px;font-weight:800;color:var(--ink-2);cursor:pointer;font-family:inherit}
 .pick.on{background:var(--brand-s);border-color:var(--brand-d);color:var(--brand-d)}
@@ -332,8 +340,8 @@ textarea:focus,.tinput:focus,input:focus,button:focus-visible,.navbtn:focus-visi
    consentimento por vínculo, DBR de 16 frases em 5 dimensões, fila de
    revisão humana e trilha de auditoria.
    ========================================================================== */
-const APP_VERSION = '1.2.0';
-const LS_KEY = 'ebenezer-conecta-v9';
+const APP_VERSION = '1.3.0';
+const LS_KEY = 'ebenezer-conecta-v10';
 const CORRECAO_MS = 15*60*1000;
 // "Hoje" = data local do dispositivo (antes era fixa em 09/09/2026, o que gerava "registrado X dias depois" incorreto).
 const HOJE = (()=>{ const d=new Date(); return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10); })();
@@ -528,6 +536,15 @@ function seedDB(){
           demandas:'', encaminhamento:null},
        ]},
     ],
+    notificacoes: [
+      {id:'nt1', childId:'EDU-0012', tipo:'atipico', urgencia:'alta', autor:'Equipe', criadoEm:Date.now()-26*3600e3, status:'aberta', responsavel:null,
+       descricao:'Chegou calada, não quis lanchar e chorou quando um adulto levantou a voz. Nas últimas três semanas ficou fora das atividades em grupo.', acoes:[], desfecho:null},
+      {id:'nt2', childId:'EDU-0007', tipo:'violencia', urgencia:'critica', autor:'Equipe', criadoEm:Date.now()-12*86400e3, status:'encerrada', responsavel:'Dra. Helena',
+       descricao:'Disse, sem ser perguntado: “não quero ir para casa hoje”. Tinha uma marca roxa no braço.',
+       acoes:[{ts:Date.now()-12*86400e3+2*3600e3, autor:'Dra. Helena', tipo:'Atendimento da psicóloga', texto:'Acolhimento individual no mesmo dia.'},
+              {ts:Date.now()-12*86400e3+5*3600e3, autor:'Uelington', tipo:'Conselho Tutelar comunicado', texto:'Comunicação feita por telefone e registrada em ofício.'}],
+       desfecho:'Conselho Tutelar comunicado', encerradoEm:Date.now()-11*86400e3},
+    ],
     auditLog: [
       {ts:Date.parse('2026-08-02T09:00:00'), texto:'Uelington validou o registro de Pietra Freitas (11/08 → 02/08).'},
       {ts:Date.parse('2026-06-07T09:00:00'), texto:'Uelington devolveu o registro de Dandara Dias — motivo: reescrever sem interpretar.'},
@@ -543,10 +560,11 @@ function loadDB(){
   }catch(e){}
   return seedDB();
 }
+function ensureDB(){ if(DB && !DB.notificacoes) DB.notificacoes = []; }
 function saveDB(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }catch(e){ console.warn('Armazenamento indisponível — dados só nesta sessão.'); } }
 function resetDB(){ try{ localStorage.removeItem(LS_KEY); }catch(e){} DB = seedDB(); }
 function uid(p){ return (p||'id')+'_'+Math.random().toString(36).slice(2,9); }
-let DB = loadDB();
+let DB = loadDB(); ensureDB();
 
 /* ==========================================================================
    ESTADO DE NAVEGAÇÃO
@@ -570,18 +588,18 @@ const NAV = {
       ['intervencoes','Intervenções',icoBolt()],
     ], overflow:[]},
   coordenacao:{primary:[
-      ['painel','Painel',icoGrid()], ['registros','Registros',icoNote()],
-      ['educandos','Educandos',icoUsers()], ['intervencoes','Intervenções',icoBolt()],
-      ['presenca','Presença',icoCal()],
+      ['painel','Painel',icoGrid()], ['notificacoes','Urgências',icoAlert()],
+      ['registros','Registros',icoNote()], ['educandos','Educandos',icoUsers()],
+      ['intervencoes','Intervenções',icoBolt()],
     ], overflow:[
-      ['avaliacoes','Avaliações',icoLeaf()], ['relatorio','Relatório',icoExport()],
+      ['presenca','Presença',icoCal()], ['avaliacoes','Avaliações',icoLeaf()], ['relatorio','Relatório',icoExport()],
       ['governanca','Governança',icoShield()], ['administracao','Administração',icoSettings()],
     ]},
   psicologa:{primary:[
-      ['painel','Painel',icoGrid()], ['grupos','Grupos',icoUsers()],
-      ['encaminhamentos','Encaminhamentos',icoFlag()], ['educandos','Educandos',icoUsers()],
-      ['registros','Registros',icoNote()],
-    ], overflow:[['avaliacoes','Avaliações',icoLeaf()], ['presenca','Presença',icoCal()], ['administracao','Frases de observação',icoSettings()]]},
+      ['painel','Painel',icoGrid()], ['notificacoes','Urgências',icoAlert()],
+      ['grupos','Grupos',icoUsers()], ['encaminhamentos','Encaminhamentos',icoFlag()],
+      ['educandos','Educandos',icoUsers()],
+    ], overflow:[['registros','Registros',icoNote()], ['avaliacoes','Avaliações',icoLeaf()], ['presenca','Presença',icoCal()], ['administracao','Frases de observação',icoSettings()]]},
 };
 function allTabsFor(role){ const n = NAV[role]; return n.primary.concat(n.overflow); }
 function tabLabel(role,tab){ const t = allTabsFor(role).find(x=>x[0]===tab); return t ? t[1] : ''; }
@@ -658,6 +676,7 @@ function titleFor(){
             S.role==='coordenacao' ? ['Visão da coordenação','Estado da coleta neste ciclo'] :
             ['Painel do educador','Estado da coleta neste ciclo'],
     presenca:['Presença','Lançamento em lote, um encontro por vez'],
+    notificacoes:['Notificações urgentes','Casos fora da curva, por criança, com prazo de ação'],
     grupos:['Encontros em grupo','Vivência Terapêutica e Começos que Protegem · esfera coletiva'],
     avaliacoes:['Avaliação inicial e check-ins','Direct Behavior Rating · 16 frases em 5 dimensões'],
     registros:['Registros da equipe','Ditado ou digitado, o registro vira texto'],
@@ -673,6 +692,9 @@ function titleFor(){
 const TUTORIALS = {
   painel: 'Os botões no topo levam à ação mais comum. Toque em qualquer número abaixo para ver quem está por trás dele.',
   presenca: 'Marque presente, justificada ou falta por educando e feche o lançamento ao terminar — depois só a coordenação corrige. Falta justificada não conta no sinal de atenção (75%). No fim da tela, registre o grupo: atividade, participação e, se quiser, uma observação geral.',
+  notificacoes: 'Notificações de situações fora da curva, por criança. As críticas aparecem primeiro. Abra uma notificação para assumir, registrar o que foi feito e encerrar. Suspeita de violência só se encerra com o Conselho Tutelar comunicado (ECA, art. 13).',
+  notificar: 'Escolha a criança, o tipo de situação e a urgência, e descreva só o que viu ou ouviu. Não investigue nem faça perguntas à criança. A notificação chega na hora à coordenação e à psicóloga.',
+  notifdetalhe: 'Assuma a notificação, registre cada ação com data e encerre com o desfecho. Nada desta tela aparece em relatórios.',
   grupos: 'Registro do grupo como um todo nos encontros que você conduz: tema trabalhado, participação, movimentos do grupo e observação geral. Sem nomes de crianças — o que for individual vai para o caso clínico.',
   avaliacoes: 'Toque num educando para abrir a avaliação. Sem consentimento, a coleta fica bloqueada. Rápido = 5 frases; completo = 16. Cada frase é sim, não ou não observei.',
   registros: 'Toque em "Registrar nova observação" para descrever o que um educando fez. Todo registro passa por revisão antes de contar oficialmente.',
@@ -709,6 +731,9 @@ function subTitle(){
   if(S.sub==='avaliar') return ['Registrar avaliação', DB.children.find(c=>c.id===S.ctx.childId)?.nome || ''];
   if(S.sub==='novoregistro') return ['Nova observação','Passo a passo'];
   if(S.sub==='relcompleto') return ['Relatório completo','Todos os programas · ciclo 2026'];
+  if(S.sub==='notificar') return ['Notificar situação urgente','Chega à coordenação e à psicóloga'];
+  if(S.sub==='notifok') return ['Notificação enviada',''];
+  if(S.sub==='notifdetalhe'){ const n=DB.notificacoes.find(x=>x.id===S.ctx.notifId); const c=n&&DB.children.find(k=>k.id===n.childId); return ['Notificação', c?c.nome:'']; }
   if(S.sub==='propor') return ['Propor intervenção', DB.children.find(c=>c.id===S.ctx.ivChild)?.nome || 'Escolher educando'];
   if(S.sub==='casonovo') return ['Abrir caso', DB.children.find(c=>c.id===S.ctx.casoChild)?.nome || ''];
   if(S.sub==='casoatividade') return ['Registrar atividade', DB.children.find(c=>c.id===S.ctx.casoChild)?.nome || ''];
@@ -769,6 +794,9 @@ function screenFor(){
   if(S.sub==='child') return screenChild(S.ctx.childId);
   if(S.sub==='avaliar') return screenAvaliar(S.ctx.childId);
   if(S.sub==='relcompleto') return screenRelatorioCompleto();
+  if(S.sub==='notificar') return screenNotificar();
+  if(S.sub==='notifok') return screenNotifOk();
+  if(S.sub==='notifdetalhe') return screenNotifDetalhe();
   if(S.sub==='novoregistro') return screenNovoRegistro();
   if(S.sub==='propor') return screenPropor();
   if(S.sub==='casonovo') return screenCasoNovo();
@@ -776,6 +804,7 @@ function screenFor(){
   switch(S.tab){
     case 'painel': return S.role==='psicologa' ? painelPsicologa() : S.role==='coordenacao' ? painelCoordenacao() : painelEducador();
     case 'presenca': return screenPresenca();
+    case 'notificacoes': return screenNotificacoes();
     case 'grupos': return screenGrupos();
     case 'avaliacoes': return screenAvaliacoesLista();
     case 'registros': return screenRegistros();
@@ -845,6 +874,7 @@ function painelEducador(){
   <div class="stack">
     ${callout('ok', `Seus registros mostram a participação das crianças nos encontros.`)}
     <button class="btn gold" data-act="goto-novoregistro">${icoPlus()} Registrar nova observação</button>
+    <button class="btn alert" data-act="goto-notificar">${icoAlert()} Notificar situação urgente</button>
     <button class="btn ghost" data-act="nav" data-tab="presenca">${icoCal()} Lançar presença do encontro</button>
     <button class="btn ghost" data-act="nav" data-tab="avaliacoes">${icoLeaf()} Fazer uma avaliação</button>
     <hr class="hr">
@@ -905,6 +935,7 @@ function painelCoordenacao(){
   const tabs = [['visao','Visão geral',icoGrid()],['equipe','Painel da equipe',icoUsers()],['semaforo','Semáforo de turmas',icoSemaforo()],['evolucao','Evolução & Fatores de Mudança',icoTrend()]];
   return `
   <div class="stack">
+    ${alertaNotificacoes()}
     ${callout('ok', `${st.aguardando} registro(s) aguardando sua revisão.`)}
     <button class="btn gold" data-act="nav" data-tab="registros">${icoNote()} Revisar registros (${st.aguardando})</button>
     <button class="btn accent" data-act="goto-relcompleto">${icoExport()} Gerar relatório completo</button>
@@ -974,6 +1005,7 @@ function painelPsicologa(){
   const recentes = pendentes.slice(0,3);
   return `
   <div class="stack">
+    ${alertaNotificacoes()}
     ${callout('ok', `${pendentes.length} encaminhamento(s) pendente(s) de revisão.`)}
     <button class="btn gold" data-act="goto-novoregistro">${icoPlus()} Registrar nova observação</button>
     <button class="btn accent" data-act="nav" data-tab="grupos">${icoUsers()} Registrar encontro em grupo</button>
@@ -1469,7 +1501,9 @@ function screenChild(childId){
       </div>
       <button class="btn ghost sm" style="margin-top:10px" data-act="novo-obs-child" data-child="${c.id}">+ Nova observação</button>
       ${S.role==='coordenacao' || S.role==='psicologa' ? `<button class="btn ghost sm" style="margin-top:8px" data-act="goto-propor" data-child="${c.id}">${icoBolt()} Propor intervenção</button>` : ''}
+      <button class="btn alert sm" style="margin-top:8px" data-act="goto-notificar" data-child="${c.id}">${icoAlert()} Notificar situação urgente</button>
     </div>
+    ${S.role==='coordenacao' || S.role==='psicologa' ? notifDaCrianca(childId) : ''}
     ${S.role==='psicologa' ? casoClinicoBlock(childId) : ''}
     <div class="grid2">
       <div class="srow" style="text-align:center"><div class="tabular" style="font-size:18px;font-weight:900">${registros.length}</div><div class="k">Registros na trajetória</div></div>
@@ -1728,6 +1762,130 @@ function relatorioBasico(turmaId){
     ${S.ctx.repCopiado ? callout('ok','Texto copiado.') : ''}`;
 }
 
+
+/* ==========================================================================
+   NOTIFICAÇÕES URGENTES — v1.3.0
+   Situação fora da curva por criança, com urgência e prazo de ação.
+   Visível só para coordenação e psicóloga; nunca entra em relatório.
+   ========================================================================== */
+const NT_TIPOS = [
+  ['violencia','Sinal de violência ou abuso','marca no corpo, relato da criança, medo de voltar para casa'],
+  ['risco','Risco à integridade','fala em se machucar, situação de perigo imediato'],
+  ['atipico','Comportamento atípico ou fora da curva','mudança brusca, isolamento, agressividade incomum'],
+  ['ausencia','Ausência sem explicação','faltas seguidas e família sem contato'],
+  ['saude','Saúde ou acidente no Instituto','mal-estar, queda, machucado durante a atividade'],
+  ['outro','Outra situação','algo que precisa de atenção rápida'],
+];
+const NT_URG = [['critica','Crítica','agir hoje',24],['alta','Alta','em até 48 h',48],['atencao','Atenção','em até 7 dias',168]];
+const NT_ACOES = ['Conversa com a família','Conselho Tutelar comunicado','Atendimento da psicóloga','Encaminhamento à rede (saúde, CRAS, escola)','Reunião de equipe','Outra ação'];
+const NT_DESFECHOS = ['Situação resolvida no Instituto','Acompanhamento pela psicóloga','Encaminhada à rede de proteção','Conselho Tutelar comunicado','Sem necessidade de ação'];
+const NT_DESFECHOS_CT = ['Conselho Tutelar comunicado','Conselho Tutelar já acompanhava o caso'];
+const ntTipo = k => (NT_TIPOS.find(t=>t[0]===k)||['','—'])[1];
+const ntUrg = k => NT_URG.find(u=>u[0]===k) || NT_URG[2];
+const ntExigeCT = n => n.tipo==='violencia';
+function ntPrazo(n){ return n.criadoEm + ntUrg(n.urgencia)[3]*3600e3; }
+function ntVencida(n){ return n.status!=='encerrada' && Date.now() > ntPrazo(n); }
+function ntIdade(ts){ const h = Math.max(0, Math.round((Date.now()-ts)/3600e3)); return h<1 ? 'agora há pouco' : h<48 ? `há ${h} h` : `há ${Math.round(h/24)} dias`; }
+function ntOrdem(a,b){ const r = {critica:0,alta:1,atencao:2}; return (r[a.urgencia]-r[b.urgencia]) || (a.criadoEm-b.criadoEm); }
+function ntPill(n){ const u = ntUrg(n.urgencia); return `<span class="pill ${n.urgencia==='critica'?'bad':n.urgencia==='alta'?'warn':'info'}">${u[1]} · ${u[2]}</span>`; }
+function ntProtocolo(tipo){
+  if(tipo!=='violencia' && tipo!=='risco') return '';
+  return callout('bad', `<b>Protocolo de proteção</b><br>Acolha e escute, sem fazer perguntas nem investigar. Não prometa segredo. Avise a coordenação hoje, pessoalmente.${tipo==='violencia' ? ' Pelo ECA (art. 13), suspeita de maus-tratos deve ser comunicada ao Conselho Tutelar.' : ''} Perigo imediato: <b>190</b>. Denúncia de violência contra criança: <b>Disque 100</b>.`);
+}
+function alertaNotificacoes(){
+  const abertas = DB.notificacoes.filter(n=>n.status!=='encerrada');
+  if(!abertas.length) return '';
+  const crit = abertas.filter(n=>n.urgencia==='critica').length, venc = abertas.filter(ntVencida).length;
+  return `<div class="callout bad" style="align-items:center"><span class="ci">${icoAlert()}</span><span class="cb"><b>${abertas.length} notificação(ões) urgente(s) aberta(s)</b>${crit?` · ${crit} crítica(s)`:''}${venc?` · ${venc} com prazo vencido`:''}</span>
+    <button class="btn danger sm" style="width:auto;padding:7px 11px" data-act="nav" data-tab="notificacoes">Ver agora</button></div>`;
+}
+function ntCard(n){
+  const c = DB.children.find(k=>k.id===n.childId);
+  return `<div class="nt-card ${n.status==='encerrada'?'':n.urgencia}" data-act="nt-abrir" data-id="${n.id}">
+    <div class="row between" style="gap:8px"><b style="font-size:13px">${c?c.nome:'—'}</b>${n.status==='encerrada' ? '<span class="pill ok">encerrada</span>' : ntPill(n)}</div>
+    <div style="font-size:11.6px;font-weight:800;margin-top:4px">${ntTipo(n.tipo)}</div>
+    <div class="nt-meta">Notificada ${ntIdade(n.criadoEm)} por ${n.autor} · ${n.status==='encerrada' ? `desfecho: ${n.desfecho}` : (n.responsavel ? `com ${n.responsavel}` : '<b style="color:var(--bad)">sem responsável</b>')}${ntVencida(n)?' · <b style="color:var(--bad)">prazo vencido</b>':''}</div>
+  </div>`;
+}
+function screenNotificacoes(){
+  const f = S.ctx.ntFiltro || 'abertas';
+  const abertas = DB.notificacoes.filter(n=>n.status!=='encerrada').sort(ntOrdem);
+  const encerradas = DB.notificacoes.filter(n=>n.status==='encerrada').sort((a,b)=>b.criadoEm-a.criadoEm);
+  const lista = f==='abertas' ? abertas : encerradas;
+  return `<div class="stack">
+    <button class="btn alert" data-act="goto-notificar">${icoAlert()} Notificar situação urgente</button>
+    <div class="subtabs">
+      <div class="subtab ${f==='abertas'?'on':''}" data-act="nt-filtro" data-f="abertas">Abertas (${abertas.length})</div>
+      <div class="subtab ${f==='encerradas'?'on':''}" data-act="nt-filtro" data-f="encerradas">Encerradas (${encerradas.length})</div>
+    </div>
+    ${lista.length ? lista.map(ntCard).join('') : `<div class="empty">${f==='abertas'?'Nenhuma notificação aberta.':'Nenhuma notificação encerrada.'}</div>`}
+    ${callout('info','Só a coordenação e a psicóloga veem esta tela. As notificações nunca entram em relatórios.')}
+  </div>`;
+}
+function notifDaCrianca(childId){
+  const ns = DB.notificacoes.filter(n=>n.childId===childId).sort(ntOrdem);
+  if(!ns.length) return '';
+  return `<div class="k">Notificações urgentes · ${ns.length}</div>${ns.map(ntCard).join('')}`;
+}
+function screenNotificar(){
+  const kids = DB.children.slice().sort((a,b)=>a.nome.localeCompare(b.nome));
+  const tipo = S.ctx.ntTipo, urg = S.ctx.ntUrg;
+  const ok = S.ctx.ntChild && tipo && urg && (S.ctx.ntTexto||'').trim().length>8;
+  return `<div class="stack">
+    <label class="field-label">Criança</label>
+    <select class="tinput" data-act="nt-child"><option value="">Escolha a criança…</option>${kids.map(k=>`<option value="${k.id}" ${k.id===S.ctx.ntChild?'selected':''}>${k.nome} · ${k.id}</option>`).join('')}</select>
+    <label class="field-label">O que aconteceu</label>
+    ${NT_TIPOS.map(([k,t,d])=>`<div class="opt ${tipo===k?'sel':''}" data-act="nt-tipo" data-v="${k}"><span>${t}</span><span class="d">${d}</span></div>`).join('')}
+    ${ntProtocolo(tipo)}
+    <label class="field-label">Urgência</label>
+    <div class="urg3">${NT_URG.map(([k,l,d])=>`<button class="${urg===k?'on '+k:''}" data-act="nt-urg" data-v="${k}">${l}<small>${d}</small></button>`).join('')}</div>
+    <label class="field-label">O que você viu ou ouviu</label>
+    <textarea rows="4" data-act="nt-texto" placeholder="Descreva só o fato. Use as palavras da criança entre aspas. Não interprete nem investigue.">${escHtml(S.ctx.ntTexto||'')}</textarea>
+    <button class="btn danger" data-act="nt-submit" ${ok?'':'disabled'}>Enviar notificação</button>
+    <div style="font-size:10.4px;color:var(--ink-2);text-align:center">Chega na hora à coordenação e à psicóloga. A equipe não vê a lista depois do envio.</div>
+  </div>`;
+}
+function screenNotifOk(){
+  const n = DB.notificacoes.find(x=>x.id===S.ctx.notifId);
+  return `<div class="stack">
+    ${callout('ok', `<b>Notificação enviada.</b> A coordenação e a psicóloga já veem o caso no painel, com urgência ${ntUrg(n.urgencia)[1].toLowerCase()} (${ntUrg(n.urgencia)[2]}).`)}
+    ${ntProtocolo(n.tipo)}
+    <button class="btn" data-act="tab-back">Voltar ao painel</button>
+  </div>`;
+}
+function screenNotifDetalhe(){
+  const n = DB.notificacoes.find(x=>x.id===S.ctx.notifId);
+  if(!n) return '<div class="empty">Notificação não encontrada.</div>';
+  const c = DB.children.find(k=>k.id===n.childId);
+  const aberta = n.status!=='encerrada';
+  const desf = ntExigeCT(n) ? NT_DESFECHOS_CT : NT_DESFECHOS;
+  return `<div class="stack">
+    <div class="nt-card ${aberta?n.urgencia:''}" style="cursor:default">
+      <div class="row between" style="gap:8px"><b style="font-size:14px">${c.nome}</b>${aberta ? ntPill(n) : '<span class="pill ok">encerrada</span>'}</div>
+      <div style="font-size:12px;font-weight:800;margin-top:4px">${ntTipo(n.tipo)}</div>
+      <div class="nt-meta">${c.idade} anos · ${c.turmas.map(t=>TURMAS[t].nome).join(', ')} · notificada ${ntIdade(n.criadoEm)} por ${n.autor}</div>
+      <div class="nt-meta">Prazo de ação: ${new Date(ntPrazo(n)).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})}${ntVencida(n)?' · <b style="color:var(--bad)">vencido</b>':''}</div>
+    </div>
+    <div class="nt-q">${escHtml(n.descricao)}</div>
+    ${aberta ? ntProtocolo(n.tipo) : ''}
+    <div class="srow row between"><div><div class="k">Responsável</div><div style="font-size:12.6px;font-weight:800;margin-top:3px">${n.responsavel || 'Ninguém assumiu ainda'}</div></div>
+      ${aberta && n.responsavel!==USERS[S.role].nome ? `<button class="btn sm" style="width:auto" data-act="nt-assumir">Assumir</button>` : ''}</div>
+    <div class="k">Ações registradas · ${n.acoes.length}</div>
+    ${n.acoes.length ? `<div class="card">${n.acoes.map((a,i)=>`<div class="timeline-evt"><div class="rail"><div class="rdot"></div>${i<n.acoes.length-1?'<div class="rline"></div>':''}</div><div class="body"><div class="when">${new Date(a.ts).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'})} · ${a.autor}</div><div style="font-weight:900;font-size:12px">${a.tipo}</div>${a.texto?`<div style="font-size:11.6px;color:var(--ink-2)">${escHtml(a.texto)}</div>`:''}</div></div>`).join('')}</div>` : '<div class="empty">Nenhuma ação registrada ainda.</div>'}
+    ${aberta ? `
+    <label class="field-label">Registrar ação</label>
+    <select class="tinput" data-act="nt-acao-tipo"><option value="">Tipo de ação…</option>${NT_ACOES.map(a=>`<option ${S.ctx.ntAcaoTipo===a?'selected':''}>${a}</option>`).join('')}</select>
+    <textarea rows="2" data-act="nt-acao-texto" placeholder="O que foi feito, com quem e quando (opcional)">${escHtml(S.ctx.ntAcaoTexto||'')}</textarea>
+    <button class="btn ghost sm" data-act="nt-acao-submit" ${S.ctx.ntAcaoTipo?'':'disabled'}>Registrar ação</button>
+    <hr class="hr">
+    <label class="field-label">Encerrar com desfecho</label>
+    ${ntExigeCT(n) ? callout('warn','Suspeita de violência só pode ser encerrada com o Conselho Tutelar comunicado (ECA, art. 13).') : ''}
+    <select class="tinput" data-act="nt-desfecho"><option value="">Desfecho…</option>${desf.map(d=>`<option ${S.ctx.ntDesfecho===d?'selected':''}>${d}</option>`).join('')}</select>
+    <button class="btn" data-act="nt-encerrar" ${S.ctx.ntDesfecho?'':'disabled'}>Encerrar notificação</button>`
+    : callout('ok', `Encerrada ${ntIdade(n.encerradoEm)} · desfecho: <b>${n.desfecho}</b>`)}
+  </div>`;
+}
+
 /* ==========================================================================
    RELATÓRIO COMPLETO (coordenação) — v1.2.0
    Consolida todos os programas num painel amigável, agregado e sem nomes.
@@ -1927,8 +2085,13 @@ function screenGovernanca(){
     <div class="card"><div class="k">Retenção de áudio</div><div class="deck" style="margin-top:4px">Descartado após a transcrição. 0 arquivos retidos.</div></div>
     <div class="card"><div class="k">Nunca coletado aqui</div><div class="deck" style="margin-top:4px">Diagnóstico, saúde, situação familiar, violência, atendimento psicológico individual.</div></div>
     <div class="card"><div class="k">Como o painel calcula os rótulos</div><div class="deck" style="margin-top:4px">Por regra e limiar (ex.: 75% de frequência) — sem IA em tempo real.</div></div>
+    <div class="card"><div class="k">Notificações urgentes</div><div class="deck" style="margin-top:4px">Qualquer perfil notifica; só a coordenação e a psicóloga veem e tratam. Não dependem de consentimento, porque proteger a criança vem antes. Nunca entram em relatórios. Suspeita de violência só se encerra com o Conselho Tutelar comunicado (ECA, art. 13).</div></div>
     <div class="card"><div class="k">Registro do grupo</div><div class="deck" style="margin-top:4px">Coletivo, sem nome de criança (o app avisa se o texto citar um nome). Nos grupos conduzidos pela psicóloga — Vivência Terapêutica e Começos que Protegem — o conteúdo é visível só para ela; os demais perfis veem apenas que o encontro foi registrado.</div></div>
     <div class="card"><div class="k">Falta justificada</div><div class="deck" style="margin-top:4px">Não conta no sinal de atenção. Recorrência (3+) é observada à parte, como vulnerabilidade.</div></div>
+    <div class="card"><div class="k">Backup dos dados</div><div class="deck" style="margin-top:4px">No nível 1, os dados ficam só neste aparelho. Exporte um backup toda semana e guarde no Drive institucional.${DB.ultimoBackup?` Último backup: ${fmtCarimbo(DB.ultimoBackup)}.`:''}</div>
+      <button class="btn sm" style="margin-top:9px" data-act="exportar-dados">${icoExport()} Exportar backup (JSON)</button>
+      <label class="btn ghost sm" style="margin-top:7px">Restaurar a partir de um backup<input type="file" accept="application/json,.json" data-act="importar-dados" style="display:none"></label>
+      ${S.ctx.backupMsg ? callout(S.ctx.backupMsg.ok?'ok':'bad', S.ctx.backupMsg.txt) : ''}</div>
     <button class="btn ghost sm" data-act="reset-demo">Restaurar dados de demonstração</button>
     <div class="k">Trilha de auditoria</div>
     <div class="card">${DB.auditLog.slice().sort((a,b)=>b.ts-a.ts).map(l=>`<div class="srow" style="margin-bottom:6px"><div style="font-size:11.6px">${l.texto}</div><div style="font-size:10px;color:var(--ink-2);margin-top:3px">${new Date(l.ts).toLocaleString('pt-BR')}</div></div>`).join('') || `<div class="empty">Nenhum evento ainda nesta sessão.</div>`}</div>
@@ -2029,7 +2192,7 @@ const LIVE = {
   'propor-obs-texto':'ivObs','caso-descricao':'casoDescricao','caso-objetivo':'casoObjetivo',
   'at-objetivo':'atObjetivo','at-procedimentos':'atProcedimentos','at-evolucao':'atEvolucao','at-demandas':'atDemandas',
   'at-enc-paraquem':'atEncParaQuem','at-enc-motivo':'atEncMotivo','frase-edit-text':'fraseTextoTmp',
-  'grupo-obs':'grupoObs',
+  'grupo-obs':'grupoObs', 'nt-texto':'ntTexto', 'nt-acao-texto':'ntAcaoTexto',
 };
 function liveInput(act, el){
   if(act==='code-input'){ el.value = el.value.replace(/\D/g,'').slice(0,4); S.codeVal = el.value; }
@@ -2047,6 +2210,7 @@ function refreshGates(){
   const w = document.getElementById('novoWarn'); const c = DB.children.find(x=>x.id===S.ctx.novoChild);
   if(w && c) w.innerHTML = novoRegistroWarning(c);
   const gw = document.getElementById('grupoWarn'); if(gw) gw.innerHTML = grupoWarning();
+  setDis('[data-act=nt-submit]', !(S.ctx.ntChild && S.ctx.ntTipo && S.ctx.ntUrg && t('ntTexto')>8));
 }
 function bind(){
   root().querySelectorAll('[data-act]').forEach(el=>{
@@ -2199,6 +2363,48 @@ function handle(act, el){
 
     /* relatório */
     case 'rep-turma': ctx({repTurma:el.value, repCopiado:false}); render(); break;
+    case 'exportar-dados': {
+      DB.ultimoBackup = Date.now(); logAudit(`${USERS[S.role].nome} exportou um backup dos dados.`); saveDB();
+      const blob = new Blob([JSON.stringify({app:'ebenezer-conecta', versao:APP_VERSION, chave:LS_KEY, exportadoEm:new Date().toISOString(), db:DB}, null, 2)], {type:'application/json'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `ebenezer-conecta-backup-${HOJE}.json`;
+      document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+      ctx({backupMsg:{ok:true, txt:'Backup exportado. Guarde o arquivo no Drive institucional.'}}); render(); break; }
+    case 'importar-dados': {
+      const f = el.files && el.files[0]; if(!f) break;
+      f.text().then(txt=>{ try{
+          const o = JSON.parse(txt); const d = o.db || o;
+          if(!Array.isArray(d.children) || !Array.isArray(d.registros) || typeof d.presencas!=='object') throw new Error('estrutura');
+          DB = d; ensureDB(); logAudit(`${USERS[S.role].nome} restaurou um backup (${o.exportadoEm ? o.exportadoEm.slice(0,10) : 'sem data'}).`); saveDB();
+          ctx({backupMsg:{ok:true, txt:`Backup restaurado: ${d.children.length} educandos.`}});
+        }catch(e){ ctx({backupMsg:{ok:false, txt:'Arquivo inválido: não é um backup do Ebenézer Conecta.'}}); }
+        render(); });
+      break; }
+    case 'goto-notificar': { const keep = el.dataset.child ? {ntChild:el.dataset.child} : {}; S.sub='notificar'; S.ctx=keep; render(); break; }
+    case 'nt-child': ctx({ntChild:el.value}); render(); break;
+    case 'nt-tipo': { const v = el.dataset.v; const patch = {ntTipo:v}; if(!S.ctx.ntUrg && (v==='violencia'||v==='risco')) patch.ntUrg='critica'; ctx(patch); render(); break; }
+    case 'nt-urg': ctx({ntUrg:el.dataset.v}); render(); break;
+    case 'nt-submit': {
+      const n = {id:'nt'+Date.now(), childId:S.ctx.ntChild, tipo:S.ctx.ntTipo, urgencia:S.ctx.ntUrg, autor:USERS[S.role].nome, criadoEm:Date.now(),
+        status:'aberta', responsavel:null, descricao:(S.ctx.ntTexto||'').trim(), acoes:[], desfecho:null};
+      DB.notificacoes.push(n);
+      logAudit(`${n.autor} abriu uma notificação ${ntUrg(n.urgencia)[1].toLowerCase()} (${ntTipo(n.tipo)}) sobre ${DB.children.find(c=>c.id===n.childId).nome}.`);
+      saveDB(); S.sub='notifok'; S.ctx={notifId:n.id}; render(); break; }
+    case 'nt-filtro': ctx({ntFiltro:el.dataset.f}); render(); break;
+    case 'nt-abrir': S.sub='notifdetalhe'; S.ctx={notifId:el.dataset.id}; render(); break;
+    case 'nt-assumir': { const n = DB.notificacoes.find(x=>x.id===S.ctx.notifId); n.responsavel = USERS[S.role].nome; if(n.status==='aberta') n.status='em_andamento';
+      logAudit(`${n.responsavel} assumiu a notificação de ${DB.children.find(c=>c.id===n.childId).nome}.`); saveDB(); render(); break; }
+    case 'nt-acao-tipo': ctx({ntAcaoTipo:el.value}); render(); break;
+    case 'nt-acao-submit': { const n = DB.notificacoes.find(x=>x.id===S.ctx.notifId);
+      n.acoes.push({ts:Date.now(), autor:USERS[S.role].nome, tipo:S.ctx.ntAcaoTipo, texto:(S.ctx.ntAcaoTexto||'').trim()});
+      if(!n.responsavel) n.responsavel = USERS[S.role].nome; n.status='em_andamento';
+      logAudit(`${USERS[S.role].nome} registrou "${S.ctx.ntAcaoTipo}" na notificação de ${DB.children.find(c=>c.id===n.childId).nome}.`);
+      saveDB(); ctx({ntAcaoTipo:null, ntAcaoTexto:''}); render(); break; }
+    case 'nt-desfecho': ctx({ntDesfecho:el.value}); render(); break;
+    case 'nt-encerrar': { const n = DB.notificacoes.find(x=>x.id===S.ctx.notifId);
+      if(ntExigeCT(n) && !NT_DESFECHOS_CT.includes(S.ctx.ntDesfecho)) break;
+      n.status='encerrada'; n.desfecho=S.ctx.ntDesfecho; n.encerradoEm=Date.now(); if(!n.responsavel) n.responsavel = USERS[S.role].nome;
+      logAudit(`${USERS[S.role].nome} encerrou a notificação de ${DB.children.find(c=>c.id===n.childId).nome} · ${n.desfecho}.`);
+      saveDB(); ctx({ntDesfecho:null}); render(); break; }
     case 'goto-relcompleto': S.sub='relcompleto'; S.ctx={}; render(); break;
     case 'rep-imprimir': try{ window.print(); }catch(e){} break;
     case 'rep-copiar': { const tx = S.ctx.repTexto||''; try{ navigator.clipboard && navigator.clipboard.writeText(tx).catch(()=>{}); }catch(e){} ctx({repCopiado:true}); render(); break; }
